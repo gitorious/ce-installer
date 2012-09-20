@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# activemq       Starts ActiveMQ.
+#
+#
+# chkconfig: 345 88 12
+# description: ActiveMQ is a JMS Messaging Queue Server.
+### BEGIN INIT INFO
+# Provides: $activemq
+### END INIT INFO
+
+if [ ! -f /etc/activemq.conf ]
+then
+    echo "/etc/activemq.conf missing"
+    exit 1
+else
+    . /etc/activemq.conf
+fi
+
+# the base directory
+AMQ_DIR=$ACTIVEMQ_HOME
+
+# run the instance as user
+AMQ_USER=activemq
+
+SCRIPT=$AMQ_DIR/bin/activemq-admin
+
+if [ ! -x $SCRIPT ]
+then
+    echo "$SCRIPT is not executable"
+    exit 1
+fi
+
+CMD="nohup $SCRIPT"
+
+
+case "$1" in
+    start)
+        echo "Starting ActiveMQ "
+        /bin/su $AMQ_USER -c "$CMD $1 >/dev/null 2>&1 &"
+        ;;
+     stop)
+        echo "Shutting down ActiveMQ"
+        /bin/su $AMQ_USER -c "kill -9 `ps -u activemq -o pid=`"
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    status)
+      if [ "1" -eq `ps -u $AMQ_USER o user=|wc -l` ]                                     
+	  then
+	    echo "Seems to be running"
+	    exit 0
+	  else
+	    echo "Seems not to be running"
+	    exit 1
+
+      fi
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+ ;;
+esac

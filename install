@@ -1,0 +1,36 @@
+#!/bin/sh
+
+echo "Starting the Gitorious installation..."
+
+echo "Disabling SELinux..."
+sed -i "s/enforcing/disabled/" /etc/selinux/config
+setenforce 0
+
+echo "Installing Ruby 1.8.7, RubyGems 1.4.2 and Puppet..."
+yum erase -y ruby rubygems
+yum install -y ruby ruby-devel rubygems
+gem update --system
+gem update --system 1.4.2
+gem install -y --no-ri --no-rdoc puppet
+
+echo "Setting Gitorious hostname..."
+ruby change_hostname.rb
+
+echo "Applying Puppet recipe (will take a while, be patient)..."
+ruby apply_puppet_recipe.rb
+PUPPETRESULT=$?
+[ $PUPPETRESULT -ne 0 ] && echo "Installation failed." && exit
+echo "Puppet recipe applied successfully."
+
+echo "Creating the database..."
+cd /var/www/gitorious/app && env RAILS_ENV=production bundle exec rake db:drop db:create db:migrate VERBOSE=false
+echo "Database created."
+
+echo "--------------------"
+echo "Your installation of Gitorious Community Edition is complete."
+echo "This installer is created and supported by Gitorious AS."
+echo "For professional, long-term support, please consider Gitorious Enterprise Edition."
+echo "http://gitorious.com"
+echo "--------------------"
+
+echo "Done. Please reboot the server."

@@ -1,0 +1,4 @@
+check process git-daemon with pidfile <%= t_app_root %>/log/git-daemon.pid
+  start program = "<%= t_control_scripts_dir %>/git-daemon.sh" as uid git and gid git
+  stop program = "/bin/kill `/bin/cat <%= t_app_root %>/log/git-daemon.pid`" as uid git and gid git
+  if failed port 9418 then restart

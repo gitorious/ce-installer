@@ -1,0 +1,4 @@
+check process ultrasphinx with pidfile /var/www/gitorious/app/db/sphinx/log/searchd.pid
+  start program = "/usr/bin/searchd --config /var/www/gitorious/app/config/ultrasphinx/production.conf" as uid git and gid git
+  stop program = "/usr/bin/searchd --config /var/www/gitorious/app/config/ultrasphinx/production.conf --stop" as uid git and gid git
+

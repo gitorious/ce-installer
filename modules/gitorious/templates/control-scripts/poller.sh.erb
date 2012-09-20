@@ -1,0 +1,4 @@
+#!/bin/sh
+cd <%= app_root %>
+
+/usr/bin/env PATH=/opt/ruby-enterprise/bin:$PATH RAILS_ENV=production HOME=<%= root %> bundle exec script/poller $1

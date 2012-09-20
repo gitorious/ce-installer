@@ -1,0 +1,6 @@
+check process git-poller with pidfile <%= t_app_root %>/tmp/pids/poller0.pid
+  start program = "<%= t_control_scripts_dir %>/poller.sh start" as uid git and gid git
+  stop program = "<%= t_control_scripts_dir %>/poller.sh stop" as uid git and gid git
+  if totalmem is greater than 500.0 MB for 3 cycles then restart
+  if 5 restarts within 8 cycles then timeout
+  group gitorious

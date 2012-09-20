@@ -1,0 +1,4 @@
+# Added by Puppet
+LoadModule passenger_module <%= @gem_path %>/passenger-3.0.4/ext/apache2/mod_passenger.so
+PassengerRoot <%= @gem_path %>/passenger-3.0.4
+PassengerRuby /usr/bin/ruby
