@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="title" content="Gitorious Community Edition Installer"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-09-13 13:38:53 CEST"/>
+<meta name="generated" content="2012-09-20 15:56:53 CEST"/>
 <meta name="author" content="Thomas Kjeldahl Nilsson"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -181,9 +181,9 @@ You will be running on the <b>HEAD</b> (aka. bleeding edge) of <a href="http://g
  you want once the initial install has completed.
 </p>
 <p>
-We only assume the following:
+We assume the following:
 </p>
-<ul>
+<ol>
 <li>You are installing on a CentOS 6.* server <i>(Debian/Ubuntu support coming soon)</i>
 </li>
 <li>You have full superuser/root access on the server
@@ -191,12 +191,15 @@ We only assume the following:
 <li>Your server has at least 2-4 GB free memory
 </li>
 <li>Your server has at least 1 GB free harddrive space (plus however
-  much space you need for hosting git repositories)
+   much space you need for hosting git repositories)
+</li>
+<li>Gitorious isn't sharing the server with other webapps, and is the
+   sole subscriber to the underlying message queues and services
 </li>
 <li>You are fine with the installer installing packages and modifying
-  some server config along the way
+   some server config along the way
 </li>
-</ul>
+</ol>
 
 
 <p> 
@@ -252,12 +255,12 @@ server. Let's install it (if it's not already present):
 
 
 <p>
-Then, clone the installer to the server, then move into the <code>ce-installer</code> dir:
+Then, clone the installer to the server, and move into the <code>ce-installer</code> dir:
 </p>
 
 
 
-<pre class="src src-shell">git clone git@dogfood.gitorious.com:gitorious-community-edition/ce-installer.git &amp;&amp; cd ce-installer
+<pre class="src src-shell">git clone git@gitorious.org:gitorious/ce-installer.git &amp;&amp; cd ce-installer
 </pre>
 
 

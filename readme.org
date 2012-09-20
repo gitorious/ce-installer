@@ -98,10 +98,10 @@ server. Let's install it (if it's not already present):
 yum install -y git
 #+end_src
 
-Then, clone the installer to the server, then move into the =ce-installer= dir:
+Then, clone the installer to the server, and move into the =ce-installer= dir:
 
 #+begin_src shell
-git clone git@dogfood.gitorious.com:gitorious-community-edition/ce-installer.git && cd ce-installer
+git clone git@gitorious.org:gitorious/ce-installer.git && cd ce-installer
 #+end_src
 
 ** Install
