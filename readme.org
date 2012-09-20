@@ -290,62 +290,6 @@ from the same tarball by running =script/restore=:
   cd /var/www/gitorious/app/ && script/restore ./testsnapshot.tar 
 #+end_src
 
-** How do I upgrade it?
-
-Read any release notes available for the version you are upgrading
-to - some major versions may include breaking changes or manual steps
-needed. Only upgrade one version at a time and test your installation
-after each version upgrade. Always do a snapshot before attempting an
-upgrade (see below).
-
-First off you'll need to check which version you're on and which
-version you want to upgrade to:
-
-#+begin_src shell
-cd /var/www/gitorious/app/ && bundle exec rake versioning:changelog
-#+end_src
-
-You'll get some information on you current version and newer versions:
-
-#+begin_src shell
-[root@cleanroom app]#   cd /var/www/gitorious/app/ && bundle exec rake versioning:changelog
-(in /var/www/gitorious/app)
-
-Available versions
--> v2.2.1              Makes the sync adapter work again
-   v2.2.0              Private repositories, site-level wikis, bug fixes
-   v2.1.1              Resolve a potential vulnerability in GitShell.
-   v2.1.0              Graphs, HTTP API, blame, improved diffs, LDAP, themeability
-   v2.0.2              Patches a XSS vulnerability
-   v2.0.1              New messaging API, pagination improvements and themeability
-   v2.0.0              First versioned version of Gitorious
-[root@cleanroom app]#   
-#+end_src
-
-The most straightforward way to upgrade is to run =script/upgrade_to
-<RELEASE_TAG_NAME>=.  The command takes the desired release tagname as
-its single parameter, and will attempt to upgrade to that version of
-Gitorious.
-
-#+begin_src shell
-cd /var/www/gitorious/app && script/upgrade_to v2.2.1
-#+end_src
-
-Each version jump done via the =script/upgrade= command will store an
-undo point (which is overwritten each time you upgrade, so again only
-do one at a time). Undo back to the last version like this:
-
-#+begin_src shell
-cd /var/www/gitorious/app && script/undo_last_upgrade 
-#+end_src
-
-*Caution*: All this said, please make sure to perform a backup of your
-Gitorious site before any upgrade work (see =script/snapshot=
-above). That way, if the upgrade fails and you are unable to roll
-back/undo, you can ultimately resort to reinstalling Gitorious from
-scratch and use =script/restore= to recover your data in the new
-installation.
-
 ** How do I make my hosted git repositories available for anonymous users?
 
 The default private mode will not allow anonymous access to content or
