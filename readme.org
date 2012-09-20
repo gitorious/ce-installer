@@ -238,12 +238,12 @@ FAQ section.
 
 ** How do I change the hostname?
 
-Rerun =change_hostname.rb= from your =ce-installer= directory. This
+Rerun =change_hostname.sh= from your =ce-installer= directory. This
 will perform the same interactive configuration of Gitorious and
 server hostname as you did during the inital installation.
 
 #+begin_src shell
-cd ~/ce-installer/ && ./change_hostname.rb
+cd ~/ce-installer/ && ./change_hostname.sh
 #+end_src
 
 Then restart Gitorious:
