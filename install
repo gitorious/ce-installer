@@ -32,11 +32,16 @@ echo "Creating the database..."
 cd /var/www/gitorious/app && env RAILS_ENV=production bundle exec rake db:drop db:create db:migrate VERBOSE=false
 echo "Database created."
 
+# Anonymous pingback on install
+curl -s http://getgitorious.com/installer_completed > /dev/null
+
 echo "--------------------"
 echo "Your installation of Gitorious Community Edition is complete."
 echo "This installer is created and supported by Gitorious AS."
 echo "For professional, long-term support, please consider Gitorious Enterprise Edition."
 echo "http://gitorious.com"
 echo "--------------------"
+
+
 
 echo "Done. Please reboot the server."
