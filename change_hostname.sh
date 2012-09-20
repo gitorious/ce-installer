@@ -22,7 +22,7 @@ if [ -f $EXISTING_GITORIOUS_CONFIG_FILE ]; then
 fi
 
 # CentOS specific
-(sed -i 's/^HOSTNAME=.*/HOSTNAME=$NEW_HOSTNAME/' /etc/sysconfig/network)
+(sed -i "s/^HOSTNAME=.*/HOSTNAME=$NEW_HOSTNAME/"" /etc/sysconfig/network)
 (echo "$NEW_HOSTNAME" > /proc/sys/kernel/hostname)
 
 echo "Server and Gitorious hostname set to '$NEW_HOSTNAME'."
