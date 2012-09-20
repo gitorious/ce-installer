@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="title" content="Gitorious Community Edition Installer"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-09-20 15:56:53 CEST"/>
+<meta name="generated" content="2012-09-20 21:24:51 CEST"/>
 <meta name="author" content="Thomas Kjeldahl Nilsson"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -150,9 +150,8 @@ href="http://gitorious.com/managed_server">Managed Server</a>).
 <li><a href="#sec-4-5">How do I fix "untrusted certificate" warnings?</a></li>
 <li><a href="#sec-4-6">How do I back it up?</a></li>
 <li><a href="#sec-4-7">How do I perform disaster recovery?</a></li>
-<li><a href="#sec-4-8">How do I upgrade it?</a></li>
-<li><a href="#sec-4-9">How do I make my hosted git repositories available for anonymous users?</a></li>
-<li><a href="#sec-4-10">What's the recommended specs for a Gitorious server?</a></li>
+<li><a href="#sec-4-8">How do I make my hosted git repositories available for anonymous users?</a></li>
+<li><a href="#sec-4-9">What's the recommended specs for a Gitorious server?</a></li>
 </ul>
 </li>
 <li><a href="#sec-5">License</a></li>
@@ -592,88 +591,8 @@ from the same tarball by running <code>script/restore</code>:
 </div>
 
 <div id="outline-container-4-8" class="outline-3">
-<h3 id="sec-4-8">How do I upgrade it?</h3>
+<h3 id="sec-4-8">How do I make my hosted git repositories available for anonymous users?</h3>
 <div class="outline-text-3" id="text-4-8">
-
-
-<p>
-Read any release notes available for the version you are upgrading
-to - some major versions may include breaking changes or manual steps
-needed. Only upgrade one version at a time and test your installation
-after each version upgrade. Always do a snapshot before attempting an
-upgrade (see below).
-</p>
-<p>
-First off you'll need to check which version you're on and which
-version you want to upgrade to:
-</p>
-
-
-
-<pre class="src src-shell">cd /var/www/gitorious/app/ &amp;&amp; bundle exec rake versioning:changelog
-</pre>
-
-
-<p>
-You'll get some information on you current version and newer versions:
-</p>
-
-
-
-<pre class="src src-shell">[root@cleanroom app]#   cd /var/www/gitorious/app/ &amp;&amp; bundle exec rake versioning:changelog
-(in /var/www/gitorious/app)
-
-Available versions
--&gt; v2.2.1              Makes the sync adapter work again
-   v2.2.0              Private repositories, site-level wikis, bug fixes
-   v2.1.1              Resolve a potential vulnerability in GitShell.
-   v2.1.0              Graphs, HTTP API, blame, improved diffs, LDAP, themeability
-   v2.0.2              Patches a XSS vulnerability
-   v2.0.1              New messaging API, pagination improvements and themeability
-   v2.0.0              First versioned version of Gitorious
-[root@cleanroom app]#   
-</pre>
-
-
-<p>
-The most straightforward way to upgrade is to run <code>script/upgrade_to &lt;RELEASE_TAG_NAME&gt;</code>.  The command takes the desired release tagname as
-its single parameter, and will attempt to upgrade to that version of
-Gitorious.
-</p>
-
-
-
-<pre class="src src-shell">cd /var/www/gitorious/app &amp;&amp; script/upgrade_to v2.2.1
-</pre>
-
-
-<p>
-Each version jump done via the <code>script/upgrade</code> command will store an
-undo point (which is overwritten each time you upgrade, so again only
-do one at a time). Undo back to the last version like this:
-</p>
-
-
-
-<pre class="src src-shell">cd /var/www/gitorious/app &amp;&amp; script/undo_last_upgrade 
-</pre>
-
-
-<p>
-<b>Caution</b>: All this said, please make sure to perform a backup of your
-Gitorious site before any upgrade work (see <code>script/snapshot</code>
-above). That way, if the upgrade fails and you are unable to roll
-back/undo, you can ultimately resort to reinstalling Gitorious from
-scratch and use <code>script/restore</code> to recover your data in the new
-installation.
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-4-9" class="outline-3">
-<h3 id="sec-4-9">How do I make my hosted git repositories available for anonymous users?</h3>
-<div class="outline-text-3" id="text-4-9">
 
 
 <p>
@@ -695,9 +614,9 @@ To change to public mode, edit
 
 </div>
 
-<div id="outline-container-4-10" class="outline-3">
-<h3 id="sec-4-10">What's the recommended specs for a Gitorious server?</h3>
-<div class="outline-text-3" id="text-4-10">
+<div id="outline-container-4-9" class="outline-3">
+<h3 id="sec-4-9">What's the recommended specs for a Gitorious server?</h3>
+<div class="outline-text-3" id="text-4-9">
 
 
 <p>
