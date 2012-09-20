@@ -8,6 +8,9 @@ fi
 
 echo "Starting the Gitorious installation..."
 
+echo "Setting Gitorious hostname..."
+./change_hostname.sh
+
 echo "Disabling SELinux..."
 sed -i "s/enforcing/disabled/" /etc/selinux/config
 setenforce 0
@@ -18,9 +21,6 @@ yum install -y ruby ruby-devel rubygems
 gem update --system
 gem update --system 1.4.2
 gem install -y --no-ri --no-rdoc puppet
-
-echo "Setting Gitorious hostname..."
-ruby change_hostname.rb
 
 echo "Applying Puppet recipe (will take a while, be patient)..."
 ruby apply_puppet_recipe.rb
