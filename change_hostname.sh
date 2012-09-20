@@ -18,11 +18,11 @@ echo "New hostname will be set to: $NEW_HOSTNAME"
 EXISTING_GITORIOUS_CONFIG_FILE="/var/www/gitorious/app/config/gitorious.yml"
 if [ -f $EXISTING_GITORIOUS_CONFIG_FILE ]; then
   echo "Updating Gitorious hostname setting"
-  (sed -i 's/gitorious_host:.*/gitorious_host: $NEW_HOSTNAME/' /var/www/gitorious/app/config/gitorious.yml)
+  (sed -i "s/gitorious_host:.*/gitorious_host: $NEW_HOSTNAME/" /var/www/gitorious/app/config/gitorious.yml)
 fi
 
 # CentOS specific
-(sed -i "s/^HOSTNAME=.*/HOSTNAME=$NEW_HOSTNAME/"" /etc/sysconfig/network)
+(sed -i "s/^HOSTNAME=.*/HOSTNAME=$NEW_HOSTNAME/" /etc/sysconfig/network)
 (echo "$NEW_HOSTNAME" > /proc/sys/kernel/hostname)
 
 echo "Server and Gitorious hostname set to '$NEW_HOSTNAME'."
