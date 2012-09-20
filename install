@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#!/bin/bash
+if ! [ $(id -u) = 0 ]; then
+   echo "You should run this script as root/superuser."
+   exit 1
+fi
+
 echo "Starting the Gitorious installation..."
 
 echo "Disabling SELinux..."
