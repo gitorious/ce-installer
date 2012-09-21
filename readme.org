@@ -65,6 +65,18 @@ href="http://gitorious.com/managed_server">Managed Server</a>).
 
 #+END_HTML
 
+* Video walkthrough
+
+Here's a brief video walkthrough. Note that it's best viewed in
+fullscreen. The video will refer to the steps outlined in this
+document - keep reading below to find detailed written instructions.
+
+#+BEGIN_HTML
+<iframe src="http://player.vimeo.com/video/49337989" width="100%" height="500px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+#+END_HTML
+
+
+
 * Introduction and assumptions
 
 Welcome to the official Gitorious Community Edition Installer. By
@@ -93,16 +105,6 @@ We assume the following:
    some server config along the way
  
 Everything cool? Ok, let's go!
-
-* Video walkthrough
-
-Here's a brief video walkthrough. Note that it's best viewed in
-fullscreen. The video will refer to the steps outlined in this
-document - keep reading below to find detailed written instructions.
-
-#+BEGIN_HTML
-<iframe src="http://player.vimeo.com/video/49337989" width="100%" height="500px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-#+END_HTML
 
 * Installation procedure
 
