@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="title" content="Gitorious Community Edition Installer"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-09-20 21:24:51 CEST"/>
+<meta name="generated" content="2012-09-21 11:07:16 CEST"/>
 <meta name="author" content="Thomas Kjeldahl Nilsson"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -97,25 +97,45 @@
 
 
 <style>
-.ad {
-   font-size: 120%;
-   max-width: 600px;
-   background-color: #A8FFA3;
-   padding: 20px 20px 20px 20px;
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.38;
+    color: #333;
+    background-color: #fff;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    padding: 20px 35px 20px 14px;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border: 1px solid #d6e9c6;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #468847;
 }
 
 .src {
-background-color: black;
-color: white;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+}
+
+code {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    padding: 0;
 }
 
 #content {
-max-width: 900px;
+    max-width: 900px;
 }
-
 </style>
 
-<div class="ad"> 
+<div class="alert alert-success"> 
 
 The Gitorious Community Edition installer is created and supported by
 <a href="http://gitorious.com">Gitorious AS</a>. For professional,
@@ -394,7 +414,7 @@ Did everything work? <b>Congratulations, you're up and running with Gitorious!</
 </p>
 
 
-<div class="ad"> 
+<div class="alert alert-success"> 
 The Gitorious Community Edition installer is created and supported by
 <a href="http://gitorious.com">Gitorious AS</a>. For professional,
 long-term support, please consider <strong>Gitorious Enterprise
@@ -494,14 +514,14 @@ FAQ section.
 
 
 <p>
-Rerun <code>change_hostname.rb</code> from your <code>ce-installer</code> directory. This
+Rerun <code>change_hostname.sh</code> from your <code>ce-installer</code> directory. This
 will perform the same interactive configuration of Gitorious and
 server hostname as you did during the inital installation.
 </p>
 
 
 
-<pre class="src src-shell">cd ~/ce-installer/ &amp;&amp; ./change_hostname.rb
+<pre class="src src-shell">cd ~/ce-installer/ &amp;&amp; ./change_hostname.sh
 </pre>
 
 
