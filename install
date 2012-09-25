@@ -28,6 +28,11 @@ PUPPETRESULT=$?
 [ $PUPPETRESULT -ne 0 ] && echo "Installation failed." && exit
 echo "Puppet recipe applied successfully."
 
+echo "Randomizing db password..."
+NEW_PASSWORD=$(date +%s | sha256sum | base64 | head -c 20) 
+sed -i "s/password: .*/password: $NEW_PASSWORD/" /var/www/gitorious/app/config/database.yml
+echo "Db password updated."
+
 echo "Creating the database..."
 cd /var/www/gitorious/app && env RAILS_ENV=production bundle exec rake db:drop db:create db:migrate VERBOSE=false
 echo "Database created."

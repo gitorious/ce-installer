@@ -76,7 +76,6 @@ document - keep reading below to find detailed written instructions.
 #+END_HTML
 
 
-
 * Introduction and assumptions
 
 Welcome to the official Gitorious Community Edition Installer. By
@@ -88,9 +87,9 @@ using sane, default settings, running in private mode with unlimited
 private repos enabled. The only option you will be prompted for during
 the installation is the intended hostname of your Gitorious server.
 
-You will be running on the *HEAD* (aka. bleeding edge) of [[http://gitorious.org/gitorious/mainline][the Gitorious
- master branch]], and you can manually reconfigure the server however
- you want once the initial install has completed.
+You will be running on v2.3.0 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
+can manually reconfigure the server however you want once the initial
+install has completed.
 
 We assume the following:
 
