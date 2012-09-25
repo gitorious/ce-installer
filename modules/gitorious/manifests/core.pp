@@ -3,7 +3,7 @@ class gitorious::core {
   Exec { path => ["/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin"] }
 
   exec {"clone_gitorious_source":
-    command => "git clone git://gitorious.org/gitorious/mainline.git ${gitorious::app_root}",
+    command => "git clone -b v2.3.0 git://gitorious.org/gitorious/mainline.git ${gitorious::app_root}",
     creates => "${gitorious::app_root}",
     require => File["gitorious_root"],
   }
