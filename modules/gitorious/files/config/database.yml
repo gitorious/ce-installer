@@ -2,6 +2,6 @@ production:
   adapter: mysql
   database: gitorious_production
   username: gitorious
-  password: BeskubVaktupObHavHydjorjArbyebbulHaytawnedVirdepgucpakyicogMynsh
+  password: DB_PASSWORD
   host: localhost
   encoding: utf8
