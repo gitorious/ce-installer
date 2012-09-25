@@ -54,12 +54,13 @@ code {
 
 <div class="alert alert-success"> 
 
-The Gitorious Community Edition installer is created and supported by
-<a href="http://gitorious.com">Gitorious AS</a>. For professional,
-long-term support, please consider <strong>Gitorious Enterprise
-Edition</strong> (available as <a
-href="http://gitorious.com/local_install">Local Install</a> or <a
-href="http://gitorious.com/managed_server">Managed Server</a>).
+The Gitorious Community Edition installer is created and maintained by
+<a href="http://gitorious.com">Gitorious AS</a> under the GPL3
+license. It is offered without warranty. For professional, long-term
+support, please consider <strong>Gitorious Enterprise Edition</strong>
+(available as <a href="http://gitorious.com/local_install">Local
+Install</a> or <a href="http://gitorious.com/managed_server">Managed
+Server</a>).
 
 </div>
 
@@ -156,7 +157,7 @@ When the installer finishes, it should look something like this:
 Database created.
 --------------------
 Your installation of Gitorious Community Edition is complete.
-This installer is created and supported by Gitorious AS.
+This installer is created and maintained by Gitorious AS under the GPL3 license.
 For professional, long-term support, please consider Gitorious Enterprise Edition.
 http://gitorious.com
 --------------------
@@ -205,12 +206,13 @@ Did everything work? *Congratulations, you're up and running with Gitorious!*
 
 #+BEGIN_HTML
 <div class="alert alert-success"> 
-The Gitorious Community Edition installer is created and supported by
-<a href="http://gitorious.com">Gitorious AS</a>. For professional,
-long-term support, please consider <strong>Gitorious Enterprise
-Edition</strong> (available as <a
-href="http://gitorious.com/local_install">Local Install</a> or <a
-href="http://gitorious.com/managed_server">Managed Server</a>).
+The Gitorious Community Edition installer is created and maintained by
+<a href="http://gitorious.com">Gitorious AS</a> under the GPL3
+license. It is offered without warranty. For professional, long-term
+support, please consider <strong>Gitorious Enterprise Edition</strong>
+(available as <a href="http://gitorious.com/local_install">Local
+Install</a> or <a href="http://gitorious.com/managed_server">Managed
+Server</a>).
 </div>
 #+END_HTML
 
