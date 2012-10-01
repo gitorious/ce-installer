@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 $exitcode = -1
 $retries = 0
-$max_retries = 10
+$max_retries = 15
 while $exitcode != 0
   `puppet apply --detailed-exitcodes --modulepath=modules manifests/site.pp`
   $exitcode = $?
