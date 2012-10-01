@@ -116,7 +116,7 @@ First, we're going to need =git= to clone the installer into your
 server. Let's install it (if it's not already present):
 
 #+begin_src shell
-yum upgrade && yum remove -y git && yum install -y git
+yum upgrade -y && yum remove -y git && yum install -y git
 #+end_src
 
 Then, clone the installer to the server, and move into the =ce-installer= dir:
