@@ -20,7 +20,7 @@ yum erase -y ruby rubygems
 yum install -y ruby ruby-devel rubygems
 gem update --system
 gem update --system 1.4.2
-gem install -y --no-ri --no-rdoc puppet
+gem install -y --no-ri --no-rdoc puppet -v=2.7.11
 
 echo "Randomizing db password in puppet recipe..."
 NEW_PASSWORD=$(date +%s | sha256sum | base64 | head -c 20) 
