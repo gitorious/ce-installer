@@ -38,6 +38,11 @@ echo "Creating the database..."
 cd /var/www/gitorious/app && env RAILS_ENV=production bundle exec rake db:drop db:create db:migrate VERBOSE=false
 echo "Database created."
 
+echo "Randomizing cookie_secret..."
+NEW_TOKEN=$(date +%s | sha256sum | base64 | head -c 40) 
+sed -i "s/cookie_secret:.*/cookie_secret: $NEW_TOKEN/" /var/www/gitorious/app/config/gitorious.yml
+echo "Rails cookie randomized."
+
 # Anonymous pingback on install
 curl -s http://getgitorious.com/installer_completed > /dev/null
 
