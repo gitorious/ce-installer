@@ -5,8 +5,7 @@ class tarball {
     $target="",
     $owner="",
     $group="",
-    $timeout=300) {
-
+    $timeout=700) {
 
       download_file {"${name}.tar.gz":
         site => $url,
