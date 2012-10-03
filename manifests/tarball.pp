@@ -35,7 +35,7 @@ class tarball {
     define download_file(
       $site="",
       $cwd="",
-      $timeout = 300) {
+      $timeout = 700) {
 
         exec { $name:
           command => "wget ${site} -O ${name}",
