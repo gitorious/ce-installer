@@ -8,4 +8,10 @@ class resque {
     ensure => running,
     require => Package["redis"],
   }
+
+  file {"/etc/init/resque-worker":
+    ensure => present,
+    mode => 644,
+    content => template("resque/rescue-worker.conf.erb"),
+  }
 }
