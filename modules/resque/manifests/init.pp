@@ -9,7 +9,7 @@ class resque {
     require => Package["redis"],
   }
 
-  file {"/etc/init/resque-worker":
+  file {"/etc/init/resque-worker.conf":
     ensure => present,
     mode => 644,
     content => template("resque/resque-worker.conf.erb"),
