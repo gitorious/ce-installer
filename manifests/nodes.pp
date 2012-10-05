@@ -14,6 +14,7 @@ node gitorious-ce {
   }
 
 #  include activemq
+  include resque
   include gitorious
   include iptables
   include iptables::default_firewall
