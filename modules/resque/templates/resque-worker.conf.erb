@@ -1,1 +1,10 @@
-# (empty, for now) <%= app_root %>
+description "Run a resque worker on all queues"
+author "Marius Mårnes Mathiesen <marius@gitorious.com>"
+
+start on startup
+stop on runlevel [016]
+
+env QUEUE=*
+
+exec <%= app_root %>/app/bin/rake resque:work
+respawn
