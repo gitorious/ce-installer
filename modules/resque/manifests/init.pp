@@ -12,6 +12,6 @@ class resque {
   file {"/etc/init/resque-worker":
     ensure => present,
     mode => 644,
-    content => template("rescue-worker.conf.erb"),
+    content => template("resque/resque-worker.conf.erb"),
   }
 }
