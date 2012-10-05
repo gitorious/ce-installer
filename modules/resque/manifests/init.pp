@@ -8,6 +8,7 @@ class resque {
     ensure => running,
     require => Package["redis"],
   }
+  $app_root = $gitorious::app_root
 
   file {"/etc/init/resque-worker.conf":
     ensure => present,
