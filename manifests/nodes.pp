@@ -12,11 +12,11 @@ node gitorious-ce {
     i386: { $gem_path = "/usr/lib/ruby/gems/1.8/gems" }
     default: { $gem_path = "/usr/lib64/ruby/gems/1.8/gems" }
   }
-  
-  include activemq
+
+#  include activemq
   include gitorious
-  include iptables		
-  include iptables::default_firewall	
+  include iptables
+  include iptables::default_firewall
   include gitorious::git
   include gitorious::dependencies
   include gitorious::sphinx
@@ -28,9 +28,9 @@ node gitorious-ce {
   group { "puppet":
     ensure => "present",
   }
-  
+
   $server_name = $fqdn
-  
+
   gitorious::vhost {"localhost":
     server_name => $server_name,
   }
@@ -41,7 +41,6 @@ node gitorious-ce {
   }
 
   monit::config { "ultrasphinx":
-    
+
   }
 }
-
