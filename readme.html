@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="title" content="Gitorious Community Edition Installer"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-10-02 10:09:58 CEST"/>
+<meta name="generated" content="2012-10-06 09:54:53 CEST"/>
 <meta name="author" content="Thomas Kjeldahl Nilsson"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -134,7 +134,7 @@ code {
 }
 </style>
 
-<div class="alert alert-success"> 
+<div class="alert alert-success">
 
 The Gitorious Community Edition installer is created and maintained by
 <a href="http://gitorious.com">Gitorious AS</a> under the GPL3
@@ -163,15 +163,16 @@ Server</a>).
 </li>
 <li><a href="#sec-4">FAQ</a>
 <ul>
-<li><a href="#sec-4-1">Can I reconfigure my Gitorious installation?</a></li>
-<li><a href="#sec-4-2">How do I add users?</a></li>
-<li><a href="#sec-4-3">Where and how is my data stored?</a></li>
-<li><a href="#sec-4-4">How do I change the hostname?</a></li>
-<li><a href="#sec-4-5">How do I fix "untrusted certificate" warnings?</a></li>
-<li><a href="#sec-4-6">How do I back it up?</a></li>
-<li><a href="#sec-4-7">How do I perform disaster recovery?</a></li>
-<li><a href="#sec-4-8">How do I make my hosted git repositories available for anonymous users?</a></li>
-<li><a href="#sec-4-9">What's the recommended specs for a Gitorious server?</a></li>
+<li><a href="#sec-4-1">I get a "Sorry, something went wrong" message when I try to log in - what's up?</a></li>
+<li><a href="#sec-4-2">Can I reconfigure my Gitorious installation?</a></li>
+<li><a href="#sec-4-3">How do I add users?</a></li>
+<li><a href="#sec-4-4">Where and how is my data stored?</a></li>
+<li><a href="#sec-4-5">How do I change the hostname?</a></li>
+<li><a href="#sec-4-6">How do I fix "untrusted certificate" warnings?</a></li>
+<li><a href="#sec-4-7">How do I back it up?</a></li>
+<li><a href="#sec-4-8">How do I perform disaster recovery?</a></li>
+<li><a href="#sec-4-9">How do I make my hosted git repositories available for anonymous users?</a></li>
+<li><a href="#sec-4-10">What's the recommended specs for a Gitorious server?</a></li>
 </ul>
 </li>
 <li><a href="#sec-5">License</a></li>
@@ -192,7 +193,6 @@ document - keep reading below to find detailed written instructions.
 
 
 <iframe src="http://player.vimeo.com/video/49337989" width="100%" height="500px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
 
 </div>
 
@@ -241,7 +241,7 @@ We assume the following:
 </ol>
 
 
-<p> 
+<p>
 Everything cool? Ok, let's go!
 </p>
 </div>
@@ -312,7 +312,7 @@ URL where developers expect to find your Gitorious installation.
 
 
 <pre class="src src-shell">Determining hostname for Gitorious installation...
-What hostname should this Gitorious instance run under? 
+What hostname should this Gitorious instance run under?
 (Hit enter for current hostname 'localhost.localdomain'):
 </pre>
 
@@ -320,6 +320,9 @@ What hostname should this Gitorious instance run under?
 <p>
 Set your intended hostname, or just hit enter to accept the server's
 current hostname (don't worry, you can easily change it later on).
+</p>
+<p>
+<b>Note: hostname needs to be a valid hostname, meaning it will need to have at least one period (.) in its name. In other words, 'gitorioustest' is invalid, but 'gitorioustest.localdomain' is valid.</b>
 </p>
 <p>
 The installer will now install Gitorious with all dependencies. How
@@ -367,7 +370,7 @@ server reboots).
 
 
 <p>
-Your Gitorious installation should now be ready to roll. 
+Your Gitorious installation should now be ready to roll.
 </p>
 <p>
 You'll need a user to log into the Gitorious web frontend. Let's
@@ -387,9 +390,9 @@ password:
 
 
 
-<pre class="src src-shell">Type in Administrator's e-mail: 
+<pre class="src src-shell">Type in Administrator's e-mail:
 thomas@kjeldahlnilsson.net
-Type in Administrator's password: 
+Type in Administrator's password:
 myRandomPasswordHere
 Admin user created successfully.
 </pre>
@@ -402,9 +405,20 @@ Now let's test your Gitorious installation:
 <ol>
 <li>Browse to the hostname url you chose during installation.
 </li>
+</ol>
+
+
+<p>
+<b>Note that you'll need to access it using the same hostname as the one set during the installation. In other words, if the hostname is 'gitorioustest.localdomain', you can't use the raw ip address because the login will fail due to Gitorious/Rails's authenticity validation.</b>
+If you cannot reach the server by that hostname through DNS, then update your local /etc/hosts file correspondingly.
+</p>
+<ol>
 <li>Log in using the admin user you created in the last paragraph.
+
 </li>
-<li>Create a new project and repo (note: you'll be asked to enter your public ssh key before you can create your own project).
+<li>Create a new project and repo (note: you'll be asked to enter your
+   public ssh key before you can create your own project).
+
 </li>
 <li>Push, pull and clone your new git repo.
 </li>
@@ -416,7 +430,7 @@ Did everything work? <b>Congratulations, you're up and running with Gitorious!</
 </p>
 
 
-<div class="alert alert-success"> 
+<div class="alert alert-success">
 The Gitorious Community Edition installer is created and maintained by
 <a href="http://gitorious.com">Gitorious AS</a> under the GPL3
 license. It is offered without warranty. For professional, long-term
@@ -439,8 +453,27 @@ Server</a>).
 </div>
 
 <div id="outline-container-4-1" class="outline-3">
-<h3 id="sec-4-1">Can I reconfigure my Gitorious installation?</h3>
+<h3 id="sec-4-1">I get a "Sorry, something went wrong" message when I try to log in - what's up?</h3>
 <div class="outline-text-3" id="text-4-1">
+
+
+<p>
+You are most likely using an unexpected hostname when logging in. You
+have to access your Gitorious server using the same hostname as you
+set during the installation, or the login will fail. This is due to an
+authenticity check that Gitorious performs during user login: the url
+that users access it with must match its configured hostname. If the
+server hostname isn't DNSed on the internet yet (or if your server is
+only for internal use) you'll have to update your /etc/hosts file to
+map the server's ip to the hostname you chose during the Gitorious
+installation.
+</p></div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2">Can I reconfigure my Gitorious installation?</h3>
+<div class="outline-text-3" id="text-4-2">
 
 
 <p>
@@ -465,9 +498,9 @@ Gitorious before they take effect. Restart by running the
 
 </div>
 
-<div id="outline-container-4-2" class="outline-3">
-<h3 id="sec-4-2">How do I add users?</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3">How do I add users?</h3>
+<div class="outline-text-3" id="text-4-3">
 
 
 <p>
@@ -492,9 +525,9 @@ user at <code>http://&lt;HOSTNAME&gt;/admin/users</code>.
 
 </div>
 
-<div id="outline-container-4-3" class="outline-3">
-<h3 id="sec-4-3">Where and how is my data stored?</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-4-4" class="outline-3">
+<h3 id="sec-4-4">Where and how is my data stored?</h3>
+<div class="outline-text-3" id="text-4-4">
 
 
 <p>
@@ -511,9 +544,9 @@ FAQ section.
 
 </div>
 
-<div id="outline-container-4-4" class="outline-3">
-<h3 id="sec-4-4">How do I change the hostname?</h3>
-<div class="outline-text-3" id="text-4-4">
+<div id="outline-container-4-5" class="outline-3">
+<h3 id="sec-4-5">How do I change the hostname?</h3>
+<div class="outline-text-3" id="text-4-5">
 
 
 <p>
@@ -542,9 +575,9 @@ Then restart Gitorious:
 
 </div>
 
-<div id="outline-container-4-5" class="outline-3">
-<h3 id="sec-4-5">How do I fix "untrusted certificate" warnings?</h3>
-<div class="outline-text-3" id="text-4-5">
+<div id="outline-container-4-6" class="outline-3">
+<h3 id="sec-4-6">How do I fix "untrusted certificate" warnings?</h3>
+<div class="outline-text-3" id="text-4-6">
 
 
 <p>
@@ -563,13 +596,13 @@ SSL cert warnings when they initially visit the site.
 
 </div>
 
-<div id="outline-container-4-6" class="outline-3">
-<h3 id="sec-4-6">How do I back it up?</h3>
-<div class="outline-text-3" id="text-4-6">
+<div id="outline-container-4-7" class="outline-3">
+<h3 id="sec-4-7">How do I back it up?</h3>
+<div class="outline-text-3" id="text-4-7">
 
 
 <p>
-Run <code>/var/www/gitorious/app/script/snapshot</code> as superuser/root. 
+Run <code>/var/www/gitorious/app/script/snapshot</code> as superuser/root.
 </p>
 
 
@@ -591,9 +624,9 @@ of said backups.
 
 </div>
 
-<div id="outline-container-4-7" class="outline-3">
-<h3 id="sec-4-7">How do I perform disaster recovery?</h3>
-<div class="outline-text-3" id="text-4-7">
+<div id="outline-container-4-8" class="outline-3">
+<h3 id="sec-4-8">How do I perform disaster recovery?</h3>
+<div class="outline-text-3" id="text-4-8">
 
 
 <p>
@@ -605,7 +638,7 @@ from the same tarball by running <code>script/restore</code>:
 
 
 
-<pre class="src src-shell">cd /var/www/gitorious/app/ &amp;&amp; script/restore ./testsnapshot.tar 
+<pre class="src src-shell">cd /var/www/gitorious/app/ &amp;&amp; script/restore ./testsnapshot.tar
 </pre>
 
 
@@ -613,9 +646,9 @@ from the same tarball by running <code>script/restore</code>:
 
 </div>
 
-<div id="outline-container-4-8" class="outline-3">
-<h3 id="sec-4-8">How do I make my hosted git repositories available for anonymous users?</h3>
-<div class="outline-text-3" id="text-4-8">
+<div id="outline-container-4-9" class="outline-3">
+<h3 id="sec-4-9">How do I make my hosted git repositories available for anonymous users?</h3>
+<div class="outline-text-3" id="text-4-9">
 
 
 <p>
@@ -637,9 +670,9 @@ To change to public mode, edit
 
 </div>
 
-<div id="outline-container-4-9" class="outline-3">
-<h3 id="sec-4-9">What's the recommended specs for a Gitorious server?</h3>
-<div class="outline-text-3" id="text-4-9">
+<div id="outline-container-4-10" class="outline-3">
+<h3 id="sec-4-10">What's the recommended specs for a Gitorious server?</h3>
+<div class="outline-text-3" id="text-4-10">
 
 
 <p>
@@ -647,6 +680,7 @@ At least 2-4GB RAM initially, since Gitorious can be a bit of a memory
 hog. The resource usage will go up linearly with increasing numbers of
 users, web traffic and git operations on your installation.
 </p>
+
 </div>
 </div>
 
@@ -660,7 +694,7 @@ users, web traffic and git operations on your installation.
 <p>
   Gitorious Community Edition Installer
 </p>
-<p>  
+<p>
   Copyright (C) 2012 Gitorious AS
 </p>
 <p>
@@ -1313,7 +1347,7 @@ later version.
 <p>If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee.
 </p>
 <p>
-END OF TERMS AND CONDITIONS  
+END OF TERMS AND CONDITIONS
 </p></div>
 </div>
 </div>

@@ -52,7 +52,7 @@ code {
 }
 </style>
 
-<div class="alert alert-success"> 
+<div class="alert alert-success">
 
 The Gitorious Community Edition installer is created and maintained by
 <a href="http://gitorious.com">Gitorious AS</a> under the GPL3
@@ -75,7 +75,6 @@ document - keep reading below to find detailed written instructions.
 #+BEGIN_HTML
 <iframe src="http://player.vimeo.com/video/49337989" width="100%" height="500px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 #+END_HTML
-
 
 * Introduction and assumptions
 
@@ -103,7 +102,7 @@ We assume the following:
    sole subscriber to the underlying message queues and services
 6. You are fine with the installer installing packages and modifying
    some server config along the way
- 
+
 Everything cool? Ok, let's go!
 
 * Installation procedure
@@ -138,12 +137,14 @@ URL where developers expect to find your Gitorious installation.
 
 #+begin_src shell
 Determining hostname for Gitorious installation...
-What hostname should this Gitorious instance run under? 
+What hostname should this Gitorious instance run under?
 (Hit enter for current hostname 'localhost.localdomain'):
 #+end_src
 
 Set your intended hostname, or just hit enter to accept the server's
 current hostname (don't worry, you can easily change it later on).
+
+*Note: hostname needs to be a valid hostname, meaning it will need to have at least one period (.) in its name. In other words, 'gitorioustest' is invalid, but 'gitorioustest.localdomain' is valid.*
 
 The installer will now install Gitorious with all dependencies. How
 long this takes varies a bit, depending on your bandwidth, as the
@@ -174,7 +175,7 @@ reboot
 
 ** Try it out
 
-Your Gitorious installation should now be ready to roll. 
+Your Gitorious installation should now be ready to roll.
 
 You'll need a user to log into the Gitorious web frontend. Let's
 create an admin user.
@@ -187,9 +188,9 @@ You'll be prompted for a login email and
 password:
 
 #+begin_src shell
-Type in Administrator's e-mail: 
+Type in Administrator's e-mail:
 thomas@kjeldahlnilsson.net
-Type in Administrator's password: 
+Type in Administrator's password:
 myRandomPasswordHere
 Admin user created successfully.
 #+end_src
@@ -198,14 +199,21 @@ Admin user created successfully.
 Now let's test your Gitorious installation:
 
 1. Browse to the hostname url you chose during installation.
+
+*Note that you'll need to access it using the same hostname as the one set during the installation. In other words, if the hostname is 'gitorioustest.localdomain', you can't use the raw ip address because the login will fail due to Gitorious/Rails's authenticity validation.*
+If you cannot reach the server by that hostname through DNS, then update your local /etc/hosts file correspondingly.
+
 2. Log in using the admin user you created in the last paragraph.
-3. Create a new project and repo (note: you'll be asked to enter your public ssh key before you can create your own project).
+
+3. Create a new project and repo (note: you'll be asked to enter your
+   public ssh key before you can create your own project).
+
 4. Push, pull and clone your new git repo.
 
 Did everything work? *Congratulations, you're up and running with Gitorious!*
 
 #+BEGIN_HTML
-<div class="alert alert-success"> 
+<div class="alert alert-success">
 The Gitorious Community Edition installer is created and maintained by
 <a href="http://gitorious.com">Gitorious AS</a> under the GPL3
 license. It is offered without warranty. For professional, long-term
@@ -217,6 +225,17 @@ Server</a>).
 #+END_HTML
 
 * FAQ
+** I get a "Sorry, something went wrong" message when I try to log in - what's up?
+
+You are most likely using an unexpected hostname when logging in. You
+have to access your Gitorious server using the same hostname as you
+set during the installation, or the login will fail. This is due to an
+authenticity check that Gitorious performs during user login: the url
+that users access it with must match its configured hostname. If the
+server hostname isn't DNSed on the internet yet (or if your server is
+only for internal use) you'll have to update your /etc/hosts file to
+map the server's ip to the hostname you chose during the Gitorious
+installation.
 ** Can I reconfigure my Gitorious installation?
 
 You certainly can. The main settings are located in
@@ -288,7 +307,7 @@ SSL cert warnings when they initially visit the site.
 
 ** How do I back it up?
 
-Run =/var/www/gitorious/app/script/snapshot= as superuser/root. 
+Run =/var/www/gitorious/app/script/snapshot= as superuser/root.
 
 #+begin_src shell
   cd /var/www/gitorious/app/ && script/snapshot ./testsnapshot.tar
@@ -309,7 +328,7 @@ restore the state of the Gitorious site (and the hosted git repos)
 from the same tarball by running =script/restore=:
 
 #+begin_src shell
-  cd /var/www/gitorious/app/ && script/restore ./testsnapshot.tar 
+  cd /var/www/gitorious/app/ && script/restore ./testsnapshot.tar
 #+end_src
 
 ** How do I make my hosted git repositories available for anonymous users?
@@ -333,10 +352,11 @@ At least 2-4GB RAM initially, since Gitorious can be a bit of a memory
 hog. The resource usage will go up linearly with increasing numbers of
 users, web traffic and git operations on your installation.
 
+
 * License
 
   Gitorious Community Edition Installer
-  
+
   Copyright (C) 2012 Gitorious AS
 
   This program is free software: you can redistribute it and/or modify
@@ -855,4 +875,4 @@ IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY C
 17. Interpretation of Sections 15 and 16.
 If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee.
 
-END OF TERMS AND CONDITIONS  
+END OF TERMS AND CONDITIONS

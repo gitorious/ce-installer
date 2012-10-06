@@ -2,8 +2,9 @@
 
 CURR_HOSTNAME=$(hostname)
 
-echo "What hostname should this server and Gitorious instance have?" 
+echo "What hostname should this server and Gitorious instance have?"
 echo "(Just hit enter for current hostname '$CURR_HOSTNAME'):"
+echo "NOTE: hostname must contain at least one period (.)"
 
 read INPUT
 
