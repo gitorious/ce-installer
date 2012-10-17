@@ -52,7 +52,7 @@ code {
 }
 </style>
 
-<div class="alert alert-success">
+<div class="alert-success">
 
 The Gitorious Community Edition installer is created and maintained by
 <a href="http://gitorious.com">Gitorious AS</a> under the GPL3
@@ -213,7 +213,7 @@ If you cannot reach the server by that hostname through DNS, then update your lo
 Did everything work? *Congratulations, you're up and running with Gitorious!*
 
 #+BEGIN_HTML
-<div class="alert alert-success">
+<div class="alert-success">
 The Gitorious Community Edition installer is created and maintained by
 <a href="http://gitorious.com">Gitorious AS</a> under the GPL3
 license. It is offered without warranty. For professional, long-term
