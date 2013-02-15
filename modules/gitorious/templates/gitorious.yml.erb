@@ -1,4 +1,4 @@
-production: 
+production:
   # The session secret key (`apg -m 64` is always useful for this kinda stuff)
   cookie_secret: wawmepkobFafcogEikJiucef4boQuicJucpegAkvivkeixraurrirviavElEdwic
 
@@ -7,11 +7,11 @@ production:
   repository_base_path: "<%= repository_root %>"
 
   # Stuff that's in the html <head>. custom stats javascript code etc
-  extra_html_head_data: 
-  
+  extra_html_head_data:
+
   # System message that will appear on all pages if present
   system_message: <%= system_message %>
-  
+
   # Port the ./script/gitorious script should use:
   gitorious_client_port: 80
 
@@ -28,7 +28,7 @@ production:
   gitorious_support_email: <%= support_email %>
 
   # Email spam on server errors to:
-  exception_notification_emails:  
+  exception_notification_emails:
 
   # Mangle visible e-mail addresses (spam protection)
   mangle_email_addresses: true
@@ -100,3 +100,5 @@ production:
   custom_username_label: <%= custom_username_label %>
 <% end %>
 
+  messaging_adapter: resque
+  frontend_server: nginx

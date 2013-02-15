@@ -11,10 +11,6 @@ class gitorious::ruby_git_daemons {
   }
 }
 class gitorious::native_git_daemons {
-  monit::config { "git-proxy":
-    t_app_root => $gitorious::app_root,
-  }
-
   monit::config { "git-daemons":
     pids_dir => "${gitorious::app_root}/log",
     pidfile => "${gitorious::app_root}/log/git-daemons.pid",

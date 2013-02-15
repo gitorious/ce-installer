@@ -12,7 +12,6 @@ class gitorious {
   $install_root = "/var/www/gitorious"
   $app_root = "$install_root/app"
   $deployed_tags_dir = "$install_root/deployed_tags"
-  $control_scripts_dir = "$install_root/control-scripts"
 
   $repository_root = "$install_root/repositories"
   $tarballs_cache = "$install_root/tarballs-cache"

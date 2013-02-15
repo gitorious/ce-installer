@@ -1,62 +1,10 @@
-define gitorious::vhost($server_name, $certificate_file="/etc/pki/tls/certs/localhost.crt", $certificate_key_file="/etc/pki/tls/private/localhost.key", $certificate_ca_chain="") {
-  $file = "/etc/httpd/conf.d/gitorious.vhost.conf"
-
-  $document_root = "${gitorious::app_root}/public"
-  $repository_root = $gitorious::repository_root
-  $tarballs_cache = $gitorious::tarballs_cache
-  
-  file {$file:
-    ensure => present,
-    owner => "root",
-    group => "root",
-    notify => Service["httpd"],
-    content => template("gitorious/gitorious.vhost.conf.erb"),
-    require => Package["httpd"],
-  }
-}
-
-# A virtual host with real SSL certs. These *must* be inside the puppet repo
-define gitorious::vhost_with_real_certs($server_name, $customer_name) {
-  $cert = "/etc/pki/tls/certs/${name}.crt"
-  $key = "/etc/pki/tls/private/${name}.key"
-  $ca_chain = "/etc/pki/tls/${name}_ca_chain.crt"
-
-  gitorious::vhost {$server_name:
-    server_name => $server_name,
-    certificate_file => $cert,
-    certificate_key_file => $key,
-    certificate_ca_chain => $ca_chain,
-  }
-  file { $cert:
-    ensure => present,
-    owner => root,
-    group => root,
-    mode => "0600",
-    source => "puppet:///modules/gitorious/ssl/clients/$customer_name/${name}.crt",    
-  }
-  file { $key:
-    ensure => present,
-    owner => root,
-    group => root,
-    mode => "0600",
-    source => "puppet:///modules/gitorious/ssl/clients/$customer_name/${name}.key",    
-  }
-  file { $ca_chain:
-    ensure => present,
-    owner => root,
-    group => root,
-    mode => "0600",
-    source => "puppet:///modules/gitorious/ssl/clients/$customer_name/${name}_ca_chain.crt",    
-  }
-}
-
 # Specify a tag to run Gitorious from
 # Will:
 # - fetcch tags from the server
 # - merge the specified tag
 # - do any required maintenance
 define gitorious::version() {
-  
+
   file { $gitorious::deployed_tags_dir:
     ensure => directory,
     owner => git,
@@ -75,12 +23,12 @@ define gitorious::version() {
   $probe = "${gitorious::deployed_tags_dir}/${name}_requirements"
 
   exec { "post_version_upgrade":
-    command => "sh -c 'export RAILS_ENV=production GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bundle install && git submodule init && git submodule update && bundle exec rake db:migrate  && rm -f public/stylesheets/gts-*.css public/stylesheets/all.css public/javascripts/all.js && touch tmp/restart.txt && touch $probe'",
+    command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bin/bundle install && git submodule update --init && bin/rake db:migrate && bin/rake assets:clear && touch $probe'",
     path => ["/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
-    require => File["bundler_config_file"],
+    require => [Package["sphinx"],File["bundler_config_file"]],
     creates => $probe,
   }
-  
+
 
 
 }
@@ -94,12 +42,12 @@ define gitorious::custom_ruby_file($relative_path, $template_file) {
     group => "git",
     mode => "0755",
     content => template($template_file),
-    notify => Service["httpd"],
+    notify => Service["web-server"],
     require => Exec["clone_gitorious_source"],
   }
 }
 
-define gitorious::authentication($host, $port, $base_dn, $dn_templ, $callback_class="") {
+define gitorious::authentication($host, $port, $base_dn, $dn_templ=false, $callback_class="",$bind_user=false,$bind_password=false,$login_attribute=false,$encryption=false) {
   $file = "${gitorious::app_root}/config/authentication.yml"
 
   file { $file:

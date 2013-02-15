@@ -3,7 +3,6 @@
     notifempty
     sharedscripts
     postrotate
-        /usr/bin/monit restart git-poller > /dev/null 2>/dev/null || true
         /usr/bin/monit restart git-daemon > /dev/null 2>/dev/null || true
         /usr/bin/monit restart git-proxy > /dev/null 2>/dev/null || true
         /usr/bin/monit restart git-daemons > /dev/null 2>/dev/null || true

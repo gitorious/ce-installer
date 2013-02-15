@@ -1,0 +1,51 @@
+#!/bin/sh
+status_message() {
+    printf "%-50s \033[1;32m %s \033[0m\n" "Restarting $1" [OK]
+}
+
+reload_unicorn() {
+    PIDFILE=<%= app_root %>/tmp/pids/unicorn.pid
+    PID=$(cat $PIDFILE)
+    SIG=USR2
+    if [ -f $PIDFILE ]
+    then
+	status_message "Unicorn"
+	/bin/kill -$SIG $PID
+    else
+	/bin/echo "Restarting unicorn: PID file $PIDFILE not found"
+    fi
+}
+
+restart_resque_worker() {
+    status_message "Resque"
+    /sbin/initctl stop resque-worker >/dev/null 2>/dev/null
+    /sbin/initctl start resque-worker >/dev/null 2>/dev/null
+}
+
+restart_git_daemons() {
+    if [ -f /etc/monit.d/git-daemons.monit ]; then
+	status_message "Git-daemons"
+	/usr/bin/monit restart git-daemons
+    fi
+    if [ -f /etc/monit.d/git-proxy.monit ]; then
+	status_message "Git-proxy"
+	/usr/bin/monit restart git-proxy
+    fi
+}
+
+restart_nginx() {
+    status_message "Nginx"
+    /etc/init.d/nginx restart >/dev/null 2>&1
+}
+
+restart_sphinx() {
+    status_message "Sphinx"
+    /usr/bin/monit restart thinking-sphinx
+}
+
+
+reload_unicorn
+restart_resque_worker
+restart_git_daemons
+restart_nginx
+restart_sphinx

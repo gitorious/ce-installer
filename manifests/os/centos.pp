@@ -17,5 +17,6 @@ class centos {
         enabled => 1;
       }
     }
-  }  
+    
+  }
 }

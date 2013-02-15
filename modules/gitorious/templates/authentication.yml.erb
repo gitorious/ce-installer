@@ -4,7 +4,20 @@ production:
       server: <%= host %>
       port: <%= port %>
       base_dn: <%= base_dn %>
+<% if dn_templ -%>
       distinguished_name_template: "<%= dn_templ %>"
-<% if callback_class != "" %>
+<% end %>
+<% if callback_class != "" -%>
       callback_class: <%= callback_class %>
+<% end %>
+<% if bind_user -%>
+      bind_user:
+        username: <%= bind_user %>
+        password: <%= bind_password %>
+<% end %>
+<% if login_attribute -%>
+      login_attribute: <%= login_attribute %>
+<% end %>
+<% if encryption -%>
+      encryption: <%= encryption %>
 <% end %>

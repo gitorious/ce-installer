@@ -5,7 +5,8 @@ class tarball {
     $target="",
     $owner="",
     $group="",
-    $timeout=700) {
+    $timeout=300) {
+
 
       download_file {"${name}.tar.gz":
         site => $url,
@@ -35,7 +36,7 @@ class tarball {
     define download_file(
       $site="",
       $cwd="",
-      $timeout = 700) {
+      $timeout = 300) {
 
         exec { $name:
           command => "wget ${site} -O ${name}",

@@ -87,7 +87,7 @@ using sane, default settings, running in private mode with unlimited
 private repos enabled. The only option you will be prompted for during
 the installation is the intended hostname of your Gitorious server.
 
-You will be running on v2.3.2 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
+You will be running on v2.4.9 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
 can manually reconfigure the server however you want once the initial
 install has completed.
 
@@ -101,7 +101,7 @@ We assume the following:
 5. Gitorious isn't sharing the server with other webapps, and is the
    sole subscriber to the underlying message queues and services
 6. You are fine with the installer installing packages and modifying
-   some server config along the way
+   some server config along the way (including the iptables).
 
 Everything cool? Ok, let's go!
 

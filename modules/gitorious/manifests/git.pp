@@ -1,5 +1,5 @@
 class gitorious::git {
-  
+
   user {"git":
     ensure => present,
     home => $gitorious::install_root,
@@ -9,18 +9,6 @@ class gitorious::git {
     ensure => present,
     require => User["git"],
   }
-
-  # group {"apache":
-  #   ensure => present,
-  # }
-
-  # # The apache user needs to be member of the git group to
-  # # have read access to the tarballs and repositories on disk
-  # user {"apache":
-  #   ensure => present,
-  #   require => Group["git","apache"],
-  #   groups => ["apache","git"],
-  # }
 
   file {"gitorious_root":
     path => $gitorious::install_root,
@@ -59,7 +47,7 @@ class gitorious::git {
     mode => 700,
     require => Group["git"],
   }
-  
+
   file {"authorized_keys":
     path => "${gitorious::install_root}/.ssh/authorized_keys",
     ensure => present,
@@ -76,7 +64,7 @@ class gitorious::git {
     owner => "git",
     group => "git",
   }
-  
+
   file {"tarball_work":
     path => "${gitorious::install_root}/tarballs-work",
     ensure => directory,
@@ -84,15 +72,6 @@ class gitorious::git {
     owner => "git",
     group => "git",
   }
-
-  file {"control_scripts":
-    path => $gitorious::control_scripts_dir,
-    ensure => directory,
-    mode => 0755,
-    owner => "git",
-    group => "git",
-  }
-
   package {"git":
     ensure => installed,
   }

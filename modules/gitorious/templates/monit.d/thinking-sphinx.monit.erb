@@ -1,0 +1,3 @@
+check process thinking-sphinx with pidfile <%= t_app_root %>/log/searchd.production.pid
+  start program = "<%= t_app_root %>/bin/rake ts:start"
+  stop program = "<%= t_app_root %>/bin/rake ts:stop"

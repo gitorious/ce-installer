@@ -25,7 +25,7 @@ class gitorious::database {
     require => File["/usr/local/bin/gitorious"],
   }
 
-  $bundler_version = "1.0.17"
+  $bundler_version = "1.2.2"
 
   exec { "install_bundler":
     command => "gem install --no-ri --no-rdoc -v '$bundler_version' bundler",
@@ -59,7 +59,7 @@ class gitorious::database {
   }
 
   exec {"populate_database":
-    command => "su - git -c 'cd ${gitorious::app_root} && RAILS_ENV=production bundle exec rake db:setup && touch tmp/database_populated'",
+    command => "${gitorious::app_root}/bin/rake db:setup && touch ${gitorious::app_root}/tmp/database_populated",
     creates => "${gitorious::app_root}/tmp/database_populated",
     require => [
                 File["db_seed"],

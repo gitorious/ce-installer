@@ -3,7 +3,7 @@ class gitorious::core {
   Exec { path => ["/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin"] }
 
   exec {"clone_gitorious_source":
-    command => "git clone git://gitorious.org/gitorious/mainline.git ${gitorious::app_root} && cd ${gitorious::app_root} && git checkout -b my-version v2.3.2 && cd -",
+    command => "git clone git://gitorious.org/gitorious/mainline.git ${gitorious::app_root}",
     creates => "${gitorious::app_root}",
     require => File["gitorious_root"],
   }
@@ -12,7 +12,7 @@ class gitorious::core {
     command => "git submodule update --init",
     creates => "${gitorious::app_root}/public/javascripts/lib/capillary/package.json",
     cwd => "${gitorious::app_root}",
-    require => File["gitorious_root"],
+    require => Exec["clone_gitorious_source"],
   }
 
   file {"/usr/local/bin/gitorious":
@@ -81,29 +81,5 @@ class gitorious::core {
     group => "git",
     require => File["/usr/local/bin/gitorious"],
     source => "puppet:///modules/gitorious/config/broker.yml"
-  }
-
-  define monit_control_script($script_name) {
-    $root = $gitorious::install_root
-    $app_root = $gitorious::app_root
-    $script_dir = $gitorious::control_scripts_dir
-
-    file {$name:
-      path => "$script_dir/$script_name",
-      ensure => present,
-      owner => "git",
-      group => "git",
-      mode => "0755",
-      require => File["control_scripts"],
-      content => template("gitorious/control-scripts/$script_name.erb"),
-    }
-  }
-
-  monit_control_script {"poller_control.sh":
-    script_name => "poller.sh",
-  }
-
-  monit_control_script { "git_daemon_control.sh":
-    script_name => "git-daemon.sh",
   }
 }
