@@ -17,8 +17,20 @@ setenforce 0
 
 echo "Installing Ruby, RubyGems and Puppet..."
 yum install -y ruby ruby-devel rubygems
-gem update --system
-gem install -y --no-ri --no-rdoc puppet -v=2.7.11
+# This breaks Puppet currently due to a Gem 2.0 change
+# gem update --system
+gem update --system 1.8.25
+
+# Check for Puppet first before potentially clobbering a already installed Puppet version
+if [ `which puppet 2>/dev/null` ]
+  # Check version
+  PUPVER=`puppet --version`
+  echo "Found an installed Puppet at version ${PUPVER}"
+  echo "NOTE: You must be at Puppet version 2.7.11 or higher, please update system Puppet if needed"
+else
+  echo "No installed Puppet found, installing via Ruby Gems"
+  gem install -y --no-ri --no-rdoc puppet -v=2.7.11
+fi
 
 if [ "`cat modules/gitorious/manifests/database.pp | grep DB_PASSWORD`" ]; then
     echo "Randomizing db password in puppet recipe..."
