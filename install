@@ -19,10 +19,11 @@ echo "Installing Ruby, RubyGems and Puppet..."
 yum install -y ruby ruby-devel rubygems
 # This breaks Puppet currently due to a Gem 2.0 change
 # gem update --system
-gem update --system 1.8.25
+/usr/bin/gem update --system 1.8.25
 
 # Check for Puppet first before potentially clobbering a already installed Puppet version
 if [ `which puppet 2>/dev/null` ]
+then
   # Check version
   PUPVER=`puppet --version`
   echo "Found an installed Puppet at version ${PUPVER}"
