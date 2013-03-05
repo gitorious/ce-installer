@@ -18,6 +18,7 @@ setenforce 0
 echo "Installing Ruby, RubyGems and Puppet..."
 yum install -y ruby ruby-devel rubygems
 gem update --system
+gem install -v 1.8.25 rubygems-update && ruby `gem env gemdir`/gems/rubygems-update-1.8.25/setup.rb
 gem install -y --no-ri --no-rdoc puppet -v=2.7.11
 
 if [ "`cat modules/gitorious/manifests/database.pp | grep DB_PASSWORD`" ]; then
