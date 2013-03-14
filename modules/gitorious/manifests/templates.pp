@@ -13,7 +13,7 @@ define gitorious::version() {
   }
 
   exec {"fetch_gitorious_tag":
-    command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git branch -D ce-installed ; git checkout -b ce-installed $name && touch ${gitorious::deployed_tags_dir}/$name'",
+    command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git merge $name && touch ${gitorious::deployed_tags_dir}/$name'",
     creates => "${gitorious::deployed_tags_dir}/$name",
     path => ["/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
     require => Exec["clone_gitorious_source"],
