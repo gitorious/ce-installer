@@ -45,7 +45,7 @@ node gitorious-ce {
     public_mode => "false",
   }
 
-  gitorious::version { "v2.4.10":
+  gitorious::version { "v2.4.12":
 
   }
 
