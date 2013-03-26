@@ -24,6 +24,7 @@ node gitorious-ce {
 
   case $operatingsystem {
     CentOS: { include centos }
+    Redhat: { include redhat }
   }
 
   case $architecture {
