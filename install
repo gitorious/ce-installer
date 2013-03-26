@@ -17,11 +17,12 @@ setenforce 0
 
 echo "Installing Ruby, RubyGems and Puppet..."
 yum install -y ruby ruby-devel rubygems
+
 # This breaks Puppet and other gems with the Gem 2.0 release
 # gem update --system
 gem install -v 1.8.25 rubygems-update && ruby `gem env gemdir`/gems/rubygems-update-1.8.25/setup.rb
 
-# Check for Puppet first before potentially clobbering a already installed Puppet version
+# Check for Puppet first before potentially clobbering an already installed Puppet version
 if [ `which puppet 2>/dev/null` ]
 then
   # Check version

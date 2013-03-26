@@ -52,16 +52,15 @@ code {
 }
 </style>
 
-<div class="alert-success">
-
-The Gitorious Community Edition installer is created and maintained by
-<a href="http://gitorious.com">Gitorious AS</a> under the GPL3
-license. It is offered without warranty. For professional, long-term
-support, please consider <strong>Gitorious Enterprise Edition</strong>
-(available as <a href="http://gitorious.com/local_install">Local
-Install</a> or <a href="http://gitorious.com/managed_server">Managed
-Server</a>).
-
+<div class="alert-success"> The Gitorious Community Edition installer
+is created and maintained by <a href="http://gitorious.com">Gitorious
+AS</a> under the GPL3 license. It is offered without warranty. If you
+run into issues, consider seeking help in the <a
+href="http://groups.google.com/group/gitorious?hl=en">Gitorious Google
+Group</a>. For professional, long-term support, please consider
+<strong>Gitorious Enterprise Edition</strong> (available as <a
+href="http://gitorious.com/local_install">Local Install</a> or <a
+href="http://gitorious.com/managed_server">Managed Server</a>).
 </div>
 
 #+END_HTML
@@ -87,7 +86,7 @@ using sane, default settings, running in private mode with unlimited
 private repos enabled. The only option you will be prompted for during
 the installation is the intended hostname of your Gitorious server.
 
-You will be running on v2.4.9 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
+You will be running on v2.4.12 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
 can manually reconfigure the server however you want once the initial
 install has completed.
 
@@ -121,7 +120,7 @@ yum install -y git
 Then, clone the installer to the server, and move into the =ce-installer= dir:
 
 #+begin_src shell
-git clone git://gitorious.org/gitorious/ce-installer.git && cd ce-installer
+git clone https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
 #+end_src
 
 ** Install
@@ -213,14 +212,15 @@ If you cannot reach the server by that hostname through DNS, then update your lo
 Did everything work? *Congratulations, you're up and running with Gitorious!*
 
 #+BEGIN_HTML
-<div class="alert-success">
-The Gitorious Community Edition installer is created and maintained by
-<a href="http://gitorious.com">Gitorious AS</a> under the GPL3
-license. It is offered without warranty. For professional, long-term
-support, please consider <strong>Gitorious Enterprise Edition</strong>
-(available as <a href="http://gitorious.com/local_install">Local
-Install</a> or <a href="http://gitorious.com/managed_server">Managed
-Server</a>).
+<div class="alert-success"> The Gitorious Community Edition installer
+is created and maintained by <a href="http://gitorious.com">Gitorious
+AS</a> under the GPL3 license. It is offered without warranty. If you
+run into issues, consider seeking help in the <a
+href="http://groups.google.com/group/gitorious?hl=en">Gitorious Google
+Group</a>. For professional, long-term support, please consider
+<strong>Gitorious Enterprise Edition</strong> (available as <a
+href="http://gitorious.com/local_install">Local Install</a> or <a
+href="http://gitorious.com/managed_server">Managed Server</a>).
 </div>
 #+END_HTML
 
