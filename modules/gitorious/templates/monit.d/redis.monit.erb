@@ -1,0 +1,4 @@
+check process redis-server with pidfile /var/run/redis/redis.pid
+  start program = "/sbin/service redis start"
+  stop program = "/sbin/service redis stop"
+  if does not exist for 1 cycles then restart

@@ -26,6 +26,10 @@ unicorn_status() {
     check_process_and_report "ps -p $PID" "Unicorn"
 }
 
+redis_status() {
+    check_process_and_report "/etc/init.d/redis status" "Redis"
+}
+
 # Upstart's exit codes are a beast of its own
 resque_status() {
     check_process_and_report "/sbin/initctl status resque-worker" "Resque"
@@ -80,3 +84,4 @@ sphinx_status
 memcached_status
 sshd_status
 mysqld_status
+redis_status

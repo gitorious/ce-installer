@@ -43,8 +43,13 @@ restart_sphinx() {
     /usr/bin/monit restart thinking-sphinx
 }
 
+restart_redis() {
+    status_message "Redis"
+    /etc/init.d/redis restart
+}
 
 reload_unicorn
+restart_redis
 restart_resque_worker
 restart_git_daemons
 restart_nginx
