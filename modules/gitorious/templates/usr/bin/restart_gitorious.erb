@@ -4,16 +4,7 @@ status_message() {
 }
 
 reload_unicorn() {
-    PIDFILE=<%= app_root %>/tmp/pids/unicorn.pid
-    PID=$(cat $PIDFILE)
-    SIG=USR2
-    if [ -f $PIDFILE ]
-    then
-	status_message "Unicorn"
-	/bin/kill -$SIG $PID
-    else
-	/bin/echo "Restarting unicorn: PID file $PIDFILE not found"
-    fi
+    /etc/init.d/gitorious-unicorn reload
 }
 
 restart_resque_worker() {
