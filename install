@@ -15,11 +15,14 @@ echo "Disabling SELinux..."
 sed -i "s/enforcing/disabled/" /etc/selinux/config
 setenforce 0
 
-echo "Installing Ruby (and Puppet)..."
+echo "Installing Ruby..."
 ./install-ruby.sh
 
 echo "Make sure we are using the proper Ruby version..."
 source /etc/profile.d/chruby.sh
+
+echo "Installing Puppet..."
+su -c "gem install -y --no-ri --no-rdoc puppet -v=2.7.11"
 
 echo "Running rest of installation (with correct, newly installed Ruby)..."
 su -c "./apply_and_finalize.sh"
