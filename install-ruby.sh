@@ -23,4 +23,7 @@ echo "Set up 1.9.3 as default ruby version"
 echo "source /usr/local/share/chruby/chruby.sh && chruby 1.9.3-p448" >> /etc/profile.d/chruby.sh
 chmod a+x /etc/profile.d/chruby.sh
 
+echo "Installing Puppet..."
+su -c "gem install -y --no-ri --no-rdoc puppet -v=2.7.11"
+
 echo "Ruby 1.9.3 installed, ready on next login/new shell."
