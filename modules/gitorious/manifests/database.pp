@@ -25,7 +25,7 @@ class gitorious::database {
     require => File["/usr/local/bin/gitorious"],
   }
 
-  $bundler_version = "1.2.2"
+  $bundler_version = "1.3.5"
 
   exec { "install_bundler":
     command => "gem install --no-ri --no-rdoc -v '$bundler_version' bundler",
