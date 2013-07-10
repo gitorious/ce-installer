@@ -18,5 +18,8 @@ setenforce 0
 echo "Installing Ruby (and Puppet)..."
 ./install-ruby.sh
 
+echo "Make sure we are using the proper Ruby version..."
+source /etc/profile.d/chruby.sh
+
 echo "Running rest of installation (with correct, newly installed Ruby)..."
-su -c "apply_and_finalize.sh"
+su -c "./apply_and_finalize.sh"
