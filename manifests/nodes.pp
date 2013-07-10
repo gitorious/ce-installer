@@ -26,10 +26,7 @@ node gitorious-ce {
     CentOS: { include centos }
   }
 
-  case $architecture {
-    i386: { $gem_path = "/usr/lib/ruby/gems/1.8/gems" }
-    default: { $gem_path = "/usr/lib64/ruby/gems/1.8/gems" }
-  }
+  $gem_path = "/opt/rubies/ruby-1.9.3-p448/lib/ruby/gems/1.9.1/gems/"
 
   group { "puppet":
     ensure => "present",
