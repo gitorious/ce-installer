@@ -19,8 +19,8 @@ su -c 'ruby-install ruby 1.9.3-p448'
 echo "Setting up chruby..."
 su -c 'cd /tmp/chruby-0.3.6/ && make install'
 
-#echo "Set up 1.9.3 as default ruby version"
-#cat << EOF > /etc/profile.d/chruby.sh
-#source /usr/local/share/chruby/chruby.sh
-#chruby 1.9.3-p448
-#EOF
+echo "Set up 1.9.3 as default ruby version"
+echo "source /usr/local/share/chruby/chruby.sh && chruby 1.9.3-p448" >> /etc/profile.d/chruby.sh
+chmod a+x /etc/profile.d/chruby.sh
+
+echo "Ruby 1.9.3 installed, ready on next login/new shell."
