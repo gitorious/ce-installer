@@ -9,7 +9,7 @@ class gitorious::core {
   }
 
   exec {"init_gitorious_submodules":
-    command => "git submodule update --init",
+    command => "env GIT_SSL_NO_VERIFY=true git submodule update --init --recursive",
     creates => "${gitorious::app_root}/public/javascripts/lib/capillary/package.json",
     cwd => "${gitorious::app_root}",
     require => Exec["clone_gitorious_source"],
