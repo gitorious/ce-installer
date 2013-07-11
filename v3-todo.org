@@ -8,7 +8,7 @@
    /opt/rubies/ruby-1.9.3-p448/lib/ruby/gems/1.9.1/gems/bundler-1.3.5/lib/bundler.rb
 
 ** DONE add recipe for fixed file: set up /usr/bin/gitorious script wrapper
-** TODO add chruby-exec prefix in existing monit files
+** DONE add chruby-exec prefix in existing monit files
 ** TODO add chruby-exec to resque-worker start-directive
 ** TODO move git-proxy from monit to upstart
 ** TODO test basic installation on 64bit centos minimal
