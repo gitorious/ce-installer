@@ -8,5 +8,5 @@ env PATH=/bin:/usr/bin:/usr/local/bin
 env QUEUE=*
 env PIDFILE=<%= resque_gitorious_root %>/tmp/pids/resque-worker1.pid
 
-exec <%= resque_gitorious_root %>/bin/rake resque:work
+exec /usr/local/bin/chruby-exec ruby-1.9.3-p448 -- <%= resque_gitorious_root %>/bin/rake resque:work
 respawn
