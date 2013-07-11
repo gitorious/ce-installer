@@ -13,16 +13,16 @@ production:
   system_message: <%= system_message %>
 
   # Port the ./script/gitorious script should use:
-  gitorious_client_port: 80
+  client_port: 80
 
   # Host the ./script/gitorious script should use:
-  gitorious_client_host: localhost
+  client_host: localhost
 
   # Host which is serving the gitorious app, eg "gitorious.org"
-  gitorious_host: <%= server_name %>
+  host: <%= server_name %>
 
   # User which is running git daemon
-  gitorious_user: git
+  user: git
 
   # Email address to the support for the Gitorious server
   gitorious_support_email: <%= support_email %>
@@ -40,7 +40,7 @@ production:
   locale: en
 
   # Turn off record throttling
-  disable_record_throttling: <%= disable_record_throttling %>
+  enable_record_throttling: <%= disable_record_throttling %> # TODO rename/invert this option in recipe
 
   # Shard & hash repository paths on disk
   enable_repository_dir_sharding: <%= enable_repository_dir_sharding %>
@@ -49,25 +49,30 @@ production:
   enable_private_repositories: <%= enable_private_repositories %>
 
   # Make all newly created projects and repos private from the start by default
-  repos_and_projects_private_by_default: <%= repos_and_projects_private_by_default %>
+  projects_default_private: <%= repos_and_projects_private_by_default %>
+  repositories_default_private: <%= repos_and_projects_private_by_default %>
 
   # Where should we store generated tarballs?
   # (should be readable by webserver, since we tell it to send the file using X-Sendfile)
   archive_cache_dir: "<%= tarballs_cache %>"
 
-  # Which directory should we work in when we generate tarballs, before moving 
+  # Which directory should we work in when we generate tarballs, before moving
   # them to the above dir?
   archive_work_dir: "<%= tarballs_work %>"
-  
-  # is it only site admins who can create new projects?
-  only_site_admins_can_create_projects: false
-  
-  # Should we hide HTTP clone urls?
-  hide_http_clone_urls: <%= disable_http %>
 
-  # Use SSL? Requires web server configuration. Recommended for security. Forces the use of
-  # HTTPS on login page and all pages while user is logged in
-  use_ssl: <%= require_ssl %>
+  # is it only site admins who can create new projects?
+  enable_project_approvals: false
+
+  # Should we hide HTTP clone urls?
+  hide_http_clone_urls: <%= disable_http %> # TODO Remove this option from puppet recipe entirely, see below
+
+  # TODO support these in puppet recipe
+  enable_ssh_daemon: true
+  enable_git_daemon: true
+  enable_git_http: true
+
+  # Use http or https?
+  scheme: <%= protocol_scheme %> # TODO fix this in puppet recipe, find old require_ssl, use http/https instead of true/false
 
   # Is this gitorious.org? Read: should we have a very flashy homepage?
   is_gitorious_dot_org: <%= is_gitorious_org %>
