@@ -60,7 +60,7 @@ define gitorious::authentication($host, $port, $base_dn, $dn_templ=false, $callb
   }
 }
 
-define gitorious::config($server_name, $require_ssl=true, $public_mode = "false", $support_email = "support@gitorious.here", $external_stylesheets = false, $common_stylesheets = false, $logo_url = false, $footer_blurb = false, $additional_view_paths  = false, $favicon_url = false, $is_gitorious_org="false", $disable_http="false",  $always_show_ssh_url=false, $system_message="", $custom_username_label=false, $disable_record_throttling=true, $enable_repository_dir_sharding=false, $enable_private_repositories=true, $repos_and_projects_private_by_default = false) {
+define gitorious::config($server_name, $require_ssl=true, $public_mode = "false", $support_email = "support@gitorious.here", $external_stylesheets = false, $common_stylesheets = false, $logo_url = false, $footer_blurb = false, $additional_view_paths  = false, $favicon_url = false, $is_gitorious_org="false", $disable_http="false",  $always_show_ssh_url=false, $system_message="", $custom_username_label=false, $enable_record_throttling=true, $enable_repository_dir_sharding=false, $enable_private_repositories=true, $repos_and_projects_private_by_default = false) {
   $file = "${gitorious::app_root}/config/gitorious.yml"
   $repository_root = $gitorious::repository_root
   $tarballs_cache = $gitorious::tarballs_cache

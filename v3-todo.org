@@ -8,10 +8,26 @@
    /opt/rubies/ruby-1.9.3-p448/lib/ruby/gems/1.9.1/gems/bundler-1.3.5/lib/bundler.rb
 
 ** TODO config/gitorious.yml
-   run bin/update-gts3 on the sample file, check the diff, update template to match
+   Fix remaining TODOs: some options should be renamed and/or inverted
+** TODO add recipe: set up /usr/bin/gitorious script wrapper
 
-** TODO set up /usr/bin/gitorious chruby wrapper
-** TODO add chruby-exec prefix in monit files
+#+begin_src shell
+which gitorious >/dev/null 2>&1 && rm -f $(which gitorious) || echo "No symlink"
+
+GITORIOUS_ROOT=/var/www/gitorious/app
+
+cat << EOF > /usr/bin/gitorious
+#!/bin/sh
+
+RUBIES=(/opt/rubies/*)
+source /etc/profile.d/chruby.sh
+
+exec $GITORIOUS_ROOT/bin/gitorious \$@
+EOF
+chmod 0755 /usr/bin/gitorious
+#+end_src
+
+** TODO add chruby-exec prefix in existing monit files
 ** TODO move git-proxy from monit to upstart
 ** TODO make sure it works on both 32 and 64 bit centos
 ** TODO create downloadable, prebuilt VM based on the recipe
