@@ -86,13 +86,3 @@ define gitorious::custom_config($source) {
     notify => File["restart.txt"],
   }
 }
-
-define gitorious::gitorious_chruby_wrapper_script() {
-  file { "/usr/bin/gitorious":
-    ensure => present,
-    owner => git,
-    group => git,
-    mode => "0755",
-    content => template("gitorious/usr/bin/gitorious.erb"),
-  }
-}

@@ -46,7 +46,13 @@ node gitorious-ce {
 
   }
 
-  gitorious::gitorious_chruby_wrapper_script {}
+  file { "/usr/bin/gitorious":
+    ensure => present,
+    owner => git,
+    group => git,
+    mode => "0755",
+    content => template("gitorious/usr/bin/gitorious.erb"),
+  }
 
   include gitorious::native_git_daemons
 }
