@@ -20,7 +20,6 @@ node gitorious-ce {
   include gitorious::unicorn
   include gitorious::nginx
   include gitorious::utils
-  include gitorious::gitorious_chruby_wrapper_script
   include resque
 
   case $operatingsystem {
@@ -46,6 +45,8 @@ node gitorious-ce {
   gitorious::version { "v3-rc1":
 
   }
+
+  gitorious::gitorious_chruby_wrapper_script {}
 
   include gitorious::native_git_daemons
 }
