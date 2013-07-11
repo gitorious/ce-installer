@@ -63,16 +63,12 @@ production:
   # is it only site admins who can create new projects?
   enable_project_approvals: false
 
-  # Should we hide HTTP clone urls?
-  hide_http_clone_urls: <%= disable_http %> # TODO Remove this option from puppet recipe entirely, see below
-
-  # TODO support these in puppet recipe
   enable_ssh_daemon: true
-  enable_git_daemon: true
-  enable_git_http: true
+  enable_git_daemon: false
+  enable_git_http: false
 
   # Use http or https?
-  scheme: <%= protocol_scheme %> # TODO fix this in puppet recipe, find old require_ssl, use http/https instead of true/false
+  scheme: <%= protocol_scheme %>
 
   # Is this gitorious.org? Read: should we have a very flashy homepage?
   is_gitorious_dot_org: <%= is_gitorious_org %>
