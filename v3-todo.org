@@ -1,0 +1,17 @@
+* create v3 puppet recipe
+** DONE add pg native package
+** DONE check out next instead of master
+** DONE config/database.yml
+** DONE chruby/ruby install in install-script before puppet apply
+** DONE update gem paths in nodes.pp
+
+   /opt/rubies/ruby-1.9.3-p448/lib/ruby/gems/1.9.1/gems/bundler-1.3.5/lib/bundler.rb
+
+** TODO config/gitorious.yml
+   run bin/update-gts3 on the sample file, check the diff, update template to match
+
+** TODO set up /usr/bin/gitorious chruby wrapper
+** TODO add chruby-exec prefix in monit files
+** TODO move git-proxy from monit to upstart
+** TODO make sure it works on both 32 and 64 bit centos
+** TODO create downloadable, prebuilt VM based on the recipe
