@@ -46,6 +46,8 @@ node gitorious-ce {
 
   }
 
+  $app_root = "${gitorious::app_root}"
+
   file { "/usr/bin/gitorious":
     ensure => present,
     owner => git,
