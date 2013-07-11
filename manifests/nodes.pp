@@ -20,6 +20,7 @@ node gitorious-ce {
   include gitorious::unicorn
   include gitorious::nginx
   include gitorious::utils
+  include gitorious::gitorious_chruby_wrapper_script
   include resque
 
   case $operatingsystem {
