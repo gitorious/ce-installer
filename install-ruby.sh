@@ -38,6 +38,6 @@ if [ ! -f /etc/profile.d/chruby.sh ]; then
     echo "Set up 1.9.3 as default ruby version"
     echo "source /usr/local/share/chruby/chruby.sh && chruby 1.9.3-p448" >> /etc/profile.d/chruby.sh
     chmod a+x /etc/profile.d/chruby.sh
-end
+fi
 
 echo "Ruby 1.9.3 installed, ready on next login/new shell."
