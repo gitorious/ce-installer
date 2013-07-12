@@ -1,4 +1,5 @@
 * create v3 puppet recipe
+** To fix =facter fqdn=: add domain: <domain> to /etc/resolv.conf
 ** DONE add pg native package
 ** DONE check out next instead of master
 ** DONE config/database.yml
@@ -14,3 +15,11 @@
 ** TODO move git-proxy from monit to upstart
 ** TODO final verification: install on both 32 and 64bit centos minimal
 ** TODO create downloadable, prebuilt VM based on the recipe
+
+
+* Marius tries to fix it
+** db/seeds.rb has changes - checkout with git
+** Need to do git reset --hard origin/next on APP
+** DONE err: /Stage[main]/Gitorious::Database/Exec[install_bundler]/returns: change from notrun to 0 failed: Could not find command 'gem'
+** DONE err: /Stage[main]//Node[gitorious-ce]/Gitorious::Version[v3-rc1]/Exec[post_version_upgrade]/returns: change from notrun to 0 failed: /usr/bin/env: ruby: No such file or directory
+** DONE Don't skip test in .bundle/config - this makes stuff break
