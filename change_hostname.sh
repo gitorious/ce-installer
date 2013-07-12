@@ -27,3 +27,5 @@ fi
 (echo "$NEW_HOSTNAME" > /proc/sys/kernel/hostname)
 
 echo "Server and Gitorious hostname set to '$NEW_HOSTNAME'."
+
+export FACTER_fqdn=$NEW_HOSTNAME
