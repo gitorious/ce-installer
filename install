@@ -24,5 +24,7 @@ source /etc/profile.d/chruby.sh
 echo "Installing Puppet..."
 su -c "gem install -y --no-ri --no-rdoc puppet -v=2.7.11"
 
+export FACTER_fqdn=$(hostname)
+
 echo "Running rest of installation (with correct, newly installed Ruby)..."
 su -c "./apply_and_finalize.sh"
