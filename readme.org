@@ -120,7 +120,7 @@ yum install -y git
 Then, clone the installer to the server, and move into the =ce-installer= dir:
 
 #+begin_src shell
-git clone https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
+git clone -b next https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
 #+end_src
 
 ** Install
