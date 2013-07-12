@@ -8,7 +8,8 @@ cd /tmp
 if [ ! -f /tmp/ruby-install-0.2.1.tar.gz ]; then
     wget --no-check-certificate -O ruby-install-0.2.1.tar.gz https://github.com/postmodern/ruby-install/archive/v0.2.1.tar.gz
 fi
-if [ ! -d /tmp/ruby-isntall-0.2.1 ]; then
+
+if [ ! -d /tmp/ruby-install-0.2.1 ]; then
     tar -xzvf ruby-install-0.2.1.tar.gz
 fi
 
@@ -28,8 +29,10 @@ if [ ! -d /opt/rubies/ruby-1.9.3-p448 ]; then
     su -c 'ruby-install ruby 1.9.3-p448'
 fi
 
-echo "Setting up chruby..."
-su -c 'cd /tmp/chruby-0.3.6/ && make install'
+if [ -f /usr/local/bin/ruby-install ]; then
+    echo "Setting up chruby..."
+    su -c 'cd /tmp/chruby-0.3.6/ && make install'
+fi
 
 if [ ! -f /etc/profile.d/chruby.sh ]; then
     echo "Set up 1.9.3 as default ruby version"
