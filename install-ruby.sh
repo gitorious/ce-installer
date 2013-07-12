@@ -1,4 +1,4 @@
-yum install -y wget tar make gcc ntp sudo
+yum install -y wget tar make gcc ntp sudo libyaml-devel
 
 echo "Setting time to avoid makefile warning..."
 ntpdate pool.ntp.org
