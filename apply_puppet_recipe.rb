@@ -8,7 +8,7 @@ $max_retries = 15
 while $exitcode != 512 # bitmasked "done" return code from puppet
   `echo "\n\nGitorious CE installer: Applying puppet recipe, attempt no. #{$retry_no}" >> applied_recipe.log`
 
-  apply_output = `puppet apply --detailed-exitcodes --modulepath=modules manifests/site.pp`
+  apply_output = `FACTER_fqdn=$(hostname) puppet apply --detailed-exitcodes --modulepath=modules manifests/site.pp`
   $exitcode = $?.to_i
 
   `echo "#{apply_output}" >> applied_recipe.log`
