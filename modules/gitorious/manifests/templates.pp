@@ -14,7 +14,7 @@ define gitorious::version() {
   Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin","/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
 
   exec {"fetch_gitorious_tag":
-    command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git add db/seeds.rb && git commit -m \"adding seeds.rb\" && git merge $name && touch ${gitorious::deployed_tags_dir}/$name'",
+    command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git add db/seeds.rb && git commit -m \"adding seeds.rb\" && git merge $name && chown -R git:git db vendor && touch ${gitorious::deployed_tags_dir}/$name'",
     creates => "${gitorious::deployed_tags_dir}/$name",
     path => ["/opt/rubies/ruby-1.9.3-p448/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
     require => Exec["clone_gitorious_source"],
@@ -24,7 +24,7 @@ define gitorious::version() {
   $probe = "${gitorious::deployed_tags_dir}/${name}_requirements"
 
   exec { "post_version_upgrade":
-    command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bundle install && git submodule update --init && bin/rake db:migrate  && chown -R git:git db vendor && touch $probe'",
+    command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bundle install && git submodule update --init   && chown -R git:git db vendor && bin/rake db:migrate && touch $probe'",
     path => ["/opt/rubies/ruby-1.9.3-p448/bin", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
     require => [Package["sphinx"],File["bundler_config_file"]],
     creates => $probe,
