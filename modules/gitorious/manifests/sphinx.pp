@@ -1,6 +1,6 @@
 class gitorious::sphinx {
 
-  Exec { path => ["/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
+  Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin/", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
 
   $app_root = $gitorious::app_root
 
