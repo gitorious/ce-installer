@@ -24,6 +24,10 @@ class gitorious::dependencies {
     require => Package["postfix"],
   }
 
+  package { "exim":
+    ensure => absent,
+  }
+
   service { "memcached":
     enable => true,
     ensure => running,
