@@ -4,7 +4,7 @@ class gitorious::dependencies {
   Exec { path => ["/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
 
   case $operatingsystem {
-    CentOS: { $package_list = ["monit", "memcached", "ImageMagick","gcc-c++","zlib-devel","make","wget","libxml2","libxml2-devel","libxslt","libxslt-devel","gcc", "ruby-devel", "openssl", "postgresql-devel.x86_64"]}
+    CentOS: { $package_list = ["monit", "memcached", "ImageMagick","gcc-c++","zlib-devel","make","wget","libxml2","libxml2-devel","libxslt","libxslt-devel","gcc", "ruby-devel", "openssl", "postgresql-devel.x86_64", "postfix"]}
   }
 
   package { $package_list: ensure => installed }
@@ -16,6 +16,12 @@ class gitorious::dependencies {
     default: {
       package { "libcurl-devel": ensure => installed }
     }
+  }
+
+  service { "postfix":
+    ensure => running,
+    enable => true,
+    require => Package["postfix"],
   }
 
   service { "memcached":
