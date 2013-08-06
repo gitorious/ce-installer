@@ -1,3 +1,11 @@
+yum install wget
+wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+rpm --import ./RPM-GPG-KEY-EPEL-6
+
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+rpm -Uvh epel-release-6-8.noarch.rpm
+
+
 yum install -y wget tar make gcc ntp sudo libyaml-devel
 
 echo "Setting time to avoid makefile warning..."
