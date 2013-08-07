@@ -1,4 +1,4 @@
-yum install wget
+yum install -y wget
 wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 rpm --import ./RPM-GPG-KEY-EPEL-6
 
