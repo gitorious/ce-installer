@@ -180,18 +180,18 @@ You'll need a user to log into the Gitorious web frontend. Let's
 create an admin user.
 
 #+begin_src shell
-cd /var/www/gitorious/app && RAILS_ENV=production ruby script/create_admin
+cd /var/www/gitorious/app && bin/create_user
 #+end_src
 
 You'll be prompted for a login email and
 password:
 
 #+begin_src shell
-Type in Administrator's e-mail:
-thomas@kjeldahlnilsson.net
-Type in Administrator's password:
-myRandomPasswordHere
-Admin user created successfully.
+Enter e-mail: admin@test.here
+Enter login (admin): admin
+Enter password: **********
+Make user admin? (y/n) y
+User 'admin' created successfully.
 #+end_src
 
 
