@@ -11,7 +11,6 @@
 ** DONE add recipe for fixed file: set up /usr/bin/gitorious script wrapper
 ** DONE add chruby-exec prefix in existing monit files
 ** DONE add chruby-exec to resque-worker start-directive
-** TODO test basic installation on 64bit centos minimal
 ** TODO move git-proxy from monit to upstart
 ** TODO final verification: install on both 32 and 64bit centos minimal
 ** TODO create downloadable, prebuilt VM based on the recipe
