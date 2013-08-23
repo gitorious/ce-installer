@@ -8,7 +8,7 @@ rpm -Uvh epel-release-6-8.noarch.rpm
 
 sed -i "s/https/http/" /etc/yum.repos.d/epel.repo
 
-yum install -y wget tar make gcc ntp sudo libyaml-devel
+yum install -y wget tar make gcc ntp sudo libyaml-devel || exit
 
 echo "Setting time to avoid makefile warning..."
 ntpdate pool.ntp.org
