@@ -13,6 +13,7 @@
 ** DONE add chruby-exec to resque-worker start-directive
 ** TODO fix ssh git access issue: "/usr/bin/env: ruby: No such file or directory"
 ** TODO Don't ship with the /usr/local/bin/gitorious symlink
+** TODO Get rid of "operatingsystem" error/warning puppet msgs
 ** TODO Get rid of yaml warnings from ruby
    Install libyaml-devel before installing Ruby with ruby-install.
    If still broken: cd /usr/local/src/ruby-1.9.3-p448/ext/psych &&

@@ -1,4 +1,5 @@
-yum install -y wget
+yum install -y wget tar make gcc ntp sudo libyaml-devel
+
 wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 rpm --import ./RPM-GPG-KEY-EPEL-6
 
@@ -7,7 +8,7 @@ rpm -Uvh epel-release-6-8.noarch.rpm
 
 sed -i "s/https/http/" /etc/yum.repos.d/epel.repo
 
-yum install -y wget tar make gcc ntp sudo libyaml-devel
+
 
 echo "Setting time to avoid makefile warning..."
 ntpdate pool.ntp.org
