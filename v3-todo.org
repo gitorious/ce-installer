@@ -11,17 +11,21 @@
 ** DONE add recipe for fixed file: set up /usr/bin/gitorious script wrapper
 ** DONE add chruby-exec prefix in existing monit files
 ** DONE add chruby-exec to resque-worker start-directive
+
 ** TODO fix ssh git access issue: "/usr/bin/env: ruby: No such file or directory"
 ** TODO Don't ship with the /usr/local/bin/gitorious symlink
+   https://issues.gitorious.org/issues/199
+
+** TODO test running with newer puppet version
 ** TODO Get rid of "operatingsystem" error/warning puppet msgs
 ** TODO Get rid of yaml warnings from ruby
    Install libyaml-devel before installing Ruby with ruby-install.
    If still broken: cd /usr/local/src/ruby-1.9.3-p448/ext/psych &&
    make && make install
-** TODO move git-proxy from monit to upstart
+** TODO settle on final tag/head to use as version "freeze"/RC for installer
+
 ** TODO final verification: install on both 32 and 64bit centos minimal
 ** TODO create downloadable, prebuilt VM based on the recipe
-** TODO Use v3 configuration
 
 
 * Marius tries to fix it
