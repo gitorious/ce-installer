@@ -34,7 +34,7 @@ class gitorious::database {
   }
 
   exec {"bundle_install":
-    command => "/bin/sh -c '/bin/env BUNDLE_GEMFILE=${gitorious::app_root}/Gemfile bundle install --deployment --without development test && touch ${gitorious::app_root}/tmp/bundles_installed'",
+    command => "/bin/sh -c './bundle_install.rb && touch ${gitorious::app_root}/tmp/bundles_installed'",
     require => File["bundler_config_file"],
     creates => "${gitorious::app_root}/tmp/bundles_installed",
   }

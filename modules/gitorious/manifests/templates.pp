@@ -24,7 +24,7 @@ define gitorious::version() {
   $probe = "${gitorious::deployed_tags_dir}/${name}_requirements"
 
   exec { "post_version_upgrade":
-    command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bundle install --deployment --without development test && env GIT_SSL_NO_VERIFY=true git submodule update --init --recursive && chown -R git:git db vendor && bin/rake db:migrate && touch $probe'",
+    command => "sh -c './bundle_install.rb && env GIT_SSL_NO_VERIFY=true git submodule update --init --recursive && chown -R git:git db vendor && bin/rake db:migrate && touch $probe'",
     path => ["/opt/rubies/ruby-1.9.3-p448/bin", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
     require => [Package["sphinx"],File["bundler_config_file"]],
     creates => $probe,
