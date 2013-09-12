@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ "`cat modules/gitorious/manifests/database.pp | grep DB_PASSWORD`" ]; then
     echo "Randomizing db password in puppet recipe..."
     NEW_PASSWORD=$(dd if=/dev/random bs=1 count=4 2>/dev/null | sha256sum | head -c 40)

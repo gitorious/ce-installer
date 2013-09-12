@@ -22,7 +22,7 @@ class gitorious::database {
     source => "puppet:///modules/gitorious/config/seeds.rb",
     owner => "git",
     group => "git",
-    require => File["/usr/local/bin/gitorious"],
+    require => File["/usr/bin/gitorious"],
   }
 
   $bundler_version = "1.3.5"
