@@ -15,12 +15,6 @@ class gitorious::core {
     require => Exec["clone_gitorious_source"],
   }
 
-  file {"/usr/local/bin/gitorious":
-    ensure => link,
-    target => "${gitorious::app_root}/script/gitorious",
-    require => Exec["clone_gitorious_source"],
-  }
-
   file {"pids":
     path => "${gitorious::app_root}/tmp/pids",
     ensure => directory,
@@ -70,7 +64,7 @@ class gitorious::core {
     ensure => present,
     owner => "git",
     group => "git",
-    require => File["/usr/local/bin/gitorious"],
+    require => File["/usr/bin/gitorious"],
     source => "puppet:///modules/gitorious/config/database.yml"
   }
 
@@ -79,7 +73,7 @@ class gitorious::core {
     ensure => present,
     owner => "git",
     group => "git",
-    require => File["/usr/local/bin/gitorious"],
+    require => File["/usr/bin/gitorious"],
     source => "puppet:///modules/gitorious/config/broker.yml"
   }
 }
