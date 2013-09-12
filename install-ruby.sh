@@ -1,4 +1,6 @@
-yum install -y wget
+#!/bin/bash
+
+yum install -y wget bzip2 tar make gcc ntp sudo git
 
 wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 rpm --import ./RPM-GPG-KEY-EPEL-6
@@ -8,7 +10,7 @@ rpm -Uvh epel-release-6-8.noarch.rpm
 
 sed -i "s/https/http/" /etc/yum.repos.d/epel.repo
 
-yum install -y wget tar make gcc ntp sudo libyaml-devel || exit
+yum install -y libyaml-devel 
 
 echo "Setting time to avoid makefile warning..."
 ntpdate pool.ntp.org
@@ -32,16 +34,16 @@ if [ ! -d /tmp/chruby-0.3.6 ]; then
 fi
 
 echo "Setting up ruby-install..."
-su -c 'cd ruby-install-0.2.1/ && make install'
+(cd ruby-install-0.2.1/ && make install)
 
 if [ ! -d /opt/rubies/ruby-1.9.3-p448 ]; then
     echo "Installing ruby 1.9.3..."
-    su -c 'ruby-install ruby 1.9.3-p448'
+    /usr/local/bin/ruby-install ruby 1.9.3-p448
 fi
 
 if [ -f /usr/local/bin/ruby-install ]; then
     echo "Setting up chruby..."
-    su -c 'cd chruby-0.3.6/ && make install'
+    (cd chruby-0.3.6/ && make install)
 fi
 
 if [ ! -f /etc/profile.d/chruby.sh ]; then
