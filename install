@@ -21,7 +21,7 @@ echo "Make sure we are using the proper Ruby version..."
 source /etc/profile.d/chruby.sh
 
 echo "Installing Puppet..."
-gem install -y --no-ri --no-rdoc puppet -v=2.7.11
+. install-puppet.sh
 
 export FACTER_fqdn=$(hostname)
 
