@@ -21,7 +21,7 @@ check_process_and_report() {
 }
 
 unicorn_status() {
-    PIDFILE=<%= app_root %>/tmp/pids/unicorn.pid
+    PIDFILE=<%= @app_root %>/tmp/pids/unicorn.pid
     PID=$(cat $PIDFILE)
     check_process_and_report "ps -p $PID" "Unicorn"
 }
@@ -36,19 +36,19 @@ nginx_status() {
 }
 
 git_daemon_status() {
-    PIDFILE=<%= app_root %>/log/git-daemons.pid
+    PIDFILE=<%= @app_root %>/log/git-daemons.pid
     PID=$(cat $PIDFILE 2>/dev/null)
     check_process_and_report "ps -p $PID" "Git-daemons"
 }
 
 git_proxy_status() {
-    PIDFILE=<%= app_root %>/log/git-proxy.pid
+    PIDFILE=<%= @app_root %>/log/git-proxy.pid
     PID=$(cat $PIDFILE 2>/dev/null)
     check_process_and_report "ps -p $PID" "Git-proxy"
 }
 
 sphinx_status() {
-    PIDFILE=<%= app_root %>/log/searchd.production.pid
+    PIDFILE=<%= @app_root %>/log/searchd.production.pid
     PID=$(cat $PIDFILE)
     check_process_and_report "ps -p $PID" "Sphinx"
 }

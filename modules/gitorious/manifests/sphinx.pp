@@ -11,7 +11,7 @@ class gitorious::sphinx {
 
   exec { "bootstrap_thinking_sphinx":
     command => "${gitorious::app_root}/bin/rake ts:configure",
-    require => [Package["sphinx"], Exec["bundle_install"]],
+    require => [Package["sphinx"], Exec["bundle_install"], Exec["populate_database"]],
     creates => "${gitorious::app_root}/config/production.sphinx.conf",
   }
 

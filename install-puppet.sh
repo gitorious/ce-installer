@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PUPPET_VERSION=2.7.11
+PUPPET_VERSION=3.3.0
 
 if which puppet > /dev/null && [ `puppet --version` != $PUPPET_VERSION ] ; then 
   EXISTING_VERSION=`puppet --version`
@@ -13,4 +13,4 @@ if which puppet > /dev/null && [ `puppet --version` != $PUPPET_VERSION ] ; then
   fi
 fi
 
-gem install -y --no-ri --no-rdoc puppet -v=$PUPPET_VERSION
+gem install --no-ri --no-rdoc puppet -v=$PUPPET_VERSION

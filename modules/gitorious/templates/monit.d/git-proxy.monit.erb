@@ -1,4 +1,4 @@
-check process git-proxy with pidfile <%= t_app_root %>/log/git-proxy.pid
-  start program = "/bin/sh -c 'cd <%= t_app_root %> && RAILS_ENV=production /usr/bin/bundle exec script/git-proxy --pid=<%= t_app_root %>/log/git-proxy.pid --detach --log=<%= t_app_root %>/log/git-proxy.log1'" as uid git and gid git
-  stop program = "/bin/kill `cat <%= t_app_root %>/log/git-proxy.pid`"
+check process git-proxy with pidfile <%= @t_app_root %>/log/git-proxy.pid
+  start program = "/bin/sh -c 'cd <%= @t_app_root %> && RAILS_ENV=production /usr/bin/bundle exec script/git-proxy --pid=<%= @t_app_root %>/log/git-proxy.pid --detach --log=<%= @t_app_root %>/log/git-proxy.log1'" as uid git and gid git
+  stop program = "/bin/kill `cat <%= @t_app_root %>/log/git-proxy.pid`"
   if failed port 9418 then restart

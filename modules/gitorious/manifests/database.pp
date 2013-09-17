@@ -34,28 +34,10 @@ class gitorious::database {
   }
 
   exec {"bundle_install":
-    command => "/bin/sh -c '/bin/env BUNDLE_GEMFILE=${gitorious::app_root}/Gemfile bundle install --deployment --without development test && touch /tmp/bundles_installed'",
-    require => File["bundler_config_file"],
-    creates => "/tmp/bundles_installed",
-  }
-
-  file {"bundler_config_home":
-    path => "${gitorious::app_root}/.bundle",
-    require => Exec["install_bundler"],
-    ensure => directory,
-    owner => "git",
-    group => "git",
-    mode => "0755",
-  }
-
-  file {"bundler_config_file":
-    path => "${gitorious::app_root}/.bundle/config",
-    require => File["bundler_config_home"],
-    ensure => present,
-    owner => "git",
-    group => "git",
-    mode => "0644",
-    source => "puppet:///modules/gitorious/bundler_config",
+    command => "bundle install --deployment --without development test && touch /tmp/bundles_installed",
+    timeout => 600,
+    cwd => "${gitorious::app_root}",
+    creates => "/tmp/bundles_installed"
   }
 
   exec {"populate_database":

@@ -4,7 +4,7 @@
 require "pathname"
 require "yaml"
 RAILS_ENV = ENV["RAILS_ENV"] || "production"
-RAILS_ROOT = "<%= app_root %>"
+RAILS_ROOT = "<%= @app_root %>"
 
 Socket = (Pathname(RAILS_ROOT) + "tmp/pids/unicorn.sock").to_s
 Timeout = 30

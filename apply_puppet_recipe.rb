@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 $exitcode = 9999
-$retry_no = 1
+$retry_no = 0
 $max_retries = 15
 
-debug = ENV['DEBUG'] ? '--debug' : ''
+debug = ENV['DEBUG'] ? '--debug --verbose' : ''
 
 `echo "Gitorious CE installer: Attempting to apply the puppet recipe" > applied_recipe.log`
 
