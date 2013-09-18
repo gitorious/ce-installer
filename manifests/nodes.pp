@@ -4,8 +4,17 @@ node default inherits gitorious-ce {
 }
 
 node gitorious-ce {
-  package { "cronie":
-    ensure => installed,
+  case $::operatingsystem {
+    default: { notify{'Not supported on your OS': } }
+    /CentoS|Redhat/: {
+      $cron_name = $::lsbmajdistrelease? {
+        5 => 'vixie-cron',
+        6 => 'cronie',
+      }
+      package { $cron_name:
+        ensure => installed,
+      }
+    }
   }
 
   include iptables
@@ -22,7 +31,8 @@ node gitorious-ce {
   include gitorious::utils
   include resque
 
-  case $operatingsystem {
+  case $::operatingsystem {
+    default: { notify{'Not supported on your OS': } }
     CentOS: { include centos }
     Redhat: { include redhat }
   }

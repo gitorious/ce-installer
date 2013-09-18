@@ -1,20 +1,21 @@
-# Configuration of CentOS-based nodes
+# Configuration of Redhat
 class redhat {
-  case $operatingsystemrelease {
-    5.6: {
-      yumrepo {"epel":
-        baseurl => "http://download.fedoraproject.org/pub/epel/5/$architecture",
-        descr => "EPEL repository",
+  case $::lsbmajdistrelease {
+    default: { notify{'Not supported on your OS': } }
+    5: {
+      yumrepo {'epel':
+        baseurl  => "http://download.fedoraproject.org/pub/epel/5/${::architecture}",
+        descr    => 'EPEL repository',
         gpgcheck => 0,
-        enabled => 1;
+        enabled  => 1;
       }
     }
-    default: {
-      yumrepo {"epel":
-        baseurl => "http://download.fedoraproject.org/pub/epel/6/$architecture",
-        descr => "EPEL repository",
+    6: {
+      yumrepo {'epel':
+        baseurl  => "http://download.fedoraproject.org/pub/epel/6/${::architecture}",
+        descr    => 'EPEL repository',
         gpgcheck => 0,
-        enabled => 1;
+        enabled  => 1;
       }
     }
   }
