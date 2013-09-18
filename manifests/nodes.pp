@@ -7,9 +7,9 @@ node gitorious-ce {
   case $::operatingsystem {
     default: { notify{'Not supported on your OS': } }
     /CentoS|Redhat/: {
-      $cron_name = $::lsbmajdistrelease? {
-        5 => 'vixie-cron',
-        6 => 'cronie',
+      $cron_name = $::operatingsystemrelease? {
+        /^5.*/ => 'vixie-cron',
+        /^6.*/ => 'cronie',
       }
       package { $cron_name:
         ensure => installed,
