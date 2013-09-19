@@ -24,7 +24,7 @@
    make && make install
 ** TODO settle on final tag/head to use as version "freeze"/RC for installer
 
-** TODO final verification: install on both 32 and 64bit centos minimal
+** DONE final verification: install on both 32 and 64bit centos minimal
 ** TODO create downloadable, prebuilt VM based on the recipe
 
 
