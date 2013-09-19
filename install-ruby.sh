@@ -1,11 +1,20 @@
 #!/bin/bash
 
+PLATFORM=`uname -m`
+
+if [ $PLATFORM = i686 ]
+then
+  PLATFORM=i386
+fi
+
+echo "Platform is $PLATFORM"
+
 yum install -y wget bzip2 tar make gcc ntp sudo git
 
 wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 rpm --import ./RPM-GPG-KEY-EPEL-6
 
-wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+wget http://dl.fedoraproject.org/pub/epel/6/$PLATFORM/epel-release-6-8.noarch.rpm
 rpm -Uvh epel-release-6-8.noarch.rpm
 
 sed -i "s/https/http/" /etc/yum.repos.d/epel.repo
