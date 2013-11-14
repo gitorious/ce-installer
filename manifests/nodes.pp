@@ -42,7 +42,7 @@ node gitorious-ce {
     public_mode => "false",
   }
 
-  gitorious::version { "fb70eb0255e7d51d10c567609bf45b40eda2f921":
+  gitorious::version { "942b6ef1b16efcb10745cf75a0c377e13ee77875":
 
   }
 
