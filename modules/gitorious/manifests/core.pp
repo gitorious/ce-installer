@@ -3,21 +3,15 @@ class gitorious::core {
   Exec { path => ["/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin"] }
 
   exec {"clone_gitorious_source":
-    command => "sh -c 'git clone https://git.gitorious.org/gitorious/mainline.git ${gitorious::app_root} && cd ${gitorious::app_root} && git fetch --tags && git checkout ${gitorious::version_tag}'",
+    command => "git clone -b next https://git.gitorious.org/gitorious/mainline.git ${gitorious::app_root}",
     creates => "${gitorious::app_root}",
     require => File["gitorious_root"],
   }
 
   exec {"init_gitorious_submodules":
-    command => "git submodule update --init",
+    command => "env GIT_SSL_NO_VERIFY=true git submodule update --init --recursive",
     creates => "${gitorious::app_root}/public/javascripts/lib/capillary/package.json",
     cwd => "${gitorious::app_root}",
-    require => Exec["clone_gitorious_source"],
-  }
-
-  file {"/usr/local/bin/gitorious":
-    ensure => link,
-    target => "${gitorious::app_root}/script/gitorious",
     require => Exec["clone_gitorious_source"],
   }
 
@@ -70,7 +64,7 @@ class gitorious::core {
     ensure => present,
     owner => "git",
     group => "git",
-    require => File["/usr/local/bin/gitorious"],
+    require => File["/usr/bin/gitorious"],
     source => "puppet:///modules/gitorious/config/database.yml"
   }
 
@@ -79,7 +73,7 @@ class gitorious::core {
     ensure => present,
     owner => "git",
     group => "git",
-    require => File["/usr/local/bin/gitorious"],
+    require => File["/usr/bin/gitorious"],
     source => "puppet:///modules/gitorious/config/broker.yml"
   }
 }

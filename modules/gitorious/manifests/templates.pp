@@ -11,14 +11,23 @@ define gitorious::version() {
     group => git,
     require => File["gitorious_root"],
   }
+  Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin","/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
+
+  exec {"fetch_gitorious_tag":
+    command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git reset --hard HEAD && git checkout $name && chown -R git:git db vendor && touch ${gitorious::deployed_tags_dir}/$name'",
+    creates => "${gitorious::deployed_tags_dir}/$name",
+    path => ["/opt/rubies/ruby-1.9.3-p448/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
+    require => [Exec["clone_gitorious_source"],File[$gitorious::deployed_tags_dir]],
+    notify => Exec["post_version_upgrade"],
+  }
 
   $probe = "${gitorious::deployed_tags_dir}/${name}_requirements"
 
   exec { "post_version_upgrade":
-    command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bin/bundle install && git submodule update --init && bin/rake db:migrate && bin/rake assets:clear && touch $probe'",
-    path => ["/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
-    require => [Package["sphinx"],File["bundler_config_file"]],
-    creates => $probe,
+    command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bundle install --deployment --without development test && env GIT_SSL_NO_VERIFY=true git submodule update --init --recursive && chown -R git:git db vendor && bin/rake db:migrate && touch /tmp/post_version_upgrade_done'",
+    path => ["/opt/rubies/ruby-1.9.3-p448/bin", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
+    require => [Package["sphinx"]],
+    creates => "/tmp/post_version_upgrade_done",
   }
 
 
@@ -52,7 +61,7 @@ define gitorious::authentication($host, $port, $base_dn, $dn_templ=false, $callb
   }
 }
 
-define gitorious::config($server_name, $require_ssl=true, $public_mode = "false", $support_email = "support@gitorious.here", $external_stylesheets = false, $common_stylesheets = false, $logo_url = false, $footer_blurb = false, $additional_view_paths  = false, $favicon_url = false, $is_gitorious_org="false", $disable_http="false",  $always_show_ssh_url=false, $system_message="", $custom_username_label=false, $disable_record_throttling=true, $enable_repository_dir_sharding=false, $enable_private_repositories=true, $repos_and_projects_private_by_default = false) {
+define gitorious::config($server_name, $require_ssl=true, $public_mode = "false", $support_email = "support@gitorious.here", $external_stylesheets = false, $common_stylesheets = false, $logo_url = false, $footer_blurb = false, $additional_view_paths  = false, $favicon_url = false, $is_gitorious_org="false", $protocol_scheme="https",  $always_show_ssh_url=false, $system_message="", $custom_username_label=false, $enable_record_throttling=true, $enable_repository_dir_sharding=false, $enable_private_repositories=true, $repos_and_projects_private_by_default = false) {
   $file = "${gitorious::app_root}/config/gitorious.yml"
   $repository_root = $gitorious::repository_root
   $tarballs_cache = $gitorious::tarballs_cache

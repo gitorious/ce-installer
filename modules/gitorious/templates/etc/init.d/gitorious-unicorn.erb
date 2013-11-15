@@ -13,10 +13,10 @@
 
 . /etc/init.d/functions
 
-UNICORN_PIDFILE="<%=app_root%>/tmp/pids/unicorn.pid"
+UNICORN_PIDFILE="<%= @app_root%>/tmp/pids/unicorn.pid"
 
 start_unicorn() {
-    /var/www/gitorious/app/bin/unicorn -c config/unicorn.rb -D && echo_success || echo_failure
+    /usr/local/bin/chruby-exec ruby-1.9.3-p448 -- /var/www/gitorious/app/bin/unicorn -c config/unicorn.rb -D && echo_success || echo_failure
     retval=$?
     echo "Starting unicorn"
 }

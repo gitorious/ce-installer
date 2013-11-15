@@ -26,10 +26,7 @@ node gitorious-ce {
     CentOS: { include centos }
   }
 
-  case $architecture {
-    i386: { $gem_path = "/usr/lib/ruby/gems/1.8/gems" }
-    default: { $gem_path = "/usr/lib64/ruby/gems/1.8/gems" }
-  }
+  $gem_path = "/opt/rubies/ruby-1.9.3-p448/lib/ruby/gems/1.9.1/gems/"
 
   group { "puppet":
     ensure => "present",
@@ -45,8 +42,16 @@ node gitorious-ce {
     public_mode => "false",
   }
 
-  gitorious::version { $gitorious::version_tag:
+  gitorious::version { "942b6ef1b16efcb10745cf75a0c377e13ee77875":
 
+  }
+
+  file { "/usr/bin/gitorious":
+    ensure => present,
+    owner => git,
+    group => git,
+    mode => "0755",
+    content => template("gitorious/usr/bin/gitorious.erb"),
   }
 
   include gitorious::native_git_daemons

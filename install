@@ -14,64 +14,16 @@ echo "Disabling SELinux..."
 sed -i "s/enforcing/disabled/" /etc/selinux/config
 setenforce 0
 
-echo "Installing Ruby, RubyGems and Puppet..."
-yum install -y ruby ruby-devel rubygems
-gem update --system
-gem install -v 1.8.25 rubygems-update && ruby `gem env gemdir`/gems/rubygems-update-1.8.25/setup.rb
+echo "Installing Ruby..."
+./install-ruby.sh
 
-PUPPET_VERSION=2.7.11
+echo "Make sure we are using the proper Ruby version..."
+source /etc/profile.d/chruby.sh
 
-if which puppet > /dev/null && [ `puppet --version` != $PUPPET_VERSION ] ; then 
-  EXISTING_VERSION=`puppet --version`
-  echo "You already have puppet installed in version $EXISTING_VERSION. This may cause conflicts with version installed by Gitorious ($PUPPET_VERSION)."
+echo "Installing Puppet..."
+. install-puppet.sh
 
-  read -p "Do you want to continue? [y/N]" -r
-  echo
-  if ! [[ $REPLY =~ ^[Yy]$ ]] ; then
-    exit 1
-  fi
-fi
+export FACTER_fqdn=$(hostname)
 
-gem install -y --no-ri --no-rdoc puppet -v=$PUPPET_VERSION
-
-if [ "`cat modules/gitorious/manifests/database.pp | grep DB_PASSWORD`" ]; then
-    echo "Randomizing db password in puppet recipe..."
-    NEW_PASSWORD=$(dd if=/dev/random bs=1 count=4 2>/dev/null | sha256sum | head -c 40)
-    sed -i "s/DB_PASSWORD/$NEW_PASSWORD/" modules/gitorious/manifests/database.pp
-    sed -i "s/DB_PASSWORD/$NEW_PASSWORD/" modules/gitorious/files/config/database.yml
-    echo "Db password updated."
-fi
-
-echo "Applying Puppet recipe (will take a while, please be patient)..."
-ruby apply_puppet_recipe.rb
-PUPPETRESULT=$?
-[ $PUPPETRESULT -ne 0 ] && echo "Installation failed." && exit
-echo "Puppet recipe applied successfully."
-
-echo "Creating the database..."
-cd /var/www/gitorious/app && bin/rake db:drop db:create db:migrate VERBOSE=false
-echo "Database created."
-
-echo "Building Thinking Sphinx index..."
-cd /var/www/gitorious/app && bin/rake ts:rebuild VERBOSE=false
-echo "Index created."
-
-echo "Randomizing cookie_secret..."
-NEW_TOKEN=$(dd if=/dev/random bs=1 count=4 2>/dev/null | sha256sum | head -c 40)
-sed -i "s/cookie_secret:.*/cookie_secret: $NEW_TOKEN/" /var/www/gitorious/app/config/gitorious.yml
-echo "Rails cookie randomized."
-
-echo "Restarting services"
-restart_gitorious
-
-# Anonymous pingback on install
-curl -s http://getgitorious.com/installer_completed > /dev/null
-
-echo "--------------------"
-echo "Your installation of Gitorious Community Edition is complete."
-echo "This installer is created and supported by Gitorious AS."
-echo "For professional, long-term support, please consider Gitorious Enterprise Edition."
-echo "http://gitorious.com"
-echo "--------------------"
-
-echo "Done. Please reboot the server."
+echo 'Running rest of installation (with correct, newly installed Ruby)...'
+./apply_and_finalize.sh

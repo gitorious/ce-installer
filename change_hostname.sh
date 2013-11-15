@@ -24,6 +24,9 @@ fi
 
 # CentOS specific
 (sed -i "s/^HOSTNAME=.*/HOSTNAME=$NEW_HOSTNAME/" /etc/sysconfig/network)
-(echo "$NEW_HOSTNAME" > /proc/sys/kernel/hostname)
+hostname $NEW_HOSTNAME
+export HOSTNAME=$NEW_HOSTNAME
 
 echo "Server and Gitorious hostname set to '$NEW_HOSTNAME'."
+
+export FACTER_fqdn=$NEW_HOSTNAME

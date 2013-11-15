@@ -4,28 +4,28 @@ production:
 
   # The path where git repositories are stored. The actual (bare) repositories resides
   # in repository_base_path/#{project.slug}/#{repository.name}.git/:
-  repository_base_path: "<%= repository_root %>"
+  repository_base_path: "<%= @repository_root %>"
 
   # Stuff that's in the html <head>. custom stats javascript code etc
   extra_html_head_data:
 
   # System message that will appear on all pages if present
-  system_message: <%= system_message %>
+  system_message: <%= @system_message %>
 
   # Port the ./script/gitorious script should use:
-  gitorious_client_port: 80
+  client_port: 80
 
   # Host the ./script/gitorious script should use:
-  gitorious_client_host: localhost
+  client_host: localhost
 
   # Host which is serving the gitorious app, eg "gitorious.org"
-  gitorious_host: <%= server_name %>
+  host: <%= @server_name %>
 
   # User which is running git daemon
-  gitorious_user: git
+  user: git
 
   # Email address to the support for the Gitorious server
-  gitorious_support_email: <%= support_email %>
+  gitorious_support_email: <%= @support_email %>
 
   # Email spam on server errors to:
   exception_notification_emails:
@@ -34,70 +34,71 @@ production:
   mangle_email_addresses: true
 
   # Enable or Disable Public Mode (true) or Private Mode (false)
-  public_mode: <%= public_mode %>
+  public_mode: <%= @public_mode %>
 
   # Define your locale
   locale: en
 
   # Turn off record throttling
-  disable_record_throttling: <%= disable_record_throttling %>
+  enable_record_throttling: <%= @enable_record_throttling %>
 
   # Shard & hash repository paths on disk
-  enable_repository_dir_sharding: <%= enable_repository_dir_sharding %>
+  enable_repository_dir_sharding: <%= @enable_repository_dir_sharding %>
 
   # Turn on private projects/repositories
-  enable_private_repositories: <%= enable_private_repositories %>
+  enable_private_repositories: <%= @enable_private_repositories %>
 
   # Make all newly created projects and repos private from the start by default
-  repos_and_projects_private_by_default: <%= repos_and_projects_private_by_default %>
+  projects_default_private: <%= @repos_and_projects_private_by_default %>
+  repositories_default_private: <%= @repos_and_projects_private_by_default %>
 
   # Where should we store generated tarballs?
   # (should be readable by webserver, since we tell it to send the file using X-Sendfile)
-  archive_cache_dir: "<%= tarballs_cache %>"
+  archive_cache_dir: "<%= @tarballs_cache %>"
 
-  # Which directory should we work in when we generate tarballs, before moving 
+  # Which directory should we work in when we generate tarballs, before moving
   # them to the above dir?
-  archive_work_dir: "<%= tarballs_work %>"
-  
-  # is it only site admins who can create new projects?
-  only_site_admins_can_create_projects: false
-  
-  # Should we hide HTTP clone urls?
-  hide_http_clone_urls: <%= disable_http %>
+  archive_work_dir: "<%= @tarballs_work %>"
 
-  # Use SSL? Requires web server configuration. Recommended for security. Forces the use of
-  # HTTPS on login page and all pages while user is logged in
-  use_ssl: <%= require_ssl %>
+  # is it only site admins who can create new projects?
+  enable_project_approvals: false
+
+  enable_ssh_daemon: true
+  enable_git_daemon: false
+  enable_git_http: false
+
+  # Use http or https?
+  scheme: <%= @protocol_scheme %>
 
   # Is this gitorious.org? Read: should we have a very flashy homepage?
-  is_gitorious_dot_org: <%= is_gitorious_org %>
+  is_gitorious_dot_org: <%= @is_gitorious_org %>
 
   # Pick a default license
   #default_license: GNU Affero General Public License (AGPLv3)
 
-<% if common_stylesheets %>
-  common_stylesheets: <%= common_stylesheets %>
+<% if @common_stylesheets %>
+  common_stylesheets: <%= @common_stylesheets %>
 <% end %>
-<% if external_stylesheets %>
-  external_stylesheets: <%= external_stylesheets %>
+<% if @external_stylesheets %>
+  external_stylesheets: <%= @external_stylesheets %>
 <% end %>
-<% if favicon_url %>
-  favicon_url: <%= favicon_url %>
+<% if @favicon_url %>
+  favicon_url: <%= @favicon_url %>
 <% end %>
-<% if logo_url %>
-  logo_url: <%= logo_url %>
+<% if @logo_url %>
+  logo_url: <%= @logo_url %>
 <% end %>
-<% if footer_blurb %>
-  footer_blurb: <%= footer_blurb %>
+<% if @footer_blurb %>
+  footer_blurb: <%= @footer_blurb %>
 <% end %>
-<% if additional_view_paths %>
-  additional_view_paths: <%= additional_view_paths %>
+<% if @additional_view_paths %>
+  additional_view_paths: <%= @additional_view_paths %>
 <% end %>
-<% if always_show_ssh_url %>
+<% if @always_show_ssh_url %>
   always_display_ssh_url: true
 <% end %>
-<% if custom_username_label %>
-  custom_username_label: <%= custom_username_label %>
+<% if @custom_username_label %>
+  custom_username_label: <%= @custom_username_label %>
 <% end %>
 
   messaging_adapter: resque

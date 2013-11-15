@@ -1,6 +1,6 @@
 class gitorious::sphinx {
 
-  Exec { path => ["/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
+  Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin/", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
 
   $app_root = $gitorious::app_root
 
@@ -10,8 +10,8 @@ class gitorious::sphinx {
   }
 
   exec { "bootstrap_thinking_sphinx":
-    command => "${gitorious::app_root}/bin/rake ts:config",
-    require => [Package["sphinx"], Exec["bundle_install"]],
+    command => "${gitorious::app_root}/bin/rake ts:configure",
+    require => [Package["sphinx"], Exec["bundle_install"], Exec["populate_database"]],
     creates => "${gitorious::app_root}/config/production.sphinx.conf",
   }
 

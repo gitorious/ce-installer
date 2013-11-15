@@ -86,7 +86,7 @@ using sane, default settings, running in private mode with unlimited
 private repos enabled. The only option you will be prompted for during
 the installation is the intended hostname of your Gitorious server.
 
-You will be running on v2.4.12 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
+You will be running on v3.0.0 of [[http://gitorious.org/gitorious/mainline][the Gitorious master branch]], and you
 can manually reconfigure the server however you want once the initial
 install has completed.
 
@@ -114,13 +114,13 @@ First, we're going to need =git= to clone the installer into your
 server. Let's install it (if it's not already present):
 
 #+begin_src shell
-yum install -y git
+yum install git
 #+end_src
 
 Then, clone the installer to the server, and move into the =ce-installer= dir:
 
 #+begin_src shell
-git clone https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
+git clone -b next https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
 #+end_src
 
 ** Install
@@ -180,18 +180,19 @@ You'll need a user to log into the Gitorious web frontend. Let's
 create an admin user.
 
 #+begin_src shell
-cd /var/www/gitorious/app && RAILS_ENV=production ruby script/create_admin
+cd /var/www/gitorious/app && bin/create-user
 #+end_src
 
 You'll be prompted for a login email and
 password:
 
 #+begin_src shell
-Type in Administrator's e-mail:
+Enter e-mail:
 thomas@kjeldahlnilsson.net
-Type in Administrator's password:
-myRandomPasswordHere
-Admin user created successfully.
+Enter login (thomas):
+Enter password: *************
+Make user admin? (y/n) y
+User 'thomas' created successfully.
 #+end_src
 
 
@@ -255,15 +256,15 @@ cd /var/www/gitorious/app && RAILS_ENV=production script/restart
 
 Unless your installation is running in public mode, users cannot
 simply register from the web front-page: you'll have to add new users
-yourself in the backend.  Run the =create_user= command to create a
+yourself in the backend.  Run the =bin/create-user= command to create a
 new user:
 
 #+begin_src shell
-cd /var/www/gitorious/app && RAILS_ENV=production ruby script/create_user
+cd /var/www/gitorious/app && RAILS_ENV=production ruby bin/create-user
 #+end_src
 
 If you want the new user to be a site admin, either create the users
-with the =scripts/create_admin= command instead, or toggle site admin status on the
+with the =bin/create-user= command instead, or toggle site admin status on the
 user at =http://<HOSTNAME>/admin/users=.
 
 ** Where and how is my data stored?

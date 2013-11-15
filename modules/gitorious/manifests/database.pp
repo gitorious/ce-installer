@@ -1,7 +1,7 @@
 class gitorious::database {
   $packages = ["mysql","mysql-devel","mysql-server"]
 
-  Exec { path => ["/usr/local/bin","/usr/bin","/bin"] }
+  Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin/","/usr/local/bin","/usr/bin","/bin"] }
 
   package { $packages: ensure => installed }
 
@@ -22,10 +22,10 @@ class gitorious::database {
     source => "puppet:///modules/gitorious/config/seeds.rb",
     owner => "git",
     group => "git",
-    require => File["/usr/local/bin/gitorious"],
+    require => File["/usr/bin/gitorious"],
   }
 
-  $bundler_version = "1.2.2"
+  $bundler_version = "1.3.5"
 
   exec { "install_bundler":
     command => "gem install --no-ri --no-rdoc -v '$bundler_version' bundler",
@@ -34,28 +34,10 @@ class gitorious::database {
   }
 
   exec {"bundle_install":
-    command => "/bin/sh -c '/bin/env BUNDLE_GEMFILE=${gitorious::app_root}/Gemfile bundle install && touch ${gitorious::app_root}/tmp/bundles_installed'",
-    require => File["bundler_config_file"],
-    creates => "${gitorious::app_root}/tmp/bundles_installed",
-  }
-
-  file {"bundler_config_home":
-    path => "${gitorious::app_root}/.bundle",
-    require => Exec["install_bundler"],
-    ensure => directory,
-    owner => "git",
-    group => "git",
-    mode => "0755",
-  }
-
-  file {"bundler_config_file":
-    path => "${gitorious::app_root}/.bundle/config",
-    require => File["bundler_config_home"],
-    ensure => present,
-    owner => "git",
-    group => "git",
-    mode => "0644",
-    source => "puppet:///modules/gitorious/bundler_config",
+    command => "bundle install --deployment --without development test && touch /tmp/bundles_installed",
+    timeout => 600,
+    cwd => "${gitorious::app_root}",
+    creates => "/tmp/bundles_installed"
   }
 
   exec {"populate_database":

@@ -1,5 +1,5 @@
-check git-daemons with pidfile <%= pidfile %>
-  start program = "/usr/bin/git daemon --listen=0.0.0.0 --port=9418 --syslog --export-all --pid-file=<%= pidfile %> --base-path=<%= repo_root %> --verbose --reuseaddr --detach <%= repo_root %>" as uid git and gid git
-  stop program = "/bin/bash -c '/bin/kill `/bin/cat <%= pidfile %>` && rm <%= pidfile %>'" as uid git and gid git
+check git-daemons with pidfile <%= @pidfile %>
+  start program = "/usr/bin/git daemon --listen=0.0.0.0 --port=9418 --syslog --export-all --pid-file=<%= @pidfile %> --base-path=<%= @repo_root %> --verbose --reuseaddr --detach <%= @repo_root %>" as uid git and gid git
+  stop program = "/bin/bash -c '/bin/kill `/bin/cat <%= @pidfile %>` && rm <%= @pidfile %>'" as uid git and gid git
   if failed port 9418 then restart
   if 5 restarts within 5 cycles then timeout

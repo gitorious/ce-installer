@@ -1,0 +1,6 @@
+#!/bin/sh
+
+RUBIES=(/opt/rubies/*)
+source /etc/profile.d/chruby.sh
+
+exec /var/www/gitorious/app/bin/gitorious $@

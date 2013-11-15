@@ -1,14 +1,16 @@
 #!/usr/bin/ruby
 $exitcode = 9999
-$retry_no = 1
+$retry_no = 0
 $max_retries = 15
+
+debug = ENV['DEBUG'] ? '--debug --verbose' : ''
 
 `echo "Gitorious CE installer: Attempting to apply the puppet recipe" > applied_recipe.log`
 
 while $exitcode != 512 # bitmasked "done" return code from puppet
   `echo "\n\nGitorious CE installer: Applying puppet recipe, attempt no. #{$retry_no}" >> applied_recipe.log`
 
-  apply_output = `FACTER_fqdn=$(hostname) puppet apply --detailed-exitcodes --modulepath=modules manifests/site.pp`
+  apply_output = `FACTER_fqdn=$(hostname) puppet apply #{debug} --detailed-exitcodes --modulepath=modules manifests/site.pp`
   $exitcode = $?.to_i
 
   `echo "#{apply_output}" >> applied_recipe.log`
