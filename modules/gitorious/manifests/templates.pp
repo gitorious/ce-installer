@@ -12,14 +12,6 @@ define gitorious::version() {
     require => File["gitorious_root"],
   }
 
-  exec {"fetch_gitorious_tag":
-    command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git merge $name && touch ${gitorious::deployed_tags_dir}/$name'",
-    creates => "${gitorious::deployed_tags_dir}/$name",
-    path => ["/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
-    require => Exec["clone_gitorious_source"],
-    notify => Exec["post_version_upgrade"],
-  }
-
   $probe = "${gitorious::deployed_tags_dir}/${name}_requirements"
 
   exec { "post_version_upgrade":
