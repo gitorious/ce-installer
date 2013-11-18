@@ -8,13 +8,13 @@ The following instruction assumes that you have installed Gitorious v2 using the
 
 2. Check out the newest version of the ce-installer:
 
-    git clone git@gitorious.org/gitorious/ce-installer.git && cd ce-installer
+        git clone git@gitorious.org/gitorious/ce-installer.git && cd ce-installer
 
 3. Run the automated upgrade script
 
-    sudo ./upgrade.sh
+        sudo ./upgrade.sh
 
-4. Review the deprecation warnings printed by the upgrade script and update your /var/www/gitorious/app/config/gitorious.yml accordingly. You can find an example of valid configuration in /var/www/gitorious/app/config/gitorious.sample.yml
+4. Review the deprecation warnings printed by the upgrade script and update your `/var/www/gitorious/app/config/gitorious.yml` accordingly. You can find an example of valid configuration in `/var/www/gitorious/app/config/gitorious.sample.yml`
 
 5. Profit!
 
@@ -28,7 +28,7 @@ If your installation differs from the standard, it might be impossible for you t
 
 2. Download the newest version of ce-installer:
 
-    git clone git@gitorious.org/gitorious/ce-installer.git && cd ce-installer
+        git clone git@gitorious.org/gitorious/ce-installer.git && cd ce-installer
 
 ### Upgrade Ruby from 1.8 to 1.9.3 with chruby
 
