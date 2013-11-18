@@ -8,7 +8,9 @@ upgrade-gitorious-from-v2-to-v3 () {
   checkout-gitorious-v3
   install-dependencies
   migrate-database
+  fix-invalid-data
   start-gitorious
+  print-configuration-warnings
 }
 
 stop-gitorious () {
@@ -60,9 +62,21 @@ migrate-database () {
   RAILS_ENV=production bundle exec rake db:migrate
 }
 
+fix-invalid-data () {
+ cd /var/www/gitorious/app && RAILS_ENV=production bundle exec rake fix_dangling_comments fix_dangling_memberships fix_missing_wiki_repos fix_dangling_committerships fix_dangling_projects fix_system_comments fix_dangling_events fix_dangling_repositories fix_dangling_favorites fix_missing_repos 
+}
+
 start-gitorious () {
   /etc/init.d/gitorious-unicorn restart
   start resque-worker
+}
+
+print-configuration-warnings () {
+ echo
+ echo
+ echo "Please fix the following warnings in your config/gitorious.yml:"
+ echo
+ cd /var/www/gitorious/app && RAILS_ENV=production bundle exec rails r ''
 }
 
 upgrade-gitorious-from-v2-to-v3
