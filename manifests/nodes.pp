@@ -26,7 +26,7 @@ node gitorious-ce {
     CentOS: { include centos }
   }
 
-  $gem_path = "/opt/rubies/ruby-1.9.3-p448/lib/ruby/gems/1.9.1/gems/"
+  $gem_path = "/opt/rubies/ruby-1.9.3-p484/lib/ruby/gems/1.9.1/gems/"
 
   group { "puppet":
     ensure => "present",

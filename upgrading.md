@@ -51,7 +51,7 @@ Gitorious v2 used system Ruby, so we need to make sure that all the Gitorious ex
 
 To run a command with chruby, prefix it with the following:
 
-    /usr/local/bin/chruby-exec ruby-1.9.3-p448 -- <command goes here>
+    /usr/local/bin/chruby-exec ruby-1.9.3-p484 -- <command goes here>
 
 The ce-installer already contains the executable templates in the correct form. You can install them using the following commands:
 

@@ -1,7 +1,7 @@
 class gitorious::database {
   $packages = ["mysql","mysql-devel","mysql-server"]
 
-  Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin/","/usr/local/bin","/usr/bin","/bin"] }
+  Exec { path => ["/opt/rubies/ruby-1.9.3-p484/bin/","/usr/local/bin","/usr/bin","/bin"] }
 
   package { $packages: ensure => installed }
 

@@ -45,9 +45,9 @@ fi
 echo "Setting up ruby-install..."
 (cd ruby-install-0.2.1/ && make install)
 
-if [ ! -d /opt/rubies/ruby-1.9.3-p448 ]; then
+if [ ! -d /opt/rubies/ruby-1.9.3-p484 ]; then
     echo "Installing ruby 1.9.3..."
-    /usr/local/bin/ruby-install ruby 1.9.3-p448
+    /usr/local/bin/ruby-install ruby 1.9.3-p484
 fi
 
 if [ -f /usr/local/bin/ruby-install ]; then
@@ -57,7 +57,7 @@ fi
 
 if [ ! -f /etc/profile.d/chruby.sh ]; then
     echo "Set up 1.9.3 as default ruby version"
-    echo "source /usr/local/share/chruby/chruby.sh && chruby 1.9.3-p448" >> /etc/profile.d/chruby.sh
+    echo "source /usr/local/share/chruby/chruby.sh && chruby 1.9.3-p484" >> /etc/profile.d/chruby.sh
     chmod a+x /etc/profile.d/chruby.sh
 fi
 

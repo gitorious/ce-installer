@@ -11,12 +11,12 @@ define gitorious::version() {
     group => git,
     require => File["gitorious_root"],
   }
-  Exec { path => ["/opt/rubies/ruby-1.9.3-p448/bin","/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
+  Exec { path => ["/opt/rubies/ruby-1.9.3-p484/bin","/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
 
   exec {"fetch_gitorious_tag":
     command => "sh -c 'cd ${gitorious::app_root} && git fetch --tags && git reset --hard HEAD && git checkout $name && chown -R git:git db vendor && touch ${gitorious::deployed_tags_dir}/$name'",
     creates => "${gitorious::deployed_tags_dir}/$name",
-    path => ["/opt/rubies/ruby-1.9.3-p448/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
+    path => ["/opt/rubies/ruby-1.9.3-p484/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
     require => [Exec["clone_gitorious_source"],File[$gitorious::deployed_tags_dir]],
     notify => Exec["post_version_upgrade"],
   }
@@ -25,7 +25,7 @@ define gitorious::version() {
 
   exec { "post_version_upgrade":
     command => "sh -c 'export GIT_SSL_NO_VERIFY=true && cd ${gitorious::app_root} && bundle install --deployment --without development test && env GIT_SSL_NO_VERIFY=true git submodule update --init --recursive && chown -R git:git db vendor && bin/rake db:migrate && touch /tmp/post_version_upgrade_done'",
-    path => ["/opt/rubies/ruby-1.9.3-p448/bin", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
+    path => ["/opt/rubies/ruby-1.9.3-p484/bin", "/usr/local/bin","/usr/bin","/bin", "/usr/sbin"],
     require => [Package["sphinx"]],
     creates => "/tmp/post_version_upgrade_done",
   }

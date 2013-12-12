@@ -1,3 +1,3 @@
 check process thinking-sphinx with pidfile <%= @t_app_root %>/log/searchd.production.pid
-  start program = "/usr/local/bin/chruby-exec ruby-1.9.3-p448 -- <%= @t_app_root %>/bin/rake ts:start"
-  stop program = "/usr/local/bin/chruby-exec ruby-1.9.3-p448 -- <%= @t_app_root %>/bin/rake ts:stop"
+  start program = "/usr/local/bin/chruby-exec ruby-1.9.3-p484 -- <%= @t_app_root %>/bin/rake ts:start"
+  stop program = "/usr/local/bin/chruby-exec ruby-1.9.3-p484 -- <%= @t_app_root %>/bin/rake ts:stop"
