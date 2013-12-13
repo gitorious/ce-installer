@@ -249,7 +249,7 @@ Gitorious before they take effect. Restart by running the
 =restart= command:
 
 #+begin_src shell
-cd /var/www/gitorious/app && RAILS_ENV=production script/restart
+cd /var/www/gitorious/app && RAILS_ENV=production script/restart_unicorn
 #+end_src
 
 ** How do I add users?
