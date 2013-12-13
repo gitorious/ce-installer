@@ -10,7 +10,7 @@ debug = ENV['DEBUG'] ? '--debug --verbose' : ''
 while $exitcode != 512 # bitmasked "done" return code from puppet
   `echo "\n\nGitorious CE installer: Applying puppet recipe, attempt no. #{$retry_no}" >> applied_recipe.log`
 
-  apply_output = `FACTER_fqdn=$(hostname) puppet apply #{debug} --detailed-exitcodes --modulepath=modules manifests/site.pp`
+  apply_output = `puppet apply #{debug} --detailed-exitcodes --modulepath=modules manifests/site.pp`
   $exitcode = $?.to_i
 
   `echo "#{apply_output}" >> applied_recipe.log`
