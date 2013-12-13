@@ -246,7 +246,7 @@ documentation of all the available options.
 
 Note that changing settings usually requires a subsequent restart of
 Gitorious before they take effect. Restart by running the
-=restart= command:
+=restart_unicorn= command:
 
 #+begin_src shell
 cd /var/www/gitorious/app && RAILS_ENV=production script/restart_unicorn
