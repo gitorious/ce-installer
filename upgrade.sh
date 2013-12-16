@@ -46,7 +46,7 @@ checkout-gitorious-v3 () {
   cd /var/www/gitorious/app
 
   git fetch --all
-  git checkout master -f
+  git checkout bc2684d254189789eca70bfae95490d4b7afc3b2 -f
   git submodule init
   git submodule update --recursive
 }
