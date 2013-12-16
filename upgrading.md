@@ -8,7 +8,7 @@ The following instruction assumes that you have installed Gitorious v2 using the
 
 2. Check out the newest version of the ce-installer:
 
-        git clone git@gitorious.org/gitorious/ce-installer.git && cd ce-installer
+        git clone https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
 
 3. Run the automated upgrade script
 
@@ -28,7 +28,7 @@ If your installation differs from the standard, it might be impossible for you t
 
 2. Download the newest version of ce-installer:
 
-        git clone git@gitorious.org/gitorious/ce-installer.git && cd ce-installer
+        git clone https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
 
 ### Upgrade Ruby from 1.8 to 1.9.3 with chruby
 
