@@ -1,4 +1,5 @@
 #!/bin/bash
+source config.sh
 
 PLATFORM=`uname -m`
 

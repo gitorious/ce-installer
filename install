@@ -15,7 +15,6 @@ sed -i "s/enforcing/disabled/" /etc/selinux/config
 setenforce 0
 
 echo "Installing Ruby..."
-export FACTER_ruby_version='1.9.3-p484'
 ./install-ruby.sh
 
 echo "Make sure we are using the proper Ruby version..."
@@ -23,8 +22,6 @@ source /etc/profile.d/chruby.sh
 
 echo "Installing Puppet..."
 . install-puppet.sh
-
-export FACTER_fqdn=$(hostname)
 
 echo 'Running rest of installation (with correct, newly installed Ruby)...'
 ./apply_and_finalize.sh
