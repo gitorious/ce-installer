@@ -33,9 +33,9 @@ install-ruby-19 () {
 }
 
 update-executables-to-use-chruby () {
-  ./render_config.rb /vagrant/ce-installer/modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
+  ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
 
-  ./render_config.rb /vagrant/ce-installer/modules/resque/templates/etc/init/resque-worker.conf.erb > /etc/init/resque-worker.conf
+  ./render_config.rb modules/resque/templates/etc/init/resque-worker.conf.erb > /etc/init/resque-worker.conf
 
   cp modules/gitorious/templates/usr/bin/gitorious.erb /usr/bin/gitorious
   chmod +x /usr/bin/gitorious
