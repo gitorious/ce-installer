@@ -14,6 +14,10 @@ upgrade-gitorious-from-v2-to-v3 () {
 }
 
 stop-gitorious () {
+  if [ -f /etc/init.d/gitorious ];
+  then
+    mv /etc/init.d/gitorious /etc/init.d/gitorious-unicorn
+  fi
   /etc/init.d/gitorious-unicorn stop
   stop resque-worker
 }
