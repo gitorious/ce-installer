@@ -34,6 +34,7 @@ install-ruby-19 () {
 
 update-executables-to-use-chruby () {
   ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
+  chmod +x /etc/init.d/gitorious-unicorn
 
   ./render_config.rb modules/resque/templates/etc/init/resque-worker.conf.erb > /etc/init/resque-worker.conf
 
@@ -46,7 +47,7 @@ checkout-gitorious-v3 () {
   cd /var/www/gitorious/app
 
   git fetch --all
-  git checkout bc2684d254189789eca70bfae95490d4b7afc3b2 -f
+  git checkout a5aa9c2e25fd3bacb2210ea024e05cb6162dce93 -f
   git submodule init
   git submodule update --recursive
 }
