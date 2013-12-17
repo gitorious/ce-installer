@@ -7,6 +7,7 @@ upgrade-gitorious-from-v2-to-v3 () {
   update-executables-to-use-chruby
   checkout-gitorious-v3
   install-dependencies
+  compile-assets
   migrate-database
   fix-invalid-data
   start-gitorious
@@ -61,6 +62,10 @@ install-dependencies () {
   gem install bundler
   yum -y install libicu-devel patch
   bundle install --deployment --without development test postgres
+}
+
+compile-assets () {
+  RAILS_ENV=production bundle exec rake assets:precompile
 }
 
 migrate-database () {
