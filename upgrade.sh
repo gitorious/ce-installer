@@ -1,5 +1,7 @@
 #!/bin/bash -l
 
+GITORIOUS_VERSION=${GITORIOUS_VERSION:-a5aa9c2e25fd3bacb2210ea024e05cb6162dce93}
+
 upgrade-gitorious-from-v2-to-v3 () {
   stop-gitorious
   uninstall-ruby-18
@@ -53,7 +55,7 @@ checkout-gitorious-v3 () {
   cd /var/www/gitorious/app
 
   git fetch --all
-  git checkout a5aa9c2e25fd3bacb2210ea024e05cb6162dce93 -f
+  git checkout $GITORIOUS_VERSION -f
   git submodule init
   git submodule update --recursive
 }
