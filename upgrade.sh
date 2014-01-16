@@ -7,6 +7,7 @@ upgrade-gitorious-from-v2-to-v3 () {
   uninstall-ruby-18
   install-ruby-19
   update-executables-to-use-chruby
+  update-nginx-configuration
   checkout-gitorious-v3
   install-dependencies
   compile-assets
@@ -24,6 +25,7 @@ stop-gitorious () {
     monit stop unicorn
   fi
   stop resque-worker
+  service nginx stop
 }
 
 uninstall-ruby-18 () {
@@ -49,6 +51,10 @@ update-executables-to-use-chruby () {
   cp modules/gitorious/templates/usr/bin/gitorious.erb /usr/bin/gitorious
   chmod +x /usr/bin/gitorious
   rm -f /usr/local/bin/gitorious
+}
+
+update-nginx-configuration() {
+  sed -i s/current\/// /etc/nginx/conf.d/gitorious.conf.erb
 }
 
 checkout-gitorious-v3 () {
@@ -82,6 +88,7 @@ fix-invalid-data () {
 start-gitorious () {
   /etc/init.d/gitorious-unicorn restart
   start resque-worker
+  service nginx start
 }
 
 print-configuration-warnings () {
