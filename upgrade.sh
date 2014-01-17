@@ -54,7 +54,7 @@ update-executables-to-use-chruby () {
 }
 
 update-nginx-configuration() {
-  sed -i s/current\/// /etc/nginx/conf.d/gitorious.conf.erb
+  sed -i s/current\\/// /etc/nginx/conf.d/gitorious.conf
 }
 
 checkout-gitorious-v3 () {
