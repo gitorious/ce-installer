@@ -5,12 +5,18 @@ $max_retries = 15
 
 debug = ENV['DEBUG'] ? '--debug --verbose' : ''
 
+UTF_LANG = "en_US.UTF-8"
+lang = ENV['LANG'] || UTF_LANG
+unless lang.downcase.include?("utf")
+  lang = UTF_LANG
+end
+
 `echo "Gitorious CE installer: Attempting to apply the puppet recipe" > applied_recipe.log`
 
 while $exitcode != 512 # bitmasked "done" return code from puppet
   `echo "\n\nGitorious CE installer: Applying puppet recipe, attempt no. #{$retry_no}" >> applied_recipe.log`
 
-  apply_output = `puppet apply #{debug} --detailed-exitcodes --modulepath=modules manifests/site.pp`
+  apply_output = `LANG=#{lang.inspect} puppet apply #{debug} --detailed-exitcodes --modulepath=modules manifests/site.pp`
   $exitcode = $?.to_i
 
   `echo "#{apply_output}" >> applied_recipe.log`
