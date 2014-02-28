@@ -275,7 +275,7 @@ webapp, which goes into MySQL. You'll find the git repositories in
 =/var/www/gitorious/repositories=. You can extract your data from
 MySQL by running =mysqldump= on the =gitorious_production= database.
 However, in practice it's easier to simply pull out your data by
-running the =script/snapshot= script described below, in the backup
+running the =bin/snapshot= script described below, in the backup
 FAQ section.
 
 ** How do I change the hostname?
@@ -308,10 +308,10 @@ SSL cert warnings when they initially visit the site.
 
 ** How do I back it up?
 
-Run =/var/www/gitorious/app/script/snapshot= as superuser/root.
+Run =/var/www/gitorious/app/bin/snapshot= as superuser/root.
 
 #+begin_src shell
-  cd /var/www/gitorious/app/ && script/snapshot ./testsnapshot.tar
+  cd /var/www/gitorious/app/ && bin/snapshot ./testsnapshot.tar
 #+end_src
 
 This will back up the current state of your Gitorious site (including
@@ -324,12 +324,12 @@ of said backups.
 ** How do I perform disaster recovery?
 
 Given a tarball created by the aforementioned
-=/var/www/gitorious/app/script/snapshot= script, you'll be able to
+=/var/www/gitorious/app/bin/snapshot= script, you'll be able to
 restore the state of the Gitorious site (and the hosted git repos)
-from the same tarball by running =script/restore=:
+from the same tarball by running =bin/restore=:
 
 #+begin_src shell
-  cd /var/www/gitorious/app/ && script/restore ./testsnapshot.tar
+  cd /var/www/gitorious/app/ && bin/restore ./testsnapshot.tar
 #+end_src
 
 ** How do I make my hosted git repositories available for anonymous users?
