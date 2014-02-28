@@ -353,6 +353,22 @@ At least 2-4GB RAM initially, since Gitorious can be a bit of a memory
 hog. The resource usage will go up linearly with increasing numbers of
 users, web traffic and git operations on your installation.
 
+** How do I upgrade my Gitorious instance?
+
+This will update Gitorious to latest stable version. Works with 
+Gitorious releases since 2.4.x:
+
+#+begin_src shell
+  cd ~/ce-installer && ./upgrade.sh
+#+end_src
+
+If you have an older Gitorious instance, please refer [[https://gitorious.org/gitorious/pages/Upgrading][to this guide.]]
+
+** How do I install Gitorious on other operating systems?
+
+Community installer supports only CentOS. However you can use any 
+other operating system with the [[http://getgitorious.com/virtual-appliance][Virtual Appliance]]
+or the [[https://gitorious.org/gitorious/gitorious-docker/][Docker image]].
 
 * License
 
