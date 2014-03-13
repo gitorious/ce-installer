@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-GITORIOUS_VERSION=${GITORIOUS_VERSION:-a5aa9c2e25fd3bacb2210ea024e05cb6162dce93}
+GITORIOUS_VERSION=${GITORIOUS_VERSION:-6a29adddecdc68b126b94d15bb8a604501c9fe2f}
 
 upgrade-gitorious-from-v2-to-v3 () {
   stop-gitorious
