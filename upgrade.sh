@@ -14,9 +14,9 @@ upgrade-gitorious-from-v2-to-v3 () {
   install-dependencies
   compile-assets
   migrate-database
-  migrate-configuration
   fix-invalid-data
   start-gitorious
+  migrate-configuration
   print-configuration-warnings
 }
 
