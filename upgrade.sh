@@ -102,7 +102,6 @@ update-searchd () {
 
 migrate-configuration () {
   echo
-  echo
   echo "If you are upgrading from 2.x you need to migrate gitorious.yml."
   echo "Running this script on 3.x config will result in lost settings!"
   echo "To upgrade the config run following commands and then inspect the result:"
@@ -123,7 +122,6 @@ start-gitorious () {
 }
 
 print-configuration-warnings () {
- echo
  echo
  echo "Please fix the following warnings in your config/gitorious.yml:"
  echo
