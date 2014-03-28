@@ -45,6 +45,7 @@ install-ruby-19 () {
 
 update-executables-to-use-chruby () {
   ./render_config.rb modules/gitorious/templates/monit.d/unicorn.monit.erb > /etc/monit.d/unicorn.monit
+  monit reload
   ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
   chmod +x /etc/init.d/gitorious-unicorn
 
