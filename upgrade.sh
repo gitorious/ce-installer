@@ -1,5 +1,7 @@
 #!/bin/bash -l
 
+source config.sh
+
 GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.0.1}
 
 upgrade-gitorious-from-v2-to-v3 () {
