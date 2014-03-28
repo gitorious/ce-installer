@@ -56,6 +56,9 @@ update-executables-to-use-chruby () {
   ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
   chmod +x /etc/init.d/gitorious-unicorn
 
+  ./render_config.rb modules/gitorious/templates/usr/bin/gitorious_status.erb > /usr/bin/gitorious_status
+  chmod +x /usr/bin/gitorious_status
+
   ./render_config.rb modules/resque/templates/etc/init/resque-worker.conf.erb > /etc/init/resque-worker.conf
 
   cp modules/gitorious/templates/usr/bin/gitorious.erb /usr/bin/gitorious
