@@ -111,6 +111,8 @@ migrate-configuration () {
   echo "The following snippet run on 3.x config will result in lost settings!"
   echo "To upgrade the config run following commands as git user and then inspect the result:"
   echo
+  echo "su git"
+  echo "source /etc/profile.d/chruby.sh"
   echo "cd /var/www/gitorious/app"
   echo "bin/upgrade-gitorious3-config config/gitorious.yml config/gitorious.yml"
   echo
