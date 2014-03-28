@@ -19,6 +19,7 @@ timeout Timeout
 
 
 listen Socket.to_s
+pid "/var/www/gitorious/app/tmp/pids/unicorn.pid"
 
 before_fork do |server, worker|
   old_pid = RAILS_ROOT + "/tmp/pids/unicorn.pid.oldbin"
