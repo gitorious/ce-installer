@@ -16,6 +16,7 @@ upgrade-gitorious-from-v2-to-v3 () {
   migrate-database
   fix-invalid-data
   update-searchd
+  update-owner
   start-gitorious
   migrate-configuration
   print-configuration-warnings
@@ -96,14 +97,18 @@ migrate-database () {
 
 update-searchd () {
   cd /var/www/gitorious/app
-  bin/rake ts:configure
-  bin/rake ts:rebuild
+  RAILS_ENV=production bundle exec rake ts:configure
+  RAILS_ENV=production bundle exec rake ts:rebuild
+}
+
+update-owner () {
+  chown git:git -R /var/www/gitorious/app
 }
 
 migrate-configuration () {
   echo
   echo "If you are upgrading from 2.x you need to migrate gitorious.yml."
-  echo "Running this script on 3.x config will result in lost settings!"
+  echo "The following snippet run on 3.x config will result in lost settings!"
   echo "To upgrade the config run following commands and then inspect the result:"
   echo
   echo "cd /var/www/gitorious/app"
