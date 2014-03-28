@@ -15,6 +15,7 @@ upgrade-gitorious-from-v2-to-v3 () {
   compile-assets
   migrate-database
   fix-invalid-data
+  update-searchd
   start-gitorious
   migrate-configuration
   print-configuration-warnings
@@ -46,8 +47,11 @@ install-ruby-19 () {
 }
 
 update-executables-to-use-chruby () {
+  ./render_config.rb modules/gitorious/templates/monit.d/thinking-sphinx.monit.erb > /etc/monit.d/thinking-sphinx.monit
+
   ./render_config.rb modules/gitorious/templates/monit.d/unicorn.monit.erb > /etc/monit.d/unicorn.monit
   monit reload
+
   ./render_config.rb modules/gitorious/templates/unicorn.rb.erb > /var/www/gitorious/app/config/unicorn.rb
   ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
   chmod +x /etc/init.d/gitorious-unicorn
@@ -74,7 +78,7 @@ checkout-gitorious-v3 () {
 
 install-dependencies () {
   gem install bundler
-  yum -y install libicu-devel patch
+  yum -y install libicu-devel patch sphinx
   bundle install --deployment --without development test postgres
 }
 
@@ -85,6 +89,12 @@ compile-assets () {
 migrate-database () {
   sed -i s/mysql\\b/mysql2/ config/database.yml
   RAILS_ENV=production bundle exec rake db:migrate
+}
+
+update-searchd () {
+  cd /var/www/gitorious/app
+  bin/rake ts:configure
+  bin/rake ts:rebuild
 }
 
 migrate-configuration () {

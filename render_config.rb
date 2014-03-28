@@ -2,7 +2,7 @@
 
 require 'erb'
 
-@app_root = @resque_gitorious_root = "/var/www/gitorious/app"
+@app_root = @t_app_root = @resque_gitorious_root = "/var/www/gitorious/app"
 @pids_dir = "/var/www/gitorious/app/tmp/pids"
 @ruby_version = ENV['FACTER_ruby_version']
 
