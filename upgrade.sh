@@ -12,6 +12,7 @@ upgrade-gitorious-from-v2-to-v3 () {
   install-dependencies
   compile-assets
   migrate-database
+  migrate-configuration
   fix-invalid-data
   start-gitorious
   print-configuration-warnings
@@ -79,6 +80,18 @@ compile-assets () {
 migrate-database () {
   sed -i s/mysql\\b/mysql2/ config/database.yml
   RAILS_ENV=production bundle exec rake db:migrate
+}
+
+migrate-configuration () {
+  echo
+  echo
+  echo "If you are upgrading from 2.x you need to migrate gitorious.yml."
+  echo "Running this script on 3.x config will result in lost settings!"
+  echo "To upgrade the config run following commands and then inspect the result:"
+  echo
+  echo "cd /var/www/gitorious/app"
+  echo "bin/upgrade-gitorious3-config config/gitorious.yml config/gitorious.yml"
+  echo
 }
 
 fix-invalid-data () {
