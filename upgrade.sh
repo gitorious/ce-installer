@@ -55,6 +55,7 @@ update-executables-to-use-chruby () {
   monit reload
 
   ./render_config.rb modules/gitorious/templates/unicorn.rb.erb > /var/www/gitorious/app/config/unicorn.rb
+  rm /etc/init.d/gitorious-unicorn
   ./render_config.rb modules/gitorious/templates/etc/init/gitorious-unicorn.conf.erb > /etc/init/gitorious-unicorn.conf
 
   ./render_config.rb modules/gitorious/templates/usr/bin/gitorious_status.erb > /usr/bin/gitorious_status
