@@ -6,7 +6,6 @@ stop on runlevel [06]
 
 env PATH=/bin:/usr/bin:/usr/local/bin
 env QUEUE=*
-env PIDFILE=<%= @resque_gitorious_root %>/tmp/pids/resque-worker1.pid
 
 exec /usr/local/bin/chruby-exec ruby-<%= @ruby_version %> -- <%= @resque_gitorious_root %>/bin/rake resque:work
 respawn

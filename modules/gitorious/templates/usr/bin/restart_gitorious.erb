@@ -10,8 +10,7 @@ reload_unicorn() {
 
 restart_resque_worker() {
     status_message "Resque"
-    /sbin/initctl stop resque-worker >/dev/null 2>/dev/null
-    /sbin/initctl start resque-worker >/dev/null 2>/dev/null
+    /sbin/initctl restart resque-worker >/dev/null 2>/dev/null
 }
 
 restart_git_daemons() {
