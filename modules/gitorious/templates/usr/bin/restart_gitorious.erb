@@ -4,7 +4,8 @@ status_message() {
 }
 
 reload_unicorn() {
-    /etc/init.d/gitorious-unicorn reload
+    status_message "Unicorn"
+    /sbin/initctl reload gitorious-unicorn >/dev/null 2>/dev/null
 }
 
 restart_resque_worker() {

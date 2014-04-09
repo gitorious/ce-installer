@@ -9,22 +9,12 @@ class gitorious::unicorn {
     content => template("gitorious/unicorn.rb.erb"),
   }
 
-  file { "/etc/init.d/gitorious-unicorn":
+  file { "/etc/init/gitorious-unicorn.conf":
+    ensure => present,
     owner => root,
     group => root,
-    mode => 0755,
     require => File["unicorn.rb"],
-    content => template("gitorious/etc/init.d/gitorious-unicorn.erb")
-  }
-
-  monit::config{ "unicorn":
-    pids_dir => "/var/www/gitorious/app/tmp/pids",
-    t_app_root => "/var/www/gitorious/app",
-  }
-  service { "gitorious-unicorn":
-    require => File["/etc/init.d/gitorious-unicorn"],
-    enable => true,
-    ensure => running,
+    content => template("gitorious/etc/init/gitorious-unicorn.conf.erb")
   }
 
   file { "/usr/bin/restart_gitorious":

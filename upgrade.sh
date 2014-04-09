@@ -2,7 +2,7 @@
 
 source config.sh
 
-GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.0.1}
+GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.0.2}
 
 upgrade-gitorious-from-v2-to-v3 () {
   stop-gitorious
@@ -27,7 +27,8 @@ stop-gitorious () {
   then
     /etc/init.d/gitorious-unicorn stop
   else
-    monit stop unicorn
+    monit stop unicorn 2&>1 /dev/null
+    stop gitorious-unicorn 2&>1 /dev/null
   fi
   stop resque-worker
   service nginx stop
@@ -50,15 +51,17 @@ install-ruby-19 () {
 update-executables-to-use-chruby () {
   ./render_config.rb modules/gitorious/templates/monit.d/thinking-sphinx.monit.erb > /etc/monit.d/thinking-sphinx.monit
 
-  ./render_config.rb modules/gitorious/templates/monit.d/unicorn.monit.erb > /etc/monit.d/unicorn.monit
+  rm /etc/monit.d/unicorn.monit
   monit reload
 
   ./render_config.rb modules/gitorious/templates/unicorn.rb.erb > /var/www/gitorious/app/config/unicorn.rb
-  ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
-  chmod +x /etc/init.d/gitorious-unicorn
+  ./render_config.rb modules/gitorious/templates/etc/init/gitorious-unicorn.conf.erb > /etc/init/gitorious-unicorn.conf
 
   ./render_config.rb modules/gitorious/templates/usr/bin/gitorious_status.erb > /usr/bin/gitorious_status
   chmod +x /usr/bin/gitorious_status
+
+  ./render_config.rb modules/gitorious/templates/usr/bin/restart_gitorious.erb > /usr/bin/restart_gitorious
+  chmod +x /usr/bin/restart_gitorious
 
   ./render_config.rb modules/resque/templates/etc/init/resque-worker.conf.erb > /etc/init/resque-worker.conf
 
@@ -123,7 +126,7 @@ fix-invalid-data () {
 }
 
 start-gitorious () {
-  /etc/init.d/gitorious-unicorn restart
+  start gitorious-unicorn
   start resque-worker
   service nginx start
 }

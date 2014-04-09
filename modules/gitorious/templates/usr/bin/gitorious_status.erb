@@ -21,9 +21,7 @@ check_process_and_report() {
 }
 
 unicorn_status() {
-    PIDFILE=<%= @app_root %>/tmp/pids/unicorn.pid
-    PID=$(cat $PIDFILE)
-    check_process_and_report "ps -p $PID" "Unicorn"
+    check_process_and_report "/sbin/initctl status gitorious-unicorn" "Unicorn"
 }
 
 # Upstart's exit codes are a beast of its own
