@@ -5,12 +5,14 @@ status_message() {
 
 reload_unicorn() {
     status_message "Unicorn"
-    /sbin/initctl reload gitorious-unicorn >/dev/null 2>/dev/null
+    /sbin/initctl stop gitorious-unicorn >/dev/null 2>/dev/null
+    /sbin/initctl start gitorious-unicorn >/dev/null 2>/dev/null
 }
 
 restart_resque_worker() {
     status_message "Resque"
-    /sbin/initctl restart resque-worker >/dev/null 2>/dev/null
+    /sbin/initctl stop resque-worker >/dev/null 2>/dev/null
+    /sbin/initctl start resque-worker >/dev/null 2>/dev/null
 }
 
 restart_git_daemons() {
