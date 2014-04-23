@@ -1,0 +1,57 @@
+#!/bin/bash
+
+case "$1" in
+  start)
+    start gitorious-mysql
+    start gitorious-redis
+    start gitorious-memcached
+    start gitorious-git-daemon
+    start gitorious-postfix
+    start gitorious-queue
+    start gitorious-sphinx
+    start gitorious-web
+    start gitorious-sshd
+    start gitorious-nginx
+    ;;
+
+  stop)
+    stop gitorious-nginx
+    stop gitorious-sshd
+    stop gitorious-web
+    stop gitorious-sphinx
+    stop gitorious-queue
+    stop gitorious-postfix
+    stop gitorious-git-daemon
+    stop gitorious-memcached
+    stop gitorious-redis
+    stop gitorious-mysql
+    ;;
+
+  status)
+    status gitorious-mysql
+    status gitorious-redis
+    status gitorious-memcached
+    status gitorious-git-daemon
+    status gitorious-postfix
+    status gitorious-queue
+    status gitorious-sphinx
+    status gitorious-web
+    status gitorious-sshd
+    status gitorious-nginx
+    ;;
+
+  rake)
+    shift
+    docker run --rm --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/rake "$@"
+    ;;
+
+  console)
+    docker run --rm --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/console
+    ;;
+
+  *)
+    echo "usage: gitoriousctl start|stop|status|rake|console"
+    ;;
+esac
+
+exit 0
