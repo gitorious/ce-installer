@@ -57,13 +57,30 @@ The ce-installer already contains the executable templates in the correct form. 
 
     # in ce-installer
 
-    ./render_config.rb modules/gitorious/templates/etc/init.d/gitorious-unicorn.erb > /etc/init.d/gitorious-unicorn
+    ./render_config.rb modules/gitorious/templates/monit.d/thinking-sphinx.monit.erb > /etc/monit.d/thinking-sphinx.monit
+
+    rm /etc/monit.d/unicorn.monit
+    monit reload
+
+    ./render_config.rb modules/gitorious/templates/unicorn.rb.erb > /var/www/gitorious/app/config/unicorn.rb
+    rm /etc/init.d/gitorious-unicorn
+    ./render_config.rb modules/gitorious/templates/etc/init/gitorious-unicorn.conf.erb > /etc/init/gitorious-unicorn.conf
+
+    ./render_config.rb modules/gitorious/templates/usr/bin/gitorious_status.erb > /usr/bin/gitorious_status
+    chmod +x /usr/bin/gitorious_status
+
+    ./render_config.rb modules/gitorious/templates/usr/bin/restart_gitorious.erb > /usr/bin/restart_gitorious
+    chmod +x /usr/bin/restart_gitorious
 
     ./render_config.rb modules/resque/templates/etc/init/resque-worker.conf.erb > /etc/init/resque-worker.conf
 
     cp modules/gitorious/templates/usr/bin/gitorious.erb /usr/bin/gitorious
     chmod +x /usr/bin/gitorious
     rm -f /usr/local/bin/gitorious
+
+### Update Nginx configuration
+
+    sed -i s/current\\/// /etc/nginx/conf.d/gitorious.conf
 
 ### Checkout the v3 version of Gitorious
 
@@ -72,15 +89,15 @@ Now you are ready to update Gitorious code to the latest stable version:
     cd /var/www/gitorious/app
 
     git fetch --all
-    git checkout master -f
+    git checkout v3.0.2 -f
     git submodule init
     git submodule update --recursive
 
 ### Install dependencies of v3
 
-Gitorious v3 depends on charlock-holmes gem, which in turn depends on libicu, which you will need to install through yum:
+Gitorious v3 depends requires some system dependencies for gemes and sphinx 2.x
 
-    yum -y install libicu-devel patch
+    yum -y install libicu-devel patch sphinx
 
 Now you can install the gems:
 
@@ -88,6 +105,14 @@ Now you can install the gems:
 
     gem install bundler
     bundle install --deployment --without development test postgres
+
+### Compile the assets
+
+Rails needs to generate cache-busters for stylesheets, images and javascripts
+
+    cd /var/www/gitorious/app
+
+    RAILS_ENV=production bundle exec rake assets:precompile
 
 ### Migrate the database
 
@@ -100,6 +125,15 @@ Before you can migrate the database, you will need to update your database.yml c
 Now you are ready to migrate:
 
     RAILS_ENV=production bundle exec rake db:migrate
+
+### Update Sphinx configuration
+
+Gitorious v3 expects Sphinx configurations in a different locations. It can be fixed with a rake task:
+
+    cd /var/www/gitorious/app
+
+    RAILS_ENV=production bundle exec rake ts:configure
+    RAILS_ENV=production bundle exec rake ts:rebuild
 
 ### Fix invalid data
 
@@ -115,7 +149,12 @@ Some already fixed bugs left the database in inconsistent state. You can run the
 
 ### Fix deprecated configuration options
 
-We changed the names of some configuration options and removed others. You will see the deprecation warnings when you push to any repository, but the easier way to see them is to run:
+We changed the names of some configuration options and removed others. You can use this scipt to automatically port the old settings.
+
+    cd /var/www/gitorious/app 
+    bin/upgrade-gitorious3-config config/gitorious.yml config/gitorious.yml
+
+You will see the deprecation warnings when you push to any repository, but the easier way to see them is to run:
 
     cd /var/www/gitorious/app 
     RAILS_ENV=production bundle exec rails r ''
