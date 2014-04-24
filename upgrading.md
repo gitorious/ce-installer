@@ -145,7 +145,6 @@ Some already fixed bugs left the database in inconsistent state. You can run the
       fix_missing_wiki_repos fix_dangling_committerships fix_dangling_projects \ 
       fix_system_comments fix_dangling_events fix_dangling_repositories \ 
       fix_dangling_favorites fix_missing_repos 
-}
 
 ### Fix deprecated configuration options
 
