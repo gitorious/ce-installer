@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ssh git@localhost -p 5022 env SSH_ORIGINAL_COMMAND="\"$SSH_ORIGINAL_COMMAND\"" gitorious $1

@@ -1,4 +1,5 @@
 source functions/install_docker.sh
+source functions/setup_git_user.sh
 
 log() {
   echo -e "\e[1;32m+\e[31m-\e[0m \e[1m$@\e[0m"
