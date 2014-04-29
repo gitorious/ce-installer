@@ -1,3 +1,5 @@
+source functions/install_docker.sh
+
 log() {
   echo -e "\e[1;32m+\e[31m-\e[0m \e[1m$@\e[0m"
 }
@@ -7,11 +9,6 @@ require_root() {
     log "You should run this script as root/superuser."
     exit 1
   fi
-}
-
-install_docker() {
-  log "Installing docker..."
-  # TODO: actually install docker
 }
 
 pull_latest_images() {

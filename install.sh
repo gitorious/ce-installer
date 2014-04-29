@@ -2,7 +2,7 @@
 
 set -e
 
-source functions.sh
+source functions/functions.sh
 
 log "Starting Gitorious installation..."
 
