@@ -10,7 +10,6 @@ require_root
 # TODO: stop_old_gitorious_services
 # TODO: move_config_and_data
 install_docker
-pull_latest_images
 start_containers
 install_gitoriousctl
 

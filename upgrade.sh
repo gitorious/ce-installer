@@ -7,7 +7,6 @@ source functions/functions.sh
 log "Starting Gitorious upgrade..."
 
 require_root
-pull_latest_images
 remove_containers
 start_containers
 install_gitoriousctl

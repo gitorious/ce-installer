@@ -12,19 +12,6 @@ require_root() {
   fi
 }
 
-pull_latest_images() {
-  log "Pulling latest docker images from index.docker.io ..."
-
-  docker pull gitorious/mysql
-  docker pull gitorious/redis
-  docker pull gitorious/memcached
-  docker pull gitorious/git-daemon
-  docker pull gitorious/app
-  docker pull gitorious/nginx
-  docker pull gitorious/sphinx
-  docker pull gitorious/postfix
-}
-
 start_containers() {
   log "Creating and starting new containers..."
 

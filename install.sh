@@ -9,7 +9,6 @@ log "Starting Gitorious installation..."
 require_root
 install_docker
 setup_git_user
-pull_latest_images
 start_containers
 install_gitoriousctl
 anonymous_pingback
