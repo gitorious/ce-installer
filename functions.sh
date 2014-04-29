@@ -12,37 +12,6 @@ require_root() {
 install_docker() {
   log "Installing docker..."
   # TODO: actually install docker
-
-  # disable automatic restarting of containers by docker himself
-  # (we use upstart for monitoring)
-  echo 'DOCKER_OPTS="-r=false"' >/etc/default/docker
-  restart docker
-  sleep 5
-}
-
-install_gitorious_services() {
-  log "Installing Gitorious services..."
-
-  cp -r ./upstart/gitorious-* /etc/init/
-}
-
-uninstall_gitorious_services() {
-  log "Uninstalling Gitorious services..."
-
-  rm -f /etc/init/gitorious-*
-}
-
-start_gitorious_services() {
-  log "Starting Gitorious services..."
-
-  cp ./gitoriousctl /usr/bin/gitoriousctl
-  /usr/bin/gitoriousctl start
-}
-
-stop_gitorious_services() {
-  log "Stopping Gitorious services..."
-
-  /usr/bin/gitoriousctl stop
 }
 
 pull_latest_images() {
@@ -62,7 +31,7 @@ start_containers() {
   log "Creating and starting new containers..."
 
   # create data only container that exits immediately, with config and data volumes mapped to host
-  docker run --name gitorious-data -v /etc/gitorious:/srv/gitorious/config -v /var/lib/gitorious:/srv/gitorious/data tianon/true
+  docker run --name gitorious-data -v /etc/gitorious:/srv/gitorious/config -v /var/lib/gitorious:/srv/gitorious/data busybox /bin/true
 
   # start containers
   docker run -d --name gitorious-mysql -v /var/lib/gitorious/mysql:/var/lib/mysql -v /var/log/gitorious/mysql:/var/log/mysql gitorious/mysql
@@ -78,7 +47,7 @@ start_containers() {
   docker run -d --name gitorious-queue --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/resque
   docker run -d --name gitorious-sphinx --link gitorious-mysql:mysql --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sphinx
   docker run -d --name gitorious-web --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/unicorn
-  docker run -d --name gitorious-sshd --link gitorious-web:web --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sshd
+  # docker run -d --name gitorious-sshd --link gitorious-web:web --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sshd
   docker run -d --name gitorious-nginx --link gitorious-web:web -p 80:80 --volumes-from gitorious-data -v /var/log/gitorious/nginx:/var/log/nginx gitorious/nginx
 }
 
@@ -86,6 +55,12 @@ remove_containers() {
   log "Removing old containers..."
 
   docker ps -a | grep "gitorious-" | awk '{print $1}' | xargs -r docker rm -f
+}
+
+install_gitoriousctl() {
+  log "Installing gitoriousctl control script..."
+
+  cp ./gitoriousctl /usr/bin/gitoriousctl
 }
 
 anonymous_pingback() {

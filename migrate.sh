@@ -12,8 +12,7 @@ require_root
 install_docker
 pull_latest_images
 start_containers
-install_gitorious_services
-start_gitorious_services
+install_gitoriousctl
 
 log ""
 log "Upgrade of your Gitorious Community Edition installation is complete."
