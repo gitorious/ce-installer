@@ -19,7 +19,7 @@ if ! rpm -qa |grep -i 'epel-release-6.8' &>- ; then
     wget http://dl.fedoraproject.org/pub/epel/6/$PLATFORM/epel-release-6-8.noarch.rpm
     rpm -Uvh epel-release-6-8.noarch.rpm
 else
-    echo "epel-release-6.8 is already installed"
+    echo "epel-release-6.8 is already installed. skipping.."
 fi
 
 sed -i "s/https/http/" /etc/yum.repos.d/epel.repo
