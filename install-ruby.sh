@@ -15,12 +15,20 @@ yum install -y wget bzip2 tar make gcc ntp sudo git
 wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 rpm --import ./RPM-GPG-KEY-EPEL-6
 
-wget http://dl.fedoraproject.org/pub/epel/6/$PLATFORM/epel-release-6-8.noarch.rpm
-rpm -Uvh epel-release-6-8.noarch.rpm
+if ! rpm -qa |grep -i 'epel-release-6.8' &>- ; then
+    wget http://dl.fedoraproject.org/pub/epel/6/$PLATFORM/epel-release-6-8.noarch.rpm
+    rpm -Uvh epel-release-6-8.noarch.rpm
+else
+    echo "epel-release-6.8 is already installed"
+fi
 
 sed -i "s/https/http/" /etc/yum.repos.d/epel.repo
 
-yum install -y libyaml-devel 
+if ! rpm -qa |grep -i libyaml-devel &>- ; then
+    yum install -y libyaml-devel 
+else
+    echo "libyaml-devel already installed. skipping.. "
+fi
 
 echo "Setting time to avoid makefile warning..."
 ntpdate pool.ntp.org
