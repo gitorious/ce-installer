@@ -16,7 +16,7 @@ start_containers() {
   log "Creating and starting new containers..."
 
   # create data only container that exits immediately, with config and data volumes mapped to host
-  docker run --name gitorious-data -v /etc/gitorious:/srv/gitorious/config -v /var/lib/gitorious:/srv/gitorious/data busybox /bin/true
+  docker run --name gitorious-data -v /etc/gitorious:/srv/gitorious/config -v /var/lib/gitorious:/srv/gitorious/data -v /srv/gitorious/assets busybox /bin/true
 
   # start containers
   docker run -d --name gitorious-mysql -v /var/lib/gitorious/mysql:/var/lib/mysql -v /var/log/gitorious/mysql:/var/log/mysql gitorious/mysql
