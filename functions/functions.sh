@@ -32,7 +32,7 @@ start_containers() {
   docker run -d --name gitorious-queue --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/resque
   docker run -d --name gitorious-sphinx --link gitorious-mysql:mysql --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sphinx
   docker run -d --name gitorious-web --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/unicorn
-  # docker run -d --name gitorious-sshd --link gitorious-web:web --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sshd
+  docker run -d --name gitorious-sshd --link gitorious-web:web --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sshd
   docker run -d --name gitorious-nginx --link gitorious-web:web -p 80:80 --volumes-from gitorious-data -v /var/log/gitorious/nginx:/var/log/nginx gitorious/nginx
 }
 
