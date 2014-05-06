@@ -40,17 +40,23 @@ case "$1" in
     status gitorious-nginx
     ;;
 
+  run)
+    shift
+    docker run --rm -t -i --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app "$@"
+    ;;
+
   rake)
     shift
-    docker run --rm --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/rake "$@"
+    $0 run bin/rake "$@"
     ;;
 
   console)
-    docker run --rm --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/console
+    shift
+    $0 run bin/console "$@"
     ;;
 
   *)
-    echo "usage: gitoriousctl start|stop|status|rake|console"
+    echo "usage: gitoriousctl start|stop|status|run|rake|console"
     ;;
 esac
 
