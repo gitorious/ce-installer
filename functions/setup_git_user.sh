@@ -9,6 +9,7 @@ create_git_user() {
 generate_key_pair() {
   su git -c "ssh-keygen -f /home/git/.ssh/id_rsa -P ''"
   cp /home/git/.ssh/id_rsa.pub /var/lib/gitorious/git_id_rsa.pub
+  chown git:git /var/lib/gitorious/git_id_rsa.pub
 }
 
 generate_bin_gitorious() {
@@ -16,7 +17,7 @@ generate_bin_gitorious() {
 }
 
 setup_authorized_keys() {
-  ln -fs /var/lib/gitorious/authorized_keys /home/git/.ssh/authorized_keys
+  su git -c "ln -fs /var/lib/gitorious/authorized_keys /home/git/.ssh/authorized_keys"
 }
 
 setup_git_user() {
