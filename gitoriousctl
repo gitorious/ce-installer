@@ -1,43 +1,93 @@
 #!/bin/bash
 
+is-running() {
+  docker ps | grep -e "gitorious-$1[^/]" &>/dev/null
+}
+
+start() {
+  echo -n "$1: "
+
+  if is-running $1; then
+    echo "already running"
+  else
+    if docker start gitorious-$1 &>/dev/null; then
+      echo -e "\e[32mstarted\e[0m"
+    else
+      echo -e "\e[31mstart failed\e[0m (to get more details run: docker start gitorious-$1)"
+    fi
+  fi
+}
+
+stop() {
+  echo -n "$1: "
+
+  if is-running $1; then
+    docker stop gitorious-$1 &>/dev/null && echo -e "\e[32mstopped\e[0m" || echo -e "\e[31mstop failed\e[0m"
+  else
+    echo "already stopped"
+  fi
+}
+
+status() {
+  echo -n "$1: "
+
+  if is-running $1; then
+    echo -e "\e[32mrunning\e[0m"
+  else
+    echo -e "\e[31mnot running\e[0m"
+  fi
+}
+
 case "$1" in
   start)
-    start gitorious-mysql
-    start gitorious-redis
-    start gitorious-memcached
-    start gitorious-git-daemon
-    start gitorious-postfix
-    start gitorious-queue
-    start gitorious-sphinx
-    start gitorious-web
-    start gitorious-sshd
-    start gitorious-nginx
+    if [[ -n $2 ]]; then
+      start $2
+    else
+      start mysql
+      start redis
+      start memcached
+      start git-daemon
+      start postfix
+      start queue
+      start sphinx
+      start web
+      start sshd
+      start nginx
+    fi
     ;;
 
   stop)
-    stop gitorious-nginx
-    stop gitorious-sshd
-    stop gitorious-web
-    stop gitorious-sphinx
-    stop gitorious-queue
-    stop gitorious-postfix
-    stop gitorious-git-daemon
-    stop gitorious-memcached
-    stop gitorious-redis
-    stop gitorious-mysql
+    if [[ -n $2 ]]; then
+      stop $2
+    else
+      stop nginx
+      stop sshd
+      stop web
+      stop sphinx
+      stop queue
+      stop postfix
+      stop git-daemon
+      stop memcached
+      stop redis
+      stop mysql
+    fi
     ;;
 
   status)
-    status gitorious-mysql
-    status gitorious-redis
-    status gitorious-memcached
-    status gitorious-git-daemon
-    status gitorious-postfix
-    status gitorious-queue
-    status gitorious-sphinx
-    status gitorious-web
-    status gitorious-sshd
-    status gitorious-nginx
+    if [[ -n $2 ]]; then
+      status $2
+    else
+      status mysql
+      status redis
+      status memcached
+      status git-daemon
+      status postfix
+      status queue
+      status sphinx
+      status web
+      status sshd
+      status nginx
+    fi
     ;;
 
   run)
