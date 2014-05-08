@@ -50,11 +50,11 @@ remove_containers() {
   log "Removing old containers..."
 
   docker ps -a | grep "gitorious-" | awk '{print $1}' | while read cid; do
-    remove-container $cid
+    remove_container $cid
   done
 }
 
-remove-container() {
+remove_container() {
   local name=$(docker inspect -f '{{.Name}}' $1 | awk '{print substr($0, 2)}')
   log "  removing $name..."
   docker rm -f $1 >/dev/null
