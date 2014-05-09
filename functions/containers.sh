@@ -40,7 +40,7 @@ start_containers() {
   docker run -d --name gitorious-web --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/unicorn >/dev/null
 
   log "  creating gitorious-sshd..."
-  docker run -d --name gitorious-sshd --link gitorious-web:web --link gitorious-redis:redis -p 5022:22 --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log -v /home/wrozka/projects/gitorious/bin/gitorious:/srv/gitorious/app/bin/gitorious gitorious/sshd >/dev/null
+  docker run -d --name gitorious-sshd --link gitorious-web:web --link gitorious-redis:redis -p 5022:22 --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sshd >/dev/null
 
   log "  creating gitorious-nginx..."
   docker run -d --name gitorious-nginx --link gitorious-web:web -p 80:80 --volumes-from gitorious-data -v /var/log/gitorious/nginx:/var/log/nginx gitorious/nginx >/dev/null
