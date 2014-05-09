@@ -6,7 +6,7 @@ source functions/containers.sh
 install_gitoriousctl() {
   log "Installing gitoriousctl control script..."
 
-  cp ./gitoriousctl /usr/bin/gitoriousctl
+  cp resources/usr/bin/gitoriousctl /usr/bin/gitoriousctl
 }
 
 generate_env() {
