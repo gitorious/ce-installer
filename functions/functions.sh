@@ -8,3 +8,30 @@ install_gitoriousctl() {
 
   cp ./gitoriousctl /usr/bin/gitoriousctl
 }
+
+generate_env() {
+  log "Enter hostname:"
+  read -e -i `hostname -f` GITORIOUS_HOST
+  log "Enter admin's email:"
+  read -e GITORIOUS_ADMIN_EMAIL
+
+  echo "
+GITORIOUS_HOST=$GITORIOUS_HOST
+GITORIOUS_ADMIN_EMAIL=$GITORIOUS_ADMIN_EMAIL
+MYSQL_ROOT_PASSWORD=`random_password`
+MYSQL_DATABASE=gitorious
+MYSQL_USER=gitorious
+MYSQL_PASSWORD=`random_password`
+" > /var/lib/gitorious/env
+
+  chown git:git /var/lib/gitorious/env
+}
+
+random_password() {
+  openssl rand -base64 32
+}
+
+setup_admin_account() {
+  log "Creating admin account"
+  gitoriousctl run bin/create-user
+}

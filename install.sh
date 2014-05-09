@@ -9,9 +9,11 @@ log "Starting Gitorious installation..."
 require_root
 install_docker
 setup_git_user
+generate_env
 start_containers
 setup_git_known_hosts
 install_gitoriousctl
+setup_admin_account
 anonymous_pingback
 
 log ""
