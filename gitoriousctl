@@ -28,6 +28,20 @@ stop() {
   fi
 }
 
+restart() {
+  echo -n "$1: "
+
+  if is-running $1; then
+    if docker restart gitorious-$1 &>/dev/null; then
+      echo -e "\e[32mrestarted\e[0m"
+    else
+      echo -e "\e[31mrestart failed\e[0m (to get more details run: docker restart gitorious-$1)"
+    fi
+  else
+    echo "not running, ignoring"
+  fi
+}
+
 status() {
   echo -n "$1: "
 
@@ -73,6 +87,23 @@ case "$1" in
     fi
     ;;
 
+  restart)
+    if [[ -n $2 ]]; then
+      restart $2
+    else
+      restart nginx
+      restart sshd
+      restart web
+      restart sphinx
+      restart queue
+      restart postfix
+      restart git-daemon
+      restart memcached
+      restart redis
+      restart mysql
+    fi
+    ;;
+
   status)
     if [[ -n $2 ]]; then
       status $2
@@ -113,6 +144,7 @@ where command is one of:
 
   start [service] - start all services or a specified service
   stop [service] - stop all services or a specified service
+  restart [service] - restart all services or a specified service
   status [service] - print status of all services or a specified service
   run <command> [args...] - run the command in application environment
   rake <task> [args...] - run the rake task
