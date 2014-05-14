@@ -61,6 +61,7 @@ case "$1" in
       start redis
       start memcached
       start git-daemon
+      start git-proxy
       start postfix
       start queue
       start sphinx
@@ -80,6 +81,7 @@ case "$1" in
       stop sphinx
       stop queue
       stop postfix
+      stop git-proxy
       stop git-daemon
       stop memcached
       stop redis
@@ -97,6 +99,7 @@ case "$1" in
       restart sphinx
       restart queue
       restart postfix
+      restart git-proxy
       restart git-daemon
       restart memcached
       restart redis
@@ -112,6 +115,7 @@ case "$1" in
       status redis
       status memcached
       status git-daemon
+      status git-proxy
       status postfix
       status queue
       status sphinx

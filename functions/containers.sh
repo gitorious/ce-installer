@@ -18,7 +18,7 @@ start_containers() {
   docker run -d --name gitorious-memcached gitorious/memcached >/dev/null
 
   log "  creating gitorious-git-daemon..."
-  docker run -d --name gitorious-git-daemon -p 9418:9418 --volumes-from gitorious-data gitorious/git-daemon >/dev/null
+  docker run -d --name gitorious-git-daemon --volumes-from gitorious-data gitorious/git-daemon >/dev/null
 
   log "  creating gitorious-postfix..."
   docker run -d --name gitorious-postfix gitorious/postfix >/dev/null
@@ -29,6 +29,9 @@ start_containers() {
   docker run --rm --link gitorious-mysql:mysql --volumes-from gitorious-data gitorious/app bin/rake db:migrate >/dev/null
 
   # start more containers (which expect db schema to be already there + ones depending on them)
+
+  log "  creating gitorious-git-proxy"
+  docker run -d --name gitorious-git-proxy -p 9418:9418 --link gitorious-git-daemon:git_daemon --link gitorious-mysql:mysql --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/git-proxy >/dev/null
 
   log "  creating gitorious-queue..."
   docker run -d --name gitorious-queue --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/resque >/dev/null
