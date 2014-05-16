@@ -35,7 +35,7 @@ class gitorious::database {
 
   exec {"bundle_install":
     command => "bundle install --deployment --without development test && touch /tmp/bundles_installed",
-    timeout => 600,
+    timeout => 900,
     cwd => "${gitorious::app_root}",
     creates => "/tmp/bundles_installed"
   }
