@@ -37,7 +37,7 @@ start_containers() {
   docker run -d --name gitorious-queue --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/resque >/dev/null
 
   log "  creating gitorious-sphinx..."
-  docker run -d --name gitorious-sphinx --link gitorious-mysql:mysql --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sphinx >/dev/null
+  docker run -d --name gitorious-sphinx --link gitorious-mysql:mysql --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sphinx /usr/local/bin/run-sphinx >/dev/null
 
   log "  creating gitorious-web..."
   docker run -d --name gitorious-web --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app bin/unicorn >/dev/null
