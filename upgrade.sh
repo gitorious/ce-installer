@@ -9,7 +9,6 @@ log "Starting Gitorious upgrade..."
 require_root
 remove_containers
 start_containers
-setup_git_known_hosts
 install_gitoriousctl
 
 log ""

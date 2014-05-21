@@ -21,10 +21,6 @@ setup_authorized_keys() {
   su git -c "ln -fs /var/lib/gitorious/.ssh/authorized_keys /home/git/.ssh/authorized_keys"
 }
 
-setup_git_known_hosts() {
-  su git -c "ssh-keyscan -p 5022 -H localhost > /home/git/.ssh/known_hosts 2> /dev/null"
-}
-
 setup_git_user() {
   if git_user_exists; then
     log "Git user already created"
