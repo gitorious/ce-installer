@@ -10,6 +10,8 @@ install_gitoriousctl() {
 }
 
 generate_env() {
+  mkdir -p /var/lib/gitorious
+
   read -e -p "Enter hostname: " -i `hostname -f` GITORIOUS_HOST
   read -e -p "Enter admin's email: " GITORIOUS_ADMIN_EMAIL
 
