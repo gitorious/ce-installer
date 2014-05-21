@@ -10,19 +10,17 @@ install_gitoriousctl() {
 }
 
 generate_env() {
-  log "Enter hostname:"
-  read -e -i `hostname -f` GITORIOUS_HOST
-  log "Enter admin's email:"
-  read -e GITORIOUS_ADMIN_EMAIL
+  read -e -p "Enter hostname: " -i `hostname -f` GITORIOUS_HOST
+  read -e -p "Enter admin's email: " GITORIOUS_ADMIN_EMAIL
 
-  echo "
+  cat <<EOS >/var/lib/gitorious/env
 GITORIOUS_HOST=$GITORIOUS_HOST
 GITORIOUS_ADMIN_EMAIL=$GITORIOUS_ADMIN_EMAIL
 MYSQL_ROOT_PASSWORD=`random_password`
 MYSQL_DATABASE=gitorious
 MYSQL_USER=gitorious
 MYSQL_PASSWORD=`random_password`
-" > /var/lib/gitorious/env
+EOS
 
   chown git:git /var/lib/gitorious/env
 }
