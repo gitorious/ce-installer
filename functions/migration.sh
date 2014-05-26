@@ -1,14 +1,15 @@
 stop_gitorious_services() {
   log "Stopping old Gitorious services"
 
-  /etc/init.d/gitorious-unicorn stop 2&>1 /dev/null
-  monit stop unicorn 2&>1 /dev/null
-  stop gitorious-unicorn 2&>1 /dev/null
+  /etc/init.d/gitorious-unicorn stop > /dev/null 2>&1 || true
+  monit stop unicorn > /dev/null 2>&1 || true
+  stop gitorious-unicorn > /dev/null 2>&1 || true
 
-  monit stop git-daemon
-  monit stop git-proxy
-  stop resque-worker
-  service nginx stop
+  monit stop git-daemon > /dev/null 2>&1 || true
+  monit stop git-daemons > /dev/null 2>&1 || true
+  monit stop git-proxy > /dev/null 2>&1 || true
+  stop resque-worker || true
+  service nginx stop || true
 }
 
 backup_gitorious() {
