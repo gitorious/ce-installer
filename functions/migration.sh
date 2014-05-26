@@ -35,13 +35,13 @@ restore_gitorious_backup() {
 
 cleanup_old_gitorious() {
   log "Cleaning up old gitorious installation"
-  rm -f /etc/monit.d/puppet.erb /etc/monit.d/puppet.monit.erb \
-    /etc/monit.d/git-proxy.monit.erb /etc/monit.d/git-daemon.monit.erb \
-    /etc/monit.d/git-daemons.monit.erb /etc/monit.d/thinking-sphinx.monit.erb \
-    /etc/monit.d/filesystem_slash.monit.erb /etc/monit.d/gitorious-poller.monit.erb \
-    /etc/init.d/activemq.erb /etc/init.d/gitorious-unicorn \
-    /etc/init/resque-worker.conf.erb /etc/init/gitorious-unicorn.conf.erb \
-    /etc/nginx/conf.d/gitorious.conf.erb /usr/bin/restart_gitorious \
+  rm -f /etc/monit.d/puppet /etc/monit.d/puppet.monit \
+    /etc/monit.d/git-proxy.monit /etc/monit.d/git-daemon.monit \
+    /etc/monit.d/git-daemons.monit /etc/monit.d/thinking-sphinx.monit \
+    /etc/monit.d/filesystem_slash.monit /etc/monit.d/gitorious-poller.monit \
+    /etc/init.d/activemq /etc/init.d/gitorious-unicorn \
+    /etc/init/resque-worker.conf /etc/init/gitorious-unicorn.conf \
+    /etc/nginx/conf.d/gitorious.conf /usr/bin/restart_gitorious \
     /usr/bin/gitorious_status
 
   chkconfig nginx off
