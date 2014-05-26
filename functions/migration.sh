@@ -42,9 +42,9 @@ cleanup_old_gitorious() {
     /etc/nginx/conf.d/gitorious.conf.erb /usr/bin/restart_gitorious \
     /usr/bin/gitorious_status
 
-  sudo chkconfig nginx off
-  sudo chkconfig searchd off
-  sudo chkconfig mysqld off
+  chkconfig nginx off
+  chkconfig searchd off
+  chkconfig mysqld off
 
   rm -rf /var/www/gitorious
 }
