@@ -44,6 +44,7 @@ cleanup_old_gitorious() {
 
   sudo chkconfig nginx off
   sudo chkconfig searchd off
+  sudo chkconfig mysqld off
 
   rm -rf /var/www/gitorious
 }

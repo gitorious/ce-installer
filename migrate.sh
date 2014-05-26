@@ -9,7 +9,8 @@ log "Starting Gitorious migration..."
 # TODO:
 # handle hooks restore
 # handle avatars restore
-# regenerate indexes after restore (remove from backup:restore?)
+# remove reindexing from backup:restore?
+# restore configs from backup? (another option to backup:restore)
 
 require_root
 stop_gitorious_services
