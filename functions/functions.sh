@@ -1,5 +1,5 @@
 source functions/utils.sh
-source functions/install_docker.sh
+source functions/docker.sh
 source functions/setup_git.sh
 source functions/containers.sh
 

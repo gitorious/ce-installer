@@ -38,3 +38,11 @@ install_docker() {
     fi
   fi
 }
+
+require_docker() {
+  if ! docker_installed; then
+    log "It seems you're trying to upgrade pre-docker Gitorious instance."
+    log "Use migrate.sh to upgrade your installation."
+    exit 1
+  fi
+}
