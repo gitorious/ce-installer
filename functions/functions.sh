@@ -28,10 +28,6 @@ EOS
   chown git:git /var/lib/gitorious/env
 }
 
-random_password() {
-  openssl rand -base64 32
-}
-
 setup_admin_account() {
   log "Creating admin account"
   gitoriousctl run bin/create-user

@@ -12,3 +12,7 @@ require_root() {
 anonymous_pingback() {
   curl -s http://getgitorious.com/installer_completed &>/dev/null || true
 }
+
+random_password() {
+  openssl rand -base64 32
+}
