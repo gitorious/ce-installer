@@ -2,6 +2,7 @@ source functions/utils.sh
 source functions/docker.sh
 source functions/setup_git.sh
 source functions/containers.sh
+source functions/migration.sh
 
 install_gitoriousctl() {
   log "Installing gitoriousctl control script..."
