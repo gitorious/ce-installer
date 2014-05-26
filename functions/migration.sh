@@ -5,6 +5,8 @@ stop_gitorious_services() {
   monit stop unicorn 2&>1 /dev/null
   stop gitorious-unicorn 2&>1 /dev/null
 
+  monit stop git-daemon
+  monit stop git-proxy
   stop resque-worker
   service nginx stop
 }
