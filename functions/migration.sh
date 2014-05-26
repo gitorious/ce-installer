@@ -46,5 +46,5 @@ cleanup_old_gitorious() {
   chkconfig searchd off
   chkconfig mysqld off
 
-  rm -rf /var/www/gitorious
+  mv /var/www/gitorious /var/www/gitorious-old
 }
