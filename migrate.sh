@@ -8,11 +8,9 @@ log "Starting Gitorious migration..."
 
 # TODO:
 # - handle hooks restore
-# - handle avatars restore
-# - remove reindexing from backup:restore?
 # - restore configs from backup? (another option to backup:restore)
 # - release a version with fixed backup:snapshot, so affected users could
-#   first update their instanance with old installer and then migrate
+#   first update their instance with old installer and then migrate
 
 require_root
 stop_gitorious_services
