@@ -7,8 +7,6 @@ source functions/functions.sh
 log "Starting Gitorious migration..."
 
 # TODO:
-# - handle hooks restore
-# - restore configs from backup? (another option to backup:restore)
 # - release a version with fixed backup:snapshot, so affected users could
 #   first update their instance with old installer and then migrate
 

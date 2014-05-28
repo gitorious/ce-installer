@@ -30,7 +30,7 @@ remove_old_git_user() {
 
 restore_gitorious_backup() {
   log "Restoring gitorious backup"
-  gitoriousctl rake backup:restore TARBALL_PATH=/srv/gitorious/data/backups/initial_backup_no_database_config.tar RAILS_ENV=production
+  gitoriousctl rake backup:restore TARBALL_PATH=/srv/gitorious/data/backups/initial_backup_no_database_config.tar RESTORE_CONFIG_FILES=true
   gitoriousctl restart
 }
 
