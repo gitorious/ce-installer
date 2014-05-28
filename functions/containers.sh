@@ -9,7 +9,7 @@ start_containers() {
   # start containers
 
   log "  creating gitorious-mysql..."
-  docker run -d --name gitorious-mysql -v /var/lib/gitorious/mysql:/var/lib/mysql -v /var/log/gitorious/mysql:/var/log/mysql gitorious/mysql >/dev/null
+  docker run -d --name gitorious-mysql -v /var/lib/gitorious/mysql:/var/lib/mysql -v /var/log/gitorious/mysql:/var/log/mysql --env-file=/var/lib/gitorious/env gitorious/mysql >/dev/null
 
   log "  creating gitorious-redis..."
   docker run -d --name gitorious-redis -v /var/lib/gitorious/redis:/var/lib/redis -v /var/log/gitorious/redis:/var/log/redis gitorious/redis >/dev/null
