@@ -16,6 +16,7 @@ node gitorious-ce {
   include gitorious::sphinx
   include gitorious::core
   include gitorious::database
+  include gitorious::assets
   include gitorious::logrotate
   include gitorious::unicorn
   include gitorious::nginx
@@ -42,7 +43,7 @@ node gitorious-ce {
     public_mode => "false",
   }
 
-  gitorious::version { "v3.0.2":
+  gitorious::version { "v3.0.3":
 
   }
 

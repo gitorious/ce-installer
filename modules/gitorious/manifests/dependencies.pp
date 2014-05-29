@@ -4,7 +4,7 @@ class gitorious::dependencies {
   Exec { path => ["/opt/ruby-enterprise/bin","/usr/local/bin","/usr/bin","/bin", "/usr/sbin"] }
 
   case $operatingsystem {
-    CentOS: { $package_list = ["monit", "memcached", "ImageMagick","gcc-c++","zlib-devel","make","wget","libxml2","libxml2-devel","libxslt","libxslt-devel","gcc", "ruby-devel", "openssl", "postgresql-devel", "postfix", "libicu-devel", "patch"]}
+    CentOS: { $package_list = ["monit", "memcached", "ImageMagick","gcc-c++","zlib-devel","make","wget","libxml2","libxml2-devel","libxslt","libxslt-devel","gcc", "ruby-devel", "openssl", "postgresql-devel", "postfix", "libicu-devel", "patch", "nodejs"]}
   }
 
   package { $package_list: ensure => installed }

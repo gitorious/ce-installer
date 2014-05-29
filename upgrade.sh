@@ -2,7 +2,7 @@
 
 source config.sh
 
-GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.0.2}
+GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.0.3}
 
 upgrade-gitorious-from-v2-to-v3 () {
   stop-gitorious
