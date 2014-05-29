@@ -89,15 +89,14 @@ Now you are ready to update Gitorious code to the latest stable version:
     cd /var/www/gitorious/app
 
     git fetch --all
-    git checkout v3.0.3 -f
-    git submodule init
-    git submodule update --recursive
+    git checkout v3.0.4 -f
+    git submodule update --init --recursive
 
 ### Install dependencies of v3
 
-Gitorious v3 depends requires some system dependencies for gemes and sphinx 2.x
+Gitorious v3 depends requires some system dependencies for gems and sphinx 2.x
 
-    yum -y install libicu-devel patch sphinx
+    yum -y install libicu-devel patch sphinx nodejs
 
 Now you can install the gems:
 
