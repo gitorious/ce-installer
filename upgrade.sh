@@ -86,7 +86,7 @@ checkout-gitorious-v3 () {
 
 install-dependencies () {
   gem install bundler
-  yum -y install libicu-devel patch sphinx
+  yum -y install libicu-devel patch sphinx nodejs
   bundle install --deployment --without development test postgres
 }
 
