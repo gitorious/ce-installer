@@ -11,12 +11,12 @@ log "Starting Gitorious migration..."
 #   first update their instance with old installer and then migrate
 
 require_root
+install_docker
 stop_gitorious_services
 backup_gitorious
 remove_old_git_user
 setup_git_user
-install_docker
-remove_containers
+generate_env
 start_containers
 install_gitoriousctl
 restore_gitorious_backup
