@@ -6,10 +6,6 @@ source functions/functions.sh
 
 log "Starting Gitorious migration..."
 
-# TODO:
-# - release a version with fixed backup:snapshot, so affected users could
-#   first update their instance with old installer and then migrate
-
 require_root
 install_docker
 stop_gitorious_services
