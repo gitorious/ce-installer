@@ -1,0 +1,435 @@
+# The Gitorious configuration file controls several aspects of your
+# setup. While the default settings will work to some extent, you are
+# strongly recommended to review these settings upon initial
+# installation.
+#
+# Each setting is described in comments throughout the file. The
+# settings that are commented out are defaults. Uncomment to change
+# the value.
+#
+# Please note: This is a YAML file, and YAML files should _not_ use
+# tabs for indentation. Using tabs for indentation will prevent
+# Gitorious from running at all.
+#
+# The test environment is configured separately through test/gitorious.yml.
+
+# Site name. Used in the title of the page and various other places.
+#site_name: Gitorious
+
+# The host, port and scheme users reach Gitorious with. Used to
+# generate URLs where full URLs are required (e.g. in emails etc). The
+# scheme defaults to https. When the scheme is https, the port
+# defaults to 443, otherwise it defaults to 80. None of these settings
+# affect your deployment, they only influence how Gitorious generates
+# full URLs. If you stay with the default SSL configuration (highly
+# recommended), you must configure your web server accordingly.
+#
+# If you need help generating an SSL certificate, see this guide:
+# https://github.com/ioerror/duraconf/blob/master/startssl/README.markdown
+#
+scheme: http
+#host: gitorious.local
+#port: 80
+
+# Host for pulling and pushing over SSH. The full SSH URLs will
+# include the name of the Gitorious user (as configured elsewhere in
+# this file). The default is the value of the `host` setting. If any
+# other port than the SSH default 22 is used, it will also be part of
+# the visible URL.
+#
+# SSH URLs are normally only displayed for users with push access.
+# However, if both Git/HTTP and the Git daemon are disabled, SSH URLs
+# will be displayed to any user. Anyone with a valid SSH key is
+# allowed to clone over SSH.
+#enable_ssh_daemon: true
+#ssh_daemon_host: gitorious.local
+#ssh_daemon_port: 22
+
+# Host and port used to reach the Gitorious git-daemon. Note that the
+# git-daemon service must be run separately from Gitorious. See
+# doc/templates/upstart for sample configurations of both git-daemon
+# and git-proxy. The default is for this service to run on the same
+# host as Gitorious (e.g. the `host` setting) on the default git
+# protocol port, 9418. Disabling the Git daemon will hide all git://
+# URLs from the UI.
+#enable_git_daemon: true
+#git_daemon_host: gitorious.local
+#git_daemon_port: 9418
+
+# Host and port used for Git over HTTP. See the main `host` and `port`
+# settings for further explanation. These default to whatever the main
+# `host` and `port` are set to. Disabling Git/HTTP will hide all Git
+# HTTP URLs from the UI.
+#enable_git_http: true
+#git_http_host: gitorious.local
+#git_http_port: 443
+#git_http_scheme: https
+
+# When Gitorious is running in public mode (true), everyone with
+# access to the server can view and clone repositories. Private mode
+# (false) will not allow anonymous access to content or user
+# registration. Only pre-approved and logged in users can surf the
+# Gitorious installation.
+#
+# NB! If you intend to run in private mode, you should probably also
+# disable HTTP and git:// cloning. These protocols are anonymous, and
+# will allow unregistered users to pull repositories, given that they
+# somehow obtained the correct URLs.
+public_mode: false
+
+# By setting this to false, you effectively disable new user
+# registrations, regardless of public mode on/off. (Defaults to true
+# when public_mode is true, false otherwise).
+#enable_registrations: true
+
+# Enabling private repositories allows users to control read-access to
+# their repositories. Repositories are public by default, but
+# individual users and/or groups can be given read permissions to
+# limit who can browse and pull from individual repositories and/or
+# projects. More information is available in the Gitorious Wiki:
+# https://gitorious.org/gitorious/pages/PrivateRepositories
+enable_private_repositories: true
+
+# New projects default to being private
+#projects_default_private: false
+
+# New repositories default to being private
+#repositories_default_private: false
+
+# Only site admins can create projects. If a regular user attempts to
+# create a project (s)he is redirected to a form where a project
+# proposal (name+description) can be submitted. Site admins are
+# notified by mail and are able to review porposed projects before
+# approving creation. Users are notified by mail of
+# rejection/approvals.
+#enable_project_approvals: false
+
+# Only site admins are allowed to create new teams
+# only_site_admins_can_create_teams: true
+
+# Session key. It is recommended to use a long random string for this.
+# A suitable key can be generated with `apg -m 64`. Make sure you
+# paste the key as one long string, no newlines or escaped characters.
+#cookie_secret: sadfk8asd_-:;SDAD)(97dsa789ssf
+
+# Define your locale. See config/locales/ for supported locales. Note
+# that locales other than en are likely to be incomplete at this
+# point. Feel free to contribute translations.
+#locale: en
+
+# Super group makes all the repositories available for registered
+# user. It automatically adds a SuperGroup, that contains everyone,
+# to every project.
+#enable_super_group: false
+
+# The (optional name and) address used when sending emails. This
+# defaults to "Gitorious <no-reply@<host>>. Can be set to an email
+# address only, or Name <address>.
+#email_sender: Gitorious <no-reply@gitorious.local>
+
+# Should LDAP be used for authorization?  Note that this is different
+# than Authentication.  Authentication is used for the login method
+# and to grant access to gitorious as a whole. Authentication should
+# be configured in config/authentication.yml. Authorization refers to
+# using ldap information to grant access to particular views such as
+# projects, teams or users once a user is already authenticated.
+#enable_ldap_authorization: true
+
+# Gitorious doesn't list LDAP group members on the team pages by default.
+# If you want to list all the group members set the following setting to true,
+# but keep in mind that if groups at your organization are big (hundreds or
+# thousands members) the team pages may load very slow.
+#enable_ldap_group_member_listing: false
+
+# Gitorious throttles the rate at which users can create database
+# records (repositories, projects, messages..) Users can only create X
+# records within Y timeframe, or they'll get a "hold off for a while"
+# error message after which the offending user has to wait until the Y
+# timeframe has passed to create more records of that type. Disable
+# this only if you trust all your users not to abuse/spam/DDOS your
+# Gitorious instance with repo/msg/project creation.
+#enable_record_throttling: true
+
+# The maximum number of seconds to allow the web server to wait for
+# diffs for a merge request. This is used to prevent huge merge
+# requests from spawning 100 % CPU processes that never die.
+#merge_request_diff_timeout: 10
+
+# List of IP addresses that are allowed to access certain possibly
+# sensitive services. Currently this only includes
+# /admin/diagnostics/summary which, when called, runs a number of
+# health checks to verify that the Gitorious installation is
+# configured correctly and that the host system seems healthy. The
+# diagnostics summary is useful for verifying installations and for
+# monitoring running installs. (Note: Logged in gitorious admins can
+# also see a visual overview of the system state at
+# /admin/diagnostics/, regardless of ips listed here)
+#
+# This setting defaults to only accept ops requests from localhost. It
+# can be reconfigured to allow any number of IPs by adding entries to
+# the list (be sure to indent each entry with two spaces, no tabs).
+#
+#remote_ops_ips:
+#  - 127.0.0.1
+
+# If Gitorious trips on an unrecoverable error, it has the ability to notify
+# you about it. There are 2 notification options.
+#
+# First option is the direct email notification per each exception.
+# Gitorious will send you an email with details if you provide your addresses
+# here. To provide multiple addresses, separate them with commas.
+#exception_recipients: ops@gitorious.local
+#
+# Second option is to use Airbrake service (http://airbrake.io/). If you have
+# an Airbrake account then set your Airbrake API key here.
+#airbrake_api_key: a1b2c3d4e5f6g7h8i9
+#
+# Note: if you set both options above only Airbrake notifications will be
+# enabled.
+
+# The maximum size allowed for tarball generation. If a repository's size
+# exceeds this threshold, a warning is issued when trying to download it
+# as a tarball.
+#
+# If this option is not set, or if it is set to 0, no size limit will be
+# enforced. Option can be set to a number (bytes) or a number like
+# 100K (100 kilobytes)
+# 100M (100 megabytes)
+# 100G (100 gigabytes)
+#max_tarball_size: 0
+
+# Available project licenses. This can be configured as an array of
+# licenses:
+#
+# licenses:
+#   - BSD
+#   - GPL
+#   - LGPL
+#   - MIT
+#
+# Alternately, you can configure licenses as an array of hashes, where
+# each hash consists of name -> description pairs. The descriptions
+# will be shown in the project creation UI (/new).
+#
+# licenses:
+#   - MIT: No guarantees, no strings attached
+#   - BSD: Keep the copyright
+#
+# For multi-line descriptions, use the YAML escape pipe:
+#
+# licenses:
+#   - MIT: |
+#     <ul>
+#       <li>Liberal license</li>
+#     </ul>
+#   - BSD: Keep the copyright
+#
+# Default licenses are:
+#
+#licenses:
+#  - Academic Free License v3.0",
+#  - MIT License
+#  - BSD License
+#  - Ruby License
+#  - GNU General Public License version 2 (GPLv2)
+#  - GNU General Public License version 3 (GPLv3)
+#  - GNU Lesser General Public License (LGPL)
+#  - GNU Affero General Public License (AGPLv3)
+#  - Mozilla Public License 1.0 (MPL)
+#  - Mozilla Public License 1.1 (MPL 1.1)
+#  - Qt Public License (QPL)
+#  - Python License
+#  - zlib/libpng License
+#  - Apache License
+#  - Apple Public Source License
+#  - Perl Artistic License
+#  - Microsoft Permissive License (Ms-PL)
+#  - ISC License
+#  - Lisp Lesser License
+#  - Boost Software License
+#  - Public Domain
+#  - Other Open Source Initiative Approved License
+#  - Other/Proprietary License
+#  - Other/Multiple
+#  - None
+
+# The default license. Should be an exact match with one of the names
+# in the list above.
+#default_license: GNU Affero General Public License (AGPLv3)
+
+# By default the label of the license field is "License". However, the
+# license field may be repurposed for certain installs, in which case
+# it may make sense to rename the label as well.
+#license_label: License
+
+# If desired, license descriptions can be displayed in the sidebar
+# when creating new projects. This can ease the task of choosing a
+# license, especially if the license field has been repurposed to some
+# company internal classification system.
+#enable_sidebar_license_descriptions: false
+
+# If your site uses other mechanisms for authentication than the
+# built-in database authentication, enter a label to display next to
+# the username field in Gitorious
+#username_label: Username
+
+# System message that will appear on all pages if present
+#system_message:
+
+# Email address to the support for the Gitorious server. Default is
+# gitorious-support@<host>
+#support_email: gitorious-support@gitorious.local
+
+# Mangle visible e-mail addresses (spam protection)
+#mangle_email_addresses: true
+
+# Logo image. If this setting is not provided, the default Gitorious
+# logo will be used. If you provide the setting, but no value, no logo
+# image will be rendered, only the text "Gitorious" (may be useful if
+# you want to provide a logo via CSS). If you provide a URL, it will
+# be assumed to be an image and included as an img tag.
+#logo_url:
+
+# Use your own favicon. If not specified, the default Gitorious
+# favicon will be used.
+#favicon_url: http://www.mysite.com/favicon.ico
+
+# The SSH fingerprint of your server. This is displayed in the FAQ if
+# set.
+#ssh_fingerprint: "7e:af:8d:ec:f0:39:5e:ba:52:16:ce:19:fa:d4:b8:7d"
+
+# Default OpenID provider URL, e.g.
+# https://www.google.com/accounts/o8/id. Blank by default.
+# To disable OpenID completely, see config/authentication.sample.yml
+#default_openid_provider_url:
+
+# When Gitorious boots up, it will require each file in this array.
+# The files are simply required - there's no other interaction.
+#post_load:
+#  - /some/file/to/load.rb
+
+#########################################################################
+# UI theming settings. Most of these settings only apply to the new UI. #
+#########################################################################
+
+# Add more view paths if you want to override some or all of
+# Gitorious' views. Make sure you know what you're doing before
+# attepting this - there is no API guarantee from the current
+# controllers. If you override views, study the git log (the Changelog
+# may not mention these changes) before upgrading.
+#
+# This allows you to e.g. provide your own frontpage template by
+# saving the file:
+# vendor/plugin/mysite/views/site/public_index.html.erb
+#
+# (Note that this particular template requires is_gitorious_dot_org:
+# true).
+#
+# This setting accepts either a single path or multiple paths, using
+# the YAML list syntax.
+#additional_view_paths:
+
+# The links to put in the footer. This is an array of tuples (arrays with
+# 2 entries), where the first is the link text and the second is the link
+# URL. If no footer links are provided, the default set will be used.
+# While additional_footer_links are deprecated, they will also be included
+# if set.
+#footer_links:
+#  - - Some text
+#    - http://somewhere.com
+#  ...
+
+# Theme - extend the new Gitorious UI with an additional CSS and/or
+# JavaScript path. Gitorious does not check that the corresponding files
+# exist on disk, meaning that you can put them anywhere, as long as you
+# configure your front-end webserver to serve the files at the configured
+# paths.
+#theme_css: /some/file.css
+#theme_js: /some/script.js
+
+#########################################################################
+# Site overrides - provide one key for each site subdomain to override  #
+# global settings                                                       #
+#########################################################################
+
+# Overridable settings:
+# footer_links
+# theme_css
+# theme_js
+# logo_url
+
+#sites:
+#  mysite:
+#    footer_links:
+#      ...
+#    theme_css: http://themes/mytheme.css
+#    theme_js: http://themes/mytheme.js
+#    logo_url: http://themes/logo.png
+#
+#  othersite:
+#    footer_links:
+#      ...
+#
+
+#########################################################################
+# Deprecated Gitorious 2 UI theming settings. These settings will only  #
+# work in the old UI, and as the old UI is phased out, they will        #
+# eventually be removed entirely.                                       #
+#########################################################################
+
+# Is this gitorious.org? Read: should we have a very flashy homepage?
+#is_gitorious_dot_org: false
+
+# Stuff that's in the html <head>. custom stats javascript code etc
+#extra_html_head_data:
+
+# An array of two-element arrays to be rendered along the normal links in the
+# footer on the site The first element is the link text, the next is the URL
+#additional_footer_links:
+#  - - Professional Gitorious Services
+#    - http://gitorious.com/
+
+# Set to true if you want to render terms of service and privacy policy links
+# in the footer.
+#terms_of_use: false
+
+# Actual URLs to terms of service and privacy policy pages. Note that the
+# defaults point to gitorious.org's policies. If you want to provide your own,
+# add app/views/site/tos.html.erb and then provide /about/tos as the URL. For
+# information on how to format the template, take a look at
+# app/views/site/about.html.erb
+#terms_of_service_url: http://en.gitorious.org/tos
+#privacy_policy_url: http://en.gitorious.org/privacy_policy
+
+# Additional text/markup displayed in the footer.
+#footer_blurb
+
+# The following settings are useful if you're interested in theming your
+# Gitorious install. Please note however, that we don't give any API
+# guarantees for view code, controllers or CSS. In fact, we plan to ditch most
+# of the existing CSS and JavaScript and replace it with a more modular system
+# (and significantly improved) markup sometime soon-ish, so use
+# "themes"/overrides at your own risk. In particular, we will not include
+# relevant theme information in the Changelog, so you will need to refer to
+# the git log if updating gives you trouble.
+
+# Additional stylesheets for most pages. "Most pages" is everything except for
+# the frontpage/public index, login page and the register page.
+#
+# One way to theme Gitorious would be to put a submodule in public/ that
+# contains stylesheets and images. Then include the following setting
+# (assuming that your submodule is at public/mytheme, and includes a directory
+# stylesheets/theme.css):
+#common_stylesheets: /mytheme/stylesheets/theme
+#
+# If you have several files:
+#common_stylesheets:
+#  - /mytheme/stylesheets/theme
+#  - /mytheme/stylesheets/theme2
+#
+# Note that the extra stylesheets will be added to the bundle used in
+# production
+
+# Additional stylesheets for the frontpage and login pages. Works like the
+# common_stylesheets setting
+#external_stylesheets: /mytheme/stylesheets/themed-public-index

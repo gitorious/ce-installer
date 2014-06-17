@@ -12,8 +12,8 @@ stop_gitorious_services
 backup_gitorious
 remove_old_git_user
 setup_git_user
-generate_env
-start_containers
+generate_mysql_env_file
+create_containers
 install_gitoriousctl
 restore_gitorious_backup
 cleanup_old_gitorious

@@ -127,7 +127,7 @@ case "$1" in
 
   run)
     shift
-    docker run --rm -t -i --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/app "$@"
+    docker run --rm -t -i --link gitorious-mysql:mysql --link gitorious-redis:redis --link gitorious-memcached:memcached --link gitorious-sphinx:sphinx --link gitorious-postfix:smtp --volumes-from gitorious-data -v /var/log/gitorious/app:/srv/gitorious/app/log --env-file=/var/lib/gitorious/env/mysql gitorious/app "$@"
     ;;
 
   rake)

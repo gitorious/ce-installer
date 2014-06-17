@@ -7,10 +7,12 @@ source functions/functions.sh
 log "Starting Gitorious installation..."
 
 require_root
+prompt_for_settings
 install_docker
 setup_git_user
-generate_env
-start_containers
+generate_config_file
+generate_mysql_env_file
+create_containers
 install_gitoriousctl
 setup_admin_account
 anonymous_pingback

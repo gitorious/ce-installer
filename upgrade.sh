@@ -9,7 +9,7 @@ log "Starting Gitorious upgrade..."
 require_root
 require_docker
 remove_containers
-start_containers
+create_containers
 install_gitoriousctl
 
 log ""
