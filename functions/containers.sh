@@ -30,7 +30,7 @@ create_containers() {
   docker run -d --name gitorious-git-daemon $LINK_DATA gitorious/git-daemon >/dev/null
 
   log "  creating gitorious-postfix..."
-  docker run -d --name gitorious-postfix gitorious/postfix >/dev/null
+  docker run -d --name gitorious-postfix $LINK_DATA gitorious/postfix >/dev/null
 
   # update db schema
 
