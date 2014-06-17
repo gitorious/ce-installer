@@ -2,7 +2,7 @@
 
 set -e
 
-source functions/functions.sh
+source functions/all.sh
 
 log "Starting Gitorious upgrade..."
 
