@@ -4,7 +4,7 @@ is-running() {
   docker ps | grep -e "gitorious-$1[^/]" &>/dev/null
 }
 
-start() {
+start-container() {
   echo -n "$1: "
 
   if is-running $1; then
@@ -18,7 +18,7 @@ start() {
   fi
 }
 
-stop() {
+stop-container() {
   echo -n "$1: "
 
   if is-running $1; then
@@ -28,7 +28,7 @@ stop() {
   fi
 }
 
-restart() {
+restart-container() {
   echo -n "$1: "
 
   if is-running $1; then
@@ -52,58 +52,194 @@ status() {
   fi
 }
 
+# Starting
+
+start-mysql() {
+  start-container mysql
+}
+
+start-redis() {
+  start-container redis
+}
+
+start-memcached() {
+  start-container memcached
+}
+
+start-git-daemon() {
+  start-container git-daemon
+}
+
+start-postfix() {
+  start-container postfix
+}
+
+start-git-proxy() {
+  start-git-daemon
+  start-mysql
+
+  start-container git-proxy
+}
+
+start-queue() {
+  start-mysql
+  start-redis
+  start-memcached
+  start-postfix
+
+  start-container queue
+}
+
+start-sphinx() {
+  start-mysql
+
+  start-container sphinx
+}
+
+start-web() {
+  start-mysql
+  start-redis
+  start-memcached
+  start-sphinx
+  start-postfix
+
+  start-container web
+}
+
+start-sshd() {
+  start-web
+  start-redis
+
+  start-container sshd
+}
+
+start-nginx() {
+  start-web
+
+  start-container nginx
+}
+
+# Stopping
+
+stop-nginx() {
+  stop-container nginx
+}
+
+stop-sshd() {
+  stop-container sshd
+}
+
+stop-web() {
+  stop-nginx
+  stop-sshd
+
+  stop-container web
+}
+
+stop-sphinx() {
+  stop-web
+
+  stop-container sphinx
+}
+
+stop-queue() {
+  stop-container queue
+}
+
+stop-postfix() {
+  stop-queue
+  stop-web
+
+  stop-container postfix
+}
+
+stop-git-proxy() {
+  stop-container git-proxy
+}
+
+stop-git-daemon() {
+  stop-git-proxy
+
+  stop-container git-daemon
+}
+
+stop-memcached() {
+  stop-queue
+  stop-web
+
+  stop-container memcached
+}
+
+stop-redis() {
+  stop-queue
+  stop-web
+  stop-sshd
+
+  stop-container redis
+}
+
+stop-mysql() {
+  stop-git-proxy
+  stop-queue
+  stop-sphinx
+  stop-web
+
+  stop-container mysql
+}
+
 case "$1" in
   start)
     if [[ -n $2 ]]; then
-      start $2
+      start-$2
     else
-      start mysql
-      start redis
-      start memcached
-      start git-daemon
-      start git-proxy
-      start postfix
-      start queue
-      start sphinx
-      start web
-      start sshd
-      start nginx
+      start-container mysql
+      start-container redis
+      start-container memcached
+      start-container git-daemon
+      start-container git-proxy
+      start-container postfix
+      start-container queue
+      start-container sphinx
+      start-container web
+      start-container sshd
+      start-container nginx
     fi
     ;;
 
   stop)
     if [[ -n $2 ]]; then
-      stop $2
+      stop-$2
     else
-      stop nginx
-      stop sshd
-      stop web
-      stop sphinx
-      stop queue
-      stop postfix
-      stop git-proxy
-      stop git-daemon
-      stop memcached
-      stop redis
-      stop mysql
+      stop-container nginx
+      stop-container sshd
+      stop-container web
+      stop-container sphinx
+      stop-container queue
+      stop-container postfix
+      stop-container git-proxy
+      stop-container git-daemon
+      stop-container memcached
+      stop-container redis
+      stop-container mysql
     fi
     ;;
 
   restart)
     if [[ -n $2 ]]; then
-      restart $2
+      stop-$2
+      start-$2
     else
-      restart nginx
-      restart sshd
-      restart web
-      restart sphinx
-      restart queue
-      restart postfix
-      restart git-proxy
-      restart git-daemon
-      restart memcached
-      restart redis
-      restart mysql
+      restart-container nginx
+      restart-container sshd
+      restart-container web
+      restart-container sphinx
+      restart-container queue
+      restart-container postfix
+      restart-container git-proxy
+      restart-container git-daemon
+      restart-container memcached
+      restart-container redis
+      restart-container mysql
     fi
     ;;
 
