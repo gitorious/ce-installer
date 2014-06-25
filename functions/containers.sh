@@ -13,7 +13,7 @@ create_containers() {
   # create data only container which exits immediately, with config and data volumes mapped to host
 
   log "  creating gitorious-data..."
-  docker run --name gitorious-data -v /etc/gitorious:/srv/gitorious/config -v /var/lib/gitorious:/srv/gitorious/data -v /srv/gitorious/assets busybox /bin/true >/dev/null
+  docker run --name gitorious-data -v /etc/gitorious:/srv/gitorious/config -v /var/lib/gitorious:/srv/gitorious/data busybox /bin/true >/dev/null
 
   # start containers
 
@@ -55,7 +55,7 @@ create_containers() {
   docker run -d --name gitorious-sshd $LINK_WEB $LINK_REDIS -p 5022:22 $LINK_DATA -v /var/log/gitorious/app:/srv/gitorious/app/log gitorious/sshd >/dev/null
 
   log "  creating gitorious-nginx..."
-  docker run -d --name gitorious-nginx $LINK_WEB -p 80:80 $LINK_DATA -v /var/log/gitorious/nginx:/var/log/nginx gitorious/nginx >/dev/null
+  docker run -d --name gitorious-nginx $LINK_WEB -p 80:80 -v /var/log/gitorious/nginx:/var/log/nginx gitorious/nginx >/dev/null
 }
 
 remove_containers() {
