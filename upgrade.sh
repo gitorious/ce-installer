@@ -2,12 +2,12 @@
 
 source config.sh
 
-GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.0.4}
+GITORIOUS_VERSION=${GITORIOUS_VERSION:-v3.1.0}
 
 upgrade-gitorious-from-v2-to-v3 () {
   stop-gitorious
   uninstall-ruby-18
-  install-ruby-19
+  install-ruby-20
   update-executables-to-use-chruby
   update-nginx-configuration
   checkout-gitorious-v3
@@ -39,13 +39,13 @@ uninstall-ruby-18 () {
   yum -y remove ruby
 }
 
-install-ruby-19 () {
-  echo "Installing Ruby 1.9.3"
+install-ruby-20 () {
+  echo "Installing Ruby 2.0"
   ./install-ruby.sh
   echo "Make sure we are using the proper Ruby version..."
 
   source /etc/profile.d/chruby.sh
-  chruby 1.9.3
+  chruby 2.0.0
 }
 
 update-executables-to-use-chruby () {
@@ -86,7 +86,7 @@ checkout-gitorious-v3 () {
 
 install-dependencies () {
   gem install bundler
-  yum -y install libicu-devel patch sphinx nodejs
+  yum -y install libicu-devel patch sphinx nodejs cmake
   bundle install --deployment --without development test postgres
 }
 

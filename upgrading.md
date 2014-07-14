@@ -30,13 +30,13 @@ If your installation differs from the standard, it might be impossible for you t
 
         git clone https://git.gitorious.org/gitorious/ce-installer.git && cd ce-installer
 
-### Upgrade Ruby from 1.8 to 1.9.3 with chruby
+### Upgrade Ruby from 1.8 to 2.0 with chruby
 
-Gitorious v3 has switched from Ruby 1.8 to 1.9.3. In the old installation process, Ruby was installed using yum. You will need to uninstall it:
+Gitorious v3 has switched from Ruby 1.8 to 2.0. In the old installation process, Ruby was installed using yum. You will need to uninstall it:
 
     yum -y remove ruby
 
-We recommend using ruby-install to install Ruby 1.9.3 and chruby to switch between Ruby versions. The ce-installer comes with a script for installing ruby-install, chruby and Ruby 1.9.3:
+We recommend using ruby-install to install Ruby 2.0 and chruby to switch between Ruby versions. The ce-installer comes with a script for installing ruby-install, chruby and Ruby 2.0:
 
     # in ce-installer
     ./install-ruby.sh
@@ -51,7 +51,7 @@ Gitorious v2 used system Ruby, so we need to make sure that all the Gitorious ex
 
 To run a command with chruby, prefix it with the following:
 
-    /usr/local/bin/chruby-exec ruby-1.9.3-p484 -- <command goes here>
+    /usr/local/bin/chruby-exec ruby-2.0.0-p451 -- <command goes here>
 
 The ce-installer already contains the executable templates in the correct form. You can install them using the following commands:
 
@@ -89,7 +89,7 @@ Now you are ready to update Gitorious code to the latest stable version:
     cd /var/www/gitorious/app
 
     git fetch --all
-    git checkout v3.0.4 -f
+    git checkout v3.1.0 -f
     git submodule update --init --recursive
 
 ### Install dependencies of v3
