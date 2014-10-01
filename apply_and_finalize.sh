@@ -28,6 +28,12 @@ NEW_TOKEN=$(dd if=/dev/random bs=1 count=4 2>/dev/null | sha256sum | head -c 40)
 sed -i "s/cookie_secret:.*/cookie_secret: $NEW_TOKEN/" /var/www/gitorious/app/config/gitorious.yml
 echo "Rails cookie randomized."
 
+echo "Creating admin user..."
+cd /var/www/gitorious/app && VERBOSE=false bin/create-user "admin@$(hostname)" "admin" "gitorious" "y"
+echo "Admin user created."
+echo "  login: admin, password: gitorious"
+echo "Please change admin user password on first login."
+
 echo "Restarting services"
 restart_gitorious
 
