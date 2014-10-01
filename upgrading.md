@@ -89,7 +89,7 @@ Now you are ready to update Gitorious code to the latest stable version:
     cd /var/www/gitorious/app
 
     git fetch --all
-    git checkout v3.1.0 -f
+    git checkout v3.1.1 -f
     git submodule update --init --recursive
 
 ### Install dependencies of v3
