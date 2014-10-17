@@ -1,2 +1,0 @@
-#!/bin/sh
-exec ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=error git@127.0.0.1 -p 5022 env SSH_ORIGINAL_COMMAND="\"$SSH_ORIGINAL_COMMAND\"" gitorious $1

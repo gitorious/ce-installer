@@ -1,0 +1,133 @@
+#!/bin/bash
+
+is-running() {
+  command status gitorious-$1 | grep -q "^gitorious-$1 start" >/dev/null
+}
+
+start() {
+  echo -n "$1: "
+  service gitorious-$1 start >/dev/null
+  echo -e "\e[32mstarted\e[0m"
+}
+
+stop() {
+  echo -n "$1: "
+  service gitorious-$1 stop >/dev/null
+  echo -e "\e[32mstopped\e[0m"
+}
+
+restart() {
+  echo -n "$1: "
+  service gitorious-$1 restart >/dev/null
+  echo -e "\e[32mrestarted\e[0m"
+}
+
+status() {
+  echo -n "$1: "
+
+  if is-running $1; then
+    echo -e "\e[32mup\e[0m"
+  else
+    echo -e "\e[31mdown\e[0m"
+  fi
+}
+
+status-all() {
+  status http-backend
+  status memcached
+  status mysql
+  status nginx
+  status postfix
+  status redis
+  status sphinx
+  status web
+  status workers
+}
+
+if ! [ $(id -u) = 0 ]; then
+  echo "Need root/superuser."
+  exit 1
+fi
+
+case "$1" in
+  start)
+    if [[ -n $2 ]]; then
+      start $2
+    else
+      start http-backend
+      start memcached
+      start mysql
+      start nginx
+      start postfix
+      start redis
+      start sphinx
+      start web
+      start workers
+    fi
+    ;;
+
+  stop)
+    if [[ -n $2 ]]; then
+      stop $2
+    else
+      stop http-backend
+      stop memcached
+      stop mysql
+      stop nginx
+      stop postfix
+      stop redis
+      stop sphinx
+      stop web
+      stop workers
+    fi
+    ;;
+
+  restart)
+    if [[ -n $2 ]]; then
+      restart $2
+    else
+      restart http-backend
+      restart memcached
+      restart mysql
+      restart nginx
+      restart postfix
+      restart redis
+      restart sphinx
+      restart web
+      restart workers
+    fi
+    ;;
+
+  status)
+    if [[ -n $2 ]]; then
+      status $2
+    else
+      status-all | column -t
+    fi
+    ;;
+
+  exec)
+    shift
+    docker run --rm -t -i {{ mount_data }} {{ mount_app_logs }} {{ link_mysql }} {{ link_redis }} {{ link_memcached }} {{ link_sphinx }} {{ link_postfix }} gitorious/app "$@" # --env-file=/var/lib/gitorious/env/mysql
+    ;;
+
+  rake)
+    shift
+    $0 exec bundle exec rake "$@"
+    ;;
+
+  *)
+    cat <<EOF
+usage: $0 <command> [args...]
+
+where command is one of:
+
+  exec <command> [args...] - run the command in application environment
+  rake <task> [args...] - run the rake task
+  restart [service] - restart all services or a specified service
+  start [service] - start all services or a specified service
+  status [service] - print status of all services or a specified service
+  stop [service] - stop all services or a specified service
+EOF
+    ;;
+esac

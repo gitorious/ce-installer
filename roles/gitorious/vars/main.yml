@@ -1,0 +1,21 @@
+---
+link_mysql: "--link gitorious-mysql:mysql"
+link_redis: "--link gitorious-redis:redis"
+link_memcached: "--link gitorious-memcached:memcached"
+link_sphinx: "--link gitorious-sphinx:sphinx"
+link_postfix: "--link gitorious-postfix:smtp"
+link_web: "--link gitorious-web:web"
+link_archiver: "--link gitorious-web:archiver" # TODO
+mount_data: "--volumes-from gitorious-data"
+mount_app_logs: "-v /var/log/gitorious/app:/usr/src/app/log"
+services:
+  - archiver
+  - http-backend
+  - memcached
+  - mysql
+  - nginx
+  - postfix
+  - redis
+  - sphinx
+  - web
+  - workers

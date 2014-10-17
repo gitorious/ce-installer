@@ -9,6 +9,14 @@ require_root() {
   fi
 }
 
+ubuntu_release() {
+  grep "Ubuntu" /proc/version >/dev/null
+}
+
+redhat_release() {
+  grep "Red Hat" /proc/version >/dev/null
+}
+
 anonymous_pingback() {
   curl -s http://getgitorious.com/installer_completed &>/dev/null || true
 }

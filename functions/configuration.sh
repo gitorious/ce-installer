@@ -29,8 +29,3 @@ MYSQL_USER=gitorious
 MYSQL_PASSWORD=`random_password`
 EOS
 }
-
-setup_admin_account() {
-  log "Creating admin account..."
-  gitoriousctl run bin/create-user "$GITORIOUS_ADMIN_EMAIL" "$GITORIOUS_ADMIN_LOGIN" "$GITORIOUS_ADMIN_PASSWORD" "y"
-}

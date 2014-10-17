@@ -1,0 +1,121 @@
+---
+# - name: check presence of Docker
+#   shell: docker version
+#   register: docker_version
+
+# - name: fail on Ubuntu < 14.10
+#   fail: msg="{{ ansible_distribution }} {{ ansible_distribution_version }} is not supported by this installer. Need 14.04 or newer"
+#   when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version < '14.10'"
+
+- name: install git & curl
+  apt: pkg={{ item }} state=present
+  with_items:
+    - git
+    - curl
+  when: ansible_os_family == "Debian"
+
+- name: install git & curl
+  yum: pkg={{ item }} state=present
+  with_items:
+    - git
+    - curl
+  when: ansible_os_family == "RedHat"
+
+# - name: install Docker
+#   shell: curl -sSL https://get.docker.io/ubuntu/ | sh
+#   when: ansible_distribution == "Ubuntu"
+
+# - name: enable and start Docker daemon
+#   service: name=docker state=started enabled=yes
+
+- name: create git user
+  user: name=git uid=5000 group=git home=/home/git
+
+- name: create .ssh dir for git user
+  file: path=/home/git/.ssh state=directory owner=git group=git mode=0700
+
+- name: create config directory (/etc/gitorious)
+  file: path=/etc/gitorious state=directory
+
+- name: create data directories (/var/lib/gitorious/*)
+  file: path=/var/lib/gitorious/{{ item }} state=directory owner=git group=git
+  with_items:
+    - repositories
+    - archives
+    - uploads
+    - tmp
+
+- name: create logs directory (/var/log/gitorious)
+  file: path=/var/log/gitorious state=directory owner=git group=git mode=0775
+
+- name: create app logs directory
+  file: path=/var/log/gitorious/app state=directory owner=git group=git mode=0775
+
+- name: clone gitorious-proto (hooks)
+  git: repo=https://gitorious.org/gitorious/gitorious-proto.git dest=/var/lib/gitorious/gitorious-proto version=v1.0.0
+
+- name: symlink hooks in repositories dir
+  file: src=/var/lib/gitorious/gitorious-proto/hooks dest=/var/lib/gitorious/repositories/.hooks state=link
+
+- name: install gitorious-shell
+  get_url: url=https://bin.gitorious.org/gitorious-proto/v1.0.0/gitorious-shell_linux_amd64 dest=/usr/bin/gitorious-shell sha256sum=594a9c028ff7940b30962a0675f373424602c60edea5001767a4bda6455a1154 force=yes
+
+- name: make gitorious-shell executable
+  file: path=/usr/bin/gitorious-shell mode=0755
+
+- name: symlink gitorious-shell to /usr/bin/gitorious
+  file: src=/usr/bin/gitorious-shell dest=/usr/bin/gitorious state=link force=yes
+
+- name: install gitorious-http-backend
+  get_url: url=https://bin.gitorious.org/gitorious-proto/v1.0.0/gitorious-http-backend_linux_amd64 dest=/usr/bin/gitorious-http-backend sha256sum=af7b33b1455f8ae8e576caed185f8c22a541183e5ddde676477c9183b5de6dde force=yes
+
+- name: make gitorious-http-backend executable
+  file: path=/usr/bin/gitorious-http-backend mode=0755
+
+- name: create gitorious-redis container
+  shell: docker rm -f gitorious-redis && docker run -d --name gitorious-redis -v /var/lib/gitorious/redis:/var/lib/redis -v /var/log/gitorious/redis:/var/log/redis gitorious/redis
+
+- name: create gitorious-mysql container
+  shell: docker rm -f gitorious-mysql && docker run -d --name gitorious-mysql -v /var/lib/gitorious/mysql:/var/lib/mysql -v /var/log/gitorious/mysql:/var/log/mysql gitorious/mysql # --env-file=/var/lib/gitorious/env/mysql
+
+- name: create gitorious-memcached container
+  shell: docker rm -f gitorious-memcached && docker run -d --name gitorious-memcached gitorious/memcached
+
+- name: create gitorious-postfix container
+  shell: docker rm -f gitorious-postfix && docker run -d --name gitorious-postfix --hostname {{ ansible_fqdn }} gitorious/postfix
+
+- name: create gitorious-data (data-only) container
+  shell: docker rm -f gitorious-data && docker run --name gitorious-data -v /etc/gitorious:/etc/gitorious -v /var/lib/gitorious:/var/lib/gitorious -v /var/log/gitorious:/var/log/gitorious -v /home/git/.ssh:/home/git/.ssh busybox /bin/true
+
+- name: setup database
+  # TODO run gitorious:upgrade instead
+  shell: docker run --rm {{ link_mysql }} {{ mount_data }} gitorious/app bundle exec rake db:setup # --env-file=/var/lib/gitorious/env/mysql
+
+- name: create gitorious-sphinx container
+  shell: docker rm -f gitorious-sphinx || true && docker run -d --name gitorious-sphinx -u git {{ mount_data }} {{ mount_app_logs }} {{ link_mysql }} gitorious/app bin/docker/sphinx
+
+- name: create gitorious-workers
+  shell: docker rm -f gitorious-workers || true && docker run -d --name gitorious-workers -u git {{ mount_data }} {{ mount_app_logs }} {{ link_mysql }} {{ link_redis }} {{ link_memcached }} {{ link_postfix }} gitorious/app bin/resque
+
+- name: create gitorious-web container
+  shell: docker rm -f gitorious-web || true && docker run -d --name gitorious-web -u git -p 3000:3000 {{ mount_data }} {{ mount_app_logs }} {{ link_mysql }} {{ link_redis }} {{ link_memcached }} {{ link_sphinx }} {{ link_postfix }} gitorious/app bin/unicorn
+
+- name: create gitorious-archiver container
+  shell: docker rm -f gitorious-archiver || true && docker run -d --name gitorious-archiver -u git {{ mount_data }} gitorious/git-archive-daemon # -v logs:logs 
+
+- name: create gitorious-nginx container
+  shell: docker rm -f gitorious-nginx || true && docker run -d --name gitorious-nginx -p 80:80 {{ link_web }} {{ link_archiver }} -v /var/log/gitorious/nginx:/var/log/nginx gitorious/app bin/docker/nginx
+
+- name: install service files
+  template: src=upstart/gitorious-{{ item }}.conf dest=/etc/init/gitorious-{{ item }}.conf
+  with_items: services
+
+- name: enable and start services
+  service: name=gitorious-{{ item }} enabled=yes state=started
+  with_items: services
+
+- name: install control script
+  template: src=gitoriousctl.j2 dest=/usr/bin/gitoriousctl mode=0755
+
+- name: install cron job for updating sphinx index
+  cron: name="gitorious-ts-index" job="/usr/bin/gitoriousctl rake ts:index" minute="11"
