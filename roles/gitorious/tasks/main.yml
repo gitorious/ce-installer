@@ -109,13 +109,19 @@
 - name: install service files
   template: src=upstart/gitorious-{{ item }}.conf dest=/etc/init/gitorious-{{ item }}.conf
   with_items: services
+  tags:
+    - service
 
 - name: enable and start services
   service: name=gitorious-{{ item }} enabled=yes state=started
   with_items: services
+  tags:
+    - service
 
 - name: install control script
   template: src=gitoriousctl.j2 dest=/usr/bin/gitoriousctl mode=0755
+  tags:
+    - ctl
 
 - name: install cron job for updating sphinx index
   cron: name="gitorious-ts-index" job="/usr/bin/gitoriousctl rake ts:index" minute="11"

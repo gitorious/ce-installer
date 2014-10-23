@@ -1,19 +1,29 @@
 #!/bin/bash
 
+set -e
+
 is-running() {
   command status gitorious-$1 | grep -q "^gitorious-$1 start" >/dev/null
 }
 
 start() {
   echo -n "$1: "
-  service gitorious-$1 start >/dev/null
-  echo -e "\e[32mstarted\e[0m"
+  if is-running $1; then
+    echo -e "running"
+  else
+    service gitorious-$1 start >/dev/null
+    echo -e "\e[32mstarted\e[0m"
+  fi
 }
 
 stop() {
   echo -n "$1: "
-  service gitorious-$1 stop >/dev/null
-  echo -e "\e[32mstopped\e[0m"
+  if is-running $1; then
+    service gitorious-$1 stop >/dev/null
+    echo -e "\e[32mstopped\e[0m"
+  else
+    echo "not running"
+  fi
 }
 
 restart() {
@@ -33,6 +43,7 @@ status() {
 }
 
 status-all() {
+  status archiver
   status http-backend
   status memcached
   status mysql
@@ -54,6 +65,7 @@ case "$1" in
     if [[ -n $2 ]]; then
       start $2
     else
+      start archiver
       start http-backend
       start memcached
       start mysql
@@ -70,6 +82,7 @@ case "$1" in
     if [[ -n $2 ]]; then
       stop $2
     else
+      stop archiver
       stop http-backend
       stop memcached
       stop mysql
@@ -86,6 +99,7 @@ case "$1" in
     if [[ -n $2 ]]; then
       restart $2
     else
+      restart archiver
       restart http-backend
       restart memcached
       restart mysql
