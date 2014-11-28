@@ -1,0 +1,327 @@
+---
+# === prerequisites
+
+- name: install prerequisites
+  yum: pkg={{ item }} state=present
+  with_items:
+    - curl
+    - wget
+    - git
+  when: ansible_os_family == "RedHat"
+
+- name: install prerequisites
+  apt: pkg={{ item }} state=present
+  with_items:
+    - curl
+    - wget
+    - git
+    - openssl
+  when: ansible_os_family == "Debian"
+
+# === MySQL
+
+- name: install mysqld
+  yum: pkg=mysql-server state=present
+  when: ansible_os_family == "RedHat"
+
+- name: install mysqld
+  apt: pkg=mysql-server state=present
+  when: ansible_os_family == "Debian"
+
+- name: enable and start mysqld
+  service: name=mysql state=started
+
+# === redis
+
+- name: install redis
+  yum: pkg=redis state=present
+  when: ansible_os_family == "RedHat"
+
+- name: install redis
+  apt: pkg=redis-server state=present
+  when: ansible_os_family == "Debian"
+
+- name: enable and start redis
+  service: name=redis-server state=started
+
+# === memcached
+
+- name: install memcached
+  yum: pkg=memcached state=present
+  when: ansible_os_family == "RedHat"
+
+- name: install memcached
+  apt: pkg=memcached state=present
+  when: ansible_os_family == "Debian"
+
+- name: enable and start memcached
+  service: name=memcached state=started
+
+# === postfix
+
+- name: install postfix
+  yum: pkg=postfix state=present
+  when: ansible_os_family == "RedHat"
+
+- name: install postfix
+  apt: pkg=postfix state=present
+  when: ansible_os_family == "Debian"
+
+- name: enable and start postfix
+  service: name=postfix state=started
+
+# === nginx
+
+- name: install nginx
+  yum: pkg=nginx state=present
+  when: ansible_os_family == "RedHat"
+
+- name: install nginx
+  apt: pkg=nginx state=present
+  when: ansible_os_family == "Debian"
+
+- name: enable and start nginx
+  service: name=nginx state=started
+
+- name: install main nginx config file
+  template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
+  notify:
+    - restart nginx
+
+- name: remove default nginx vhost
+  file: path=/etc/nginx/conf.d/default.conf state=absent
+  notify:
+    - restart nginx
+
+- name: ensure nginx conf.d directory exists
+  file: path=/etc/nginx/conf.d state=directory
+
+- name: install gitorious vhost config file
+  template: src=nginx/gitorious.conf dest=/etc/nginx/conf.d/gitorious.conf
+  notify:
+    - restart nginx
+
+- name: install gitorious ssl config file
+  template: src=nginx/ssl.conf dest=/etc/nginx/conf.d/ssl.conf
+  notify:
+    - restart nginx
+
+- name: create nginx ssl directory
+  file: path=/etc/nginx/ssl state=directory
+  notify:
+    - restart nginx
+
+- name: generate self-signed SSL certificate
+  command: openssl req -sha256 -x509 -nodes -days 3650 -subj '/C=NO/ST=Aust-Agder/L=Grimstad/CN={{ gitorious_host }}' -newkey rsa:2048 -keyout {{ ssl_key_path }} -out {{ ssl_cert_path }}
+  args:
+    creates: "{{ ssl_cert_path }}"
+  notify:
+    - restart nginx
+
+# === git user
+
+- name: create git group
+  group: name=git gid=5000
+
+- name: create git user
+  user: name=git uid=5000 group=git home=/home/git
+
+- name: create .ssh dir for git user
+  file: path=/home/git/.ssh state=directory owner=git group=git mode=0700
+
+- name: create empty authorized_keys file for git user
+  file: path=/home/git/.ssh/authorized_keys state=touch owner=git group=git mode=0600
+
+# === logs directory
+
+- name: create logs directory (/var/log/gitorious)
+  file: path=/var/log/gitorious state=directory owner=git group=git mode=0775
+
+# === gitorious-shell
+
+- name: install gitorious-shell
+  get_url: url=https://bin.gitorious.org/gitorious-proto/v1.0.0/gitorious-shell_linux_amd64 dest=/usr/bin/gitorious-shell sha256sum=594a9c028ff7940b30962a0675f373424602c60edea5001767a4bda6455a1154 force=yes
+
+- name: make gitorious-shell executable
+  file: path=/usr/bin/gitorious-shell mode=0755
+
+- name: symlink gitorious-shell to /usr/bin/gitorious
+  file: src=/usr/bin/gitorious-shell dest=/usr/bin/gitorious state=link force=yes
+
+# === gitorious-http-backend
+
+- name: install gitorious-http-backend
+  get_url: url=https://bin.gitorious.org/gitorious-proto/v1.0.0/gitorious-http-backend_linux_amd64 dest=/usr/bin/gitorious-http-backend sha256sum=af7b33b1455f8ae8e576caed185f8c22a541183e5ddde676477c9183b5de6dde force=yes
+
+- name: make gitorious-http-backend executable
+  file: path=/usr/bin/gitorious-http-backend mode=0755
+
+- name: install http-backend service file
+  template: src=upstart/gitorious-http-backend.conf dest=/etc/init/gitorious-http-backend.conf
+
+- name: enable and start http-backend service
+  service: name=gitorious-http-backend state=started
+
+# === git-archive-daemon
+
+- name: create directories for archiver
+  file: path={{ gitorious_root }}/{{ item }} state=directory owner=git group=git
+  with_items:
+    - tarballs-cache
+    - tarballs-work
+
+- name: install git-archive-daemon
+  get_url: url=https://bin.gitorious.org/git-archive-daemon/v1.0.0/git-archive-daemon_linux_amd64 dest=/usr/bin/git-archive-daemon sha256sum=860f2febdc2b6d5904752c5ce23db6cf12f6e550dea4e8c6cf61a91d74ea5284 force=yes
+
+- name: make git-archive-daemon executable
+  file: path=/usr/bin/git-archive-daemon mode=0755
+
+- name: install archiver service file
+  template: src=upstart/gitorious-archiver.conf dest=/etc/init/gitorious-archiver.conf
+
+- name: enable and start archiver service
+  service: name=gitorious-archiver state=started
+
+# === control script
+
+- name: install control script
+  template: src=gitoriousctl dest=/usr/bin/gitoriousctl mode=0755
+  tags:
+    - ctl
+
+# === web app
+
+- name: create repositories directory
+  file: path={{ gitorious_root }}/repositories state=directory owner=git group=git
+
+- name: clone web app
+  git: repo=https://gitorious.org/gitorious/mainline.git dest={{ gitorious_root }}/app version=221c6fc
+
+- name: create config files
+  template: src={{ item }} dest={{ gitorious_root }}/app/config/{{ item }} owner=git group=git mode=0644
+  with_items:
+    - database.yml
+    - gitorious.yml
+    - unicorn.rb
+
+- name: install ruby-install
+  shell: rm -rf /tmp/ruby-install* && wget -O ruby-install-0.5.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.5.0.tar.gz && tar -xzvf ruby-install-0.5.0.tar.gz && cd ruby-install-0.5.0/ && make install
+  args:
+    chdir: /tmp
+    creates: /usr/local/bin/ruby-install
+
+- name: install ruby {{ ruby_version }}
+  shell: /usr/local/bin/ruby-install ruby {{ ruby_version }}
+  args:
+    creates: /opt/rubies/ruby-{{ ruby_version }}/bin/ruby
+
+- name: install chruby
+  shell: rm -rf /tmp/chruby* && wget -O chruby-0.3.8.tar.gz https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz && tar -xzvf chruby-0.3.8.tar.gz && cd chruby-0.3.8/ && make install
+  args:
+    chdir: /tmp
+    creates: /usr/local/share/chruby/chruby.sh
+
+- name: install .env file for setting proper ruby environment
+  template: src=env dest={{ gitorious_root }}/app/bin/.env
+
+- name: install gitorious gem wrapper
+  template: src=gem dest={{ gitorious_root }}/app/bin/gem mode=0755
+
+- name: install bundler
+  gem: name=bundler state=present user_install=no executable={{ gitorious_root }}/app/bin/gem
+
+- name: chown all gitorious files to git
+  file: path={{ gitorious_root }} state=directory owner=git group=git recurse=yes
+
+- name: install app dependencies
+  yum: pkg={{ item }} state=present
+  with_items:
+    - ImageMagick
+    - cmake
+    - gcc
+    - gcc-c++
+    - libicu-devel
+    - libxml2
+    - libxml2-devel
+    - libxslt
+    - libxslt-devel
+    - make
+    - mysql-devel
+    - nodejs
+    - sphinx
+    - zlib-devel
+  when: ansible_os_family == "RedHat"
+
+- name: install app dependencies
+  apt: pkg={{ item }} state=present
+  with_items:
+    - build-essential
+    - cmake
+    - imagemagick
+    - libicu-dev
+    - libmysqlclient-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - make
+    - mysql-client
+    - nodejs
+    - pkg-config
+    - sphinxsearch
+  when: ansible_os_family == "Debian"
+
+- name: install gems
+  command: gitoriousctl exec bundle install --jobs 4 --retry 3 --deployment --without development test postgres
+
+- name: create gitorious database
+  mysql_db: name=gitorious_production state=present
+
+- name: create gitorious database user
+  mysql_user: name=gitorious password="{{ lookup('password', '/tmp/.gitorious_mysql_user_password') }}" priv="gitorious_production.*:ALL" state=present
+
+- name: setup database schema and seed it
+  command: gitoriousctl rake db:setup
+
+- name: initialize assets submodules
+  command: gitoriousctl exec git submodule update --init --recursive
+
+- name: precompile static assets
+  command: gitoriousctl rake assets:precompile
+
+- name: install app service files
+  template: src=upstart/gitorious-{{ item }}.conf dest=/etc/init/gitorious-{{ item }}.conf
+  with_items:
+    - web
+    - workers
+
+- name: enable and start app services
+  service: name=gitorious-{{ item }} state=started
+  with_items:
+    - web
+    - workers
+
+# === hooks
+
+- name: clone gitorious-proto (hooks)
+  git: repo=https://gitorious.org/gitorious/gitorious-proto.git dest={{ gitorious_root }}/gitorious-proto version=v1.0.0
+
+- name: symlink hooks in repositories dir
+  file: src={{ gitorious_root }}/gitorious-proto/hooks dest={{ gitorious_root }}/repositories/.hooks state=link
+
+# === sphinx search
+
+- name: build sphinx index
+  command: gitoriousctl rake ts:configure ts:rebuild
+
+- name: install sphinx service file
+  template: src=upstart/gitorious-sphinx.conf dest=/etc/init/gitorious-sphinx.conf
+
+- name: enable and start sphinx service
+  service: name=gitorious-sphinx state=started
+
+# === cron jobs
+
+- name: install cron job for updating sphinx index
+  cron: name="gitorious-ts-index" job="/usr/bin/gitoriousctl rake ts:index" minute="11"
+
+- name: install cron job for rebuilding sphinx index
+  cron: name="gitorious-ts-rebuild" job="/usr/bin/gitoriousctl rake ts:rebuild" hour="3" minute="11"

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source /usr/local/share/chruby/chruby.sh
+chruby {{ ruby_version }}
+
+export GITORIOUS_ARCHIVER_URL=/_internal/archiver

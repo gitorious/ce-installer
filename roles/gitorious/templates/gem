@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source /var/www/gitorious/app/bin/.env
+exec gem "$@"

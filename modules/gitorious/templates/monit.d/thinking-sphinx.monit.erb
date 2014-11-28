@@ -1,3 +1,0 @@
-check process thinking-sphinx with pidfile <%= @t_app_root %>/log/production.sphinx.pid
-  start program = "/usr/local/bin/chruby-exec ruby-<%= @ruby_version %> -- <%= @t_app_root %>/bin/rake ts:start"
-  stop program = "/usr/local/bin/chruby-exec ruby-<%= @ruby_version %> -- <%= @t_app_root %>/bin/rake ts:stop"

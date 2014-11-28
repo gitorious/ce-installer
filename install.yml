@@ -1,0 +1,5 @@
+---
+- hosts: gitorious
+  sudo: true
+  roles:
+    - gitorious

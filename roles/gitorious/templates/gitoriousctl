@@ -1,0 +1,181 @@
+#!/bin/bash
+
+set -e
+
+is-running() {
+  if [[ -x /etc/init.d/$1 ]]; then
+    /etc/init.d/$1 status >/dev/null
+  else
+    command status $1 | grep -q "^$1 start" >/dev/null
+  fi
+}
+
+start() {
+  echo -n "$1: "
+  if is-running $1; then
+    echo -e "running"
+  else
+    do-start $1
+    echo -e "\e[32mstarted\e[0m"
+  fi
+}
+
+do-start() {
+  if [[ -x /etc/init.d/$1 ]]; then
+    /etc/init.d/$1 start >/dev/null
+  else
+    command start $1 >/dev/null
+  fi
+}
+
+stop() {
+  echo -n "$1: "
+  if is-running $1; then
+    do-stop $1
+    echo -e "\e[32mstopped\e[0m"
+  else
+    echo "not running"
+  fi
+}
+
+do-stop() {
+  if [[ -x /etc/init.d/$1 ]]; then
+    /etc/init.d/$1 stop >/dev/null
+  else
+    command stop $1 >/dev/null
+  fi
+}
+
+restart() {
+  echo -n "$1: "
+  do-restart $1
+  echo -e "\e[32mrestarted\e[0m"
+}
+
+do-restart() {
+  if [[ -x /etc/init.d/$1 ]]; then
+    /etc/init.d/$1 restart >/dev/null
+  else
+    command restart $1 >/dev/null
+  fi
+}
+
+status() {
+  echo -n "$1: "
+
+  if is-running $1; then
+    echo -e "\e[32mup\e[0m"
+  else
+    echo -e "\e[31mdown\e[0m"
+  fi
+}
+
+status-all() {
+  status gitorious-archiver
+  status gitorious-http-backend
+  status memcached
+  status {{ mysql_service }}
+  status nginx
+  status postfix
+  status {{ redis_service }}
+  status gitorious-sphinx
+  status gitorious-web
+  status gitorious-workers
+}
+
+if ! [ $(id -u) = 0 ]; then
+  echo "Need root/superuser."
+  exit 1
+fi
+
+case "$1" in
+  start)
+    if [[ -n $2 ]]; then
+      start $2
+    else
+      start gitorious-archiver
+      start gitorious-http-backend
+      start memcached
+      start {{ mysql_service }}
+      start nginx
+      start postfix
+      start {{ redis_service }}
+      start gitorious-sphinx
+      start gitorious-web
+      start gitorious-workers
+    fi
+    ;;
+
+  stop)
+    if [[ -n $2 ]]; then
+      stop $2
+    else
+      stop gitorious-archiver
+      stop gitorious-http-backend
+      stop memcached
+      stop {{ mysql_service }}
+      stop nginx
+      stop postfix
+      stop {{ redis_service }}
+      stop gitorious-sphinx
+      stop gitorious-web
+      stop gitorious-workers
+    fi
+    ;;
+
+  restart)
+    if [[ -n $2 ]]; then
+      restart $2
+    else
+      restart gitorious-archiver
+      restart gitorious-http-backend
+      restart memcached
+      restart {{ mysql_service }}
+      restart nginx
+      restart postfix
+      restart {{ redis_service }}
+      restart gitorious-sphinx
+      restart gitorious-web
+      restart gitorious-workers
+    fi
+    ;;
+
+  status)
+    if [[ -n $2 ]]; then
+      status $2
+    else
+      status-all | column -t
+    fi
+    ;;
+
+  exec)
+    shift
+    sudo -u git -H /var/www/gitorious/app/bin/exec "$@"
+    ;;
+
+  rake)
+    shift
+    sudo -u git -H /var/www/gitorious/app/bin/rake "$@"
+    ;;
+
+  console)
+    shift
+    sudo -u git -H /var/www/gitorious/app/bin/console "$@"
+    ;;
+
+  *)
+    cat <<EOF
+usage: $0 <command> [args...]
+
+where command is one of:
+
+  console - start Rails console
+  exec <command> [args...] - run the command in application environment
+  rake <task> [args...] - run the rake task
+  restart [service] - restart all services or a specified service
+  start [service] - start all services or a specified service
+  status [service] - print status of all services or a specified service
+  stop [service] - stop all services or a specified service
+EOF
+    ;;
+esac

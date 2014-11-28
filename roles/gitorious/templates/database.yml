@@ -1,0 +1,10 @@
+# Gitorious database configuration
+
+production:
+  adapter: mysql2
+  database: "gitorious_production"
+  username: "gitorious"
+  password: "{{ lookup('password', '/tmp/.gitorious_mysql_user_password') }}"
+  host: localhost
+  port: 3306
+  encoding: utf8
