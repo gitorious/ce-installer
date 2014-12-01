@@ -29,7 +29,12 @@
   when: ansible_os_family == "Debian"
 
 - name: enable and start mysqld
+  service: name=mysqld state=started
+  when: ansible_os_family == "RedHat"
+
+- name: enable and start mysqld
   service: name=mysql state=started
+  when: ansible_os_family == "Debian"
 
 # === redis
 
@@ -42,7 +47,12 @@
   when: ansible_os_family == "Debian"
 
 - name: enable and start redis
+  service: name=redis state=started
+  when: ansible_os_family == "RedHat"
+
+- name: enable and start redis
   service: name=redis-server state=started
+  when: ansible_os_family == "Debian"
 
 # === memcached
 
