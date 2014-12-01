@@ -103,9 +103,6 @@
   notify:
     - restart nginx
 
-- name: ensure nginx conf.d directory exists
-  file: path=/etc/nginx/conf.d state=directory
-
 - name: install gitorious vhost config file
   template: src=nginx/gitorious.conf dest=/etc/nginx/conf.d/gitorious.conf
   notify:
@@ -139,7 +136,7 @@
 - name: create .ssh dir for git user
   file: path=/home/git/.ssh state=directory owner=git group=git mode=0700
 
-- name: create empty authorized_keys file for git user
+- name: create authorized_keys file for git user
   file: path=/home/git/.ssh/authorized_keys state=touch owner=git group=git mode=0600
 
 # === logs directory
@@ -162,15 +159,16 @@
 
 - name: install gitorious-http-backend
   get_url: url=https://bin.gitorious.org/gitorious-proto/v1.0.0/gitorious-http-backend_linux_amd64 dest=/usr/bin/gitorious-http-backend sha256sum=af7b33b1455f8ae8e576caed185f8c22a541183e5ddde676477c9183b5de6dde force=yes
+  notify:
+    - restart gitorious-http-backend
 
 - name: make gitorious-http-backend executable
   file: path=/usr/bin/gitorious-http-backend mode=0755
 
 - name: install http-backend service file
   template: src=upstart/gitorious-http-backend.conf dest=/etc/init/gitorious-http-backend.conf
-
-- name: enable and start http-backend service
-  service: name=gitorious-http-backend state=started
+  notify:
+    - stop-start gitorious-http-backend
 
 # === git-archive-daemon
 
@@ -182,22 +180,21 @@
 
 - name: install git-archive-daemon
   get_url: url=https://bin.gitorious.org/git-archive-daemon/v1.0.0/git-archive-daemon_linux_amd64 dest=/usr/bin/git-archive-daemon sha256sum=860f2febdc2b6d5904752c5ce23db6cf12f6e550dea4e8c6cf61a91d74ea5284 force=yes
+  notify:
+    - restart gitorious-archiver
 
 - name: make git-archive-daemon executable
   file: path=/usr/bin/git-archive-daemon mode=0755
 
 - name: install archiver service file
   template: src=upstart/gitorious-archiver.conf dest=/etc/init/gitorious-archiver.conf
-
-- name: enable and start archiver service
-  service: name=gitorious-archiver state=started
+  notify:
+    - stop-start gitorious-archiver
 
 # === control script
 
 - name: install control script
   template: src=gitoriousctl dest=/usr/bin/gitoriousctl mode=0755
-  tags:
-    - ctl
 
 # === web app
 
@@ -205,7 +202,11 @@
   file: path={{ gitorious_root }}/repositories state=directory owner=git group=git
 
 - name: clone web app
-  git: repo=https://gitorious.org/gitorious/mainline.git dest={{ gitorious_root }}/app version=221c6fc
+  git: repo=https://gitorious.org/gitorious/mainline.git dest={{ gitorious_root }}/app version={{ gitorious_version }}
+  notify:
+    - restart web
+    - restart workers
+    - restart sphinx
 
 - name: create config files
   template: src={{ item }} dest={{ gitorious_root }}/app/config/{{ item }} owner=git group=git mode=0644
@@ -213,6 +214,10 @@
     - database.yml
     - gitorious.yml
     - unicorn.rb
+  notify:
+    - restart web
+    - restart workers
+    - restart sphinx
 
 - name: install ruby-install
   shell: rm -rf /tmp/ruby-install* && wget -O ruby-install-0.5.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.5.0.tar.gz && tar -xzvf ruby-install-0.5.0.tar.gz && cd ruby-install-0.5.0/ && make install
@@ -233,6 +238,10 @@
 
 - name: install .env file for setting proper ruby environment
   template: src=env dest={{ gitorious_root }}/app/bin/.env
+  notify:
+    - restart web
+    - restart workers
+    - restart sphinx
 
 - name: install gitorious gem wrapper
   template: src=gem dest={{ gitorious_root }}/app/bin/gem mode=0755
@@ -284,12 +293,18 @@
 
 - name: create gitorious database
   mysql_db: name=gitorious_production state=present
+  register: create_database
 
 - name: create gitorious database user
   mysql_user: name=gitorious password="{{ lookup('password', '/tmp/.gitorious_mysql_user_password') }}" priv="gitorious_production.*:ALL" state=present
 
-- name: setup database schema and seed it
+- name: initialize database
   command: gitoriousctl rake db:setup
+  when: create_database.changed
+
+- name: upgrade database and authorized_keys
+  command: gitoriousctl rake gts:upgrade
+  when: not create_database.changed
 
 - name: initialize assets submodules
   command: gitoriousctl exec git submodule update --init --recursive
@@ -297,17 +312,15 @@
 - name: precompile static assets
   command: gitoriousctl rake assets:precompile
 
-- name: install app service files
-  template: src=upstart/gitorious-{{ item }}.conf dest=/etc/init/gitorious-{{ item }}.conf
-  with_items:
-    - web
-    - workers
+- name: install web app service files
+  template: src=upstart/gitorious-web.conf dest=/etc/init/gitorious-web.conf
+  notify:
+    - stop-start web
 
-- name: enable and start app services
-  service: name=gitorious-{{ item }} state=started
-  with_items:
-    - web
-    - workers
+- name: install worker service files
+  template: src=upstart/gitorious-workers.conf dest=/etc/init/gitorious-workers.conf
+  notify:
+    - stop-start workers
 
 # === hooks
 
@@ -324,9 +337,8 @@
 
 - name: install sphinx service file
   template: src=upstart/gitorious-sphinx.conf dest=/etc/init/gitorious-sphinx.conf
-
-- name: enable and start sphinx service
-  service: name=gitorious-sphinx state=started
+  notify:
+    - stop-start sphinx
 
 # === cron jobs
 

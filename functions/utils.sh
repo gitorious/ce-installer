@@ -13,3 +13,14 @@ redhat_release() {
 anonymous_pingback() {
   curl -s http://getgitorious.com/installer_completed &>/dev/null || true
 }
+
+prompt_for_hostname() {
+  echo "Following information will be used to generate configuration file and SSL certificate:"
+  read -e -p "  hostname (FQDN): " -i $(hostname) gitorious_host
+}
+
+footnote() {
+  log "This script is created and supported by Gitorious AS."
+  log "For professional support contact us at sales@gitorious.org"
+  log "http://gitorious.com"
+}

@@ -1,3 +1,33 @@
 ---
 - name: restart nginx
   service: name=nginx state=restarted
+
+- name: restart gitorious-http-backend
+  service: name=gitorious-http-backend state=restarted
+
+- name: stop-start gitorious-http-backend
+  shell: stop gitorious-http-backend; start gitorious-http-backend
+
+- name: restart gitorious-archiver
+  service: name=gitorious-archiver state=restarted
+
+- name: stop-start gitorious-archiver
+  shell: stop gitorious-archiver; start gitorious-archiver
+
+- name: restart web
+  service: name=gitorious-web state=restarted
+
+- name: stop-start web
+  shell: stop gitorious-web; start gitorious-web
+
+- name: restart workers
+  service: name=gitorious-workers state=restarted
+
+- name: stop-start workers
+  shell: stop gitorious-workers; start gitorious-workers
+
+- name: restart sphinx
+  service: name=gitorious-sphinx state=restarted
+
+- name: stop-start sphinx
+  shell: stop gitorious-sphinx; start gitorious-sphinx
