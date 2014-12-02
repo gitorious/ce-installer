@@ -1,7 +1,4 @@
 ---
-- name: restart nginx
-  service: name=nginx state=restarted
-
 - name: restart gitorious-http-backend
   service: name=gitorious-http-backend state=restarted
 

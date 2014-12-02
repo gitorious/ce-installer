@@ -95,35 +95,26 @@
 
 - name: install main nginx config file
   template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
-  notify:
-    - restart nginx
 
 - name: remove default nginx vhost
   file: path=/etc/nginx/conf.d/default.conf state=absent
-  notify:
-    - restart nginx
 
 - name: install gitorious vhost config file
   template: src=nginx/gitorious.conf dest=/etc/nginx/conf.d/gitorious.conf
-  notify:
-    - restart nginx
 
 - name: install gitorious ssl config file
   template: src=nginx/ssl.conf dest=/etc/nginx/conf.d/ssl.conf
-  notify:
-    - restart nginx
 
 - name: create nginx ssl directory
   file: path=/etc/nginx/ssl state=directory
-  notify:
-    - restart nginx
 
 - name: generate self-signed SSL certificate
   command: openssl req -sha256 -x509 -nodes -days 3650 -subj '/C=NO/ST=Aust-Agder/L=Grimstad/CN={{ gitorious_host }}' -newkey rsa:2048 -keyout {{ ssl_key_path }} -out {{ ssl_cert_path }}
   args:
     creates: "{{ ssl_cert_path }}"
-  notify:
-    - restart nginx
+
+- name: restart nginx
+  service: name=nginx state=restarted
 
 # === git user
 
@@ -170,6 +161,9 @@
   notify:
     - stop-start gitorious-http-backend
 
+- name: enable and start gitorious-http-backend
+  service: name=gitorious-http-backend state=started
+
 # === git-archive-daemon
 
 - name: create directories for archiver
@@ -190,6 +184,9 @@
   template: src=upstart/gitorious-archiver.conf dest=/etc/init/gitorious-archiver.conf
   notify:
     - stop-start gitorious-archiver
+
+- name: enable and start gitorious-archiver
+  service: name=gitorious-archiver state=started
 
 # === control script
 
@@ -322,6 +319,12 @@
   notify:
     - stop-start workers
 
+- name: enable and start gitorious-{{ item }}
+  service: name=gitorious-{{ item }} state=started
+  with_items:
+    - web
+    - workers
+
 # === hooks
 
 - name: clone gitorious-proto (hooks)
@@ -339,6 +342,9 @@
   template: src=upstart/gitorious-sphinx.conf dest=/etc/init/gitorious-sphinx.conf
   notify:
     - stop-start sphinx
+
+- name: enable and start gitorious-sphinx
+  service: name=gitorious-sphinx state=started
 
 # === cron jobs
 
