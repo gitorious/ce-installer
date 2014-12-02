@@ -1,5 +1,8 @@
+gitorious_version=42dc7ec
+
 install_gitorious() {
-  prompt_for_hostname
+  echo "Following information will be used to generate configuration file and SSL certificate:"
+  read -e -p "  hostname (FQDN): " -i $(hostname) gitorious_host
   echo
 
   install_ansible
