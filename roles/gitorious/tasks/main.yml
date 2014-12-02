@@ -18,6 +18,20 @@
     - openssl
   when: ansible_os_family == "Debian"
 
+# === git user
+
+- name: create git group
+  group: name=git gid=5000
+
+- name: create git user
+  user: name=git uid=5000 group=git home=/home/git
+
+- name: create .ssh dir for git user
+  file: path=/home/git/.ssh state=directory owner=git group=git mode=0700
+
+- name: create authorized_keys file for git user
+  file: path=/home/git/.ssh/authorized_keys state=touch owner=git group=git mode=0600
+
 # === MySQL
 
 - name: install mysqld
@@ -115,20 +129,6 @@
 
 - name: restart nginx
   service: name=nginx state=restarted
-
-# === git user
-
-- name: create git group
-  group: name=git gid=5000
-
-- name: create git user
-  user: name=git uid=5000 group=git home=/home/git
-
-- name: create .ssh dir for git user
-  file: path=/home/git/.ssh state=directory owner=git group=git mode=0700
-
-- name: create authorized_keys file for git user
-  file: path=/home/git/.ssh/authorized_keys state=touch owner=git group=git mode=0600
 
 # === logs directory
 
