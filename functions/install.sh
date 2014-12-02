@@ -2,7 +2,7 @@ gitorious_version=d8199db
 
 install_gitorious() {
   echo "Following information will be used to generate configuration file and SSL certificate:"
-  read -e -p "  hostname (FQDN): " -i $(hostname -f || hostname) gitorious_host
+  read -e -p "  hostname (FQDN): " -i $(hostname -f 2>/dev/null || hostname) gitorious_host
   echo
 
   install_ansible
