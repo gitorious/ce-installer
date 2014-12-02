@@ -1,4 +1,4 @@
-gitorious_version=42dc7ec
+gitorious_version=d8199db
 
 install_gitorious() {
   echo "Following information will be used to generate configuration file and SSL certificate:"
