@@ -195,6 +195,9 @@
 
 # === web app
 
+- name: ensure /var/www is accessible by git user
+  file: path=/var/www state=directory owner=root group=root mode=755
+
 - name: create repositories directory
   file: path={{ gitorious_root }}/repositories state=directory owner=git group=git
 

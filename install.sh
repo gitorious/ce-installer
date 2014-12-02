@@ -6,8 +6,8 @@ source functions/all.sh
 
 log "Welcome to Gitorious installer!"
 log "This script will install Gitorious $gitorious_version on this machine."
-echo
 
+echo
 install_gitorious installation
 
 anonymous_pingback
