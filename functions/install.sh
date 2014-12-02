@@ -9,5 +9,5 @@ install_gitorious() {
 
   log "Starting $1 procedure..."
   ansible-playbook -c local -i hosts install.yml --extra-vars "gitorious_host=$gitorious_host gitorious_version=$gitorious_version"
-  rm /tmp/.gitorious*
+  rm -f /tmp/.gitorious*
 }
