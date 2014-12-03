@@ -34,8 +34,13 @@ remove-old-ruby-install() {
 }
 
 update-old-ctl-scripts() {
-  update-old-ctl-script /usr/bin/restart_gitorious
-  update-old-ctl-script /usr/bin/gitorious_status
+  if [[ -x /usr/bin/restart_gitorious ]]; then
+    update-old-ctl-script /usr/bin/restart_gitorious
+  fi
+
+  if [[ -x /usr/bin/gitorious_status ]]; then
+    update-old-ctl-script /usr/bin/gitorious_status
+  fi
 }
 
 update-old-ctl-script() {
