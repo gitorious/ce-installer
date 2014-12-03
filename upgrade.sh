@@ -19,7 +19,9 @@ backup-configuration
 remove-old-ruby-install
 
 echo
+trap 'handle-exit' INT TERM EXIT
 install_gitorious upgrade
+success=1
 
 update-old-ctl-scripts
 

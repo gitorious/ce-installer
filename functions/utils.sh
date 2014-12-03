@@ -19,3 +19,14 @@ footnote() {
   log "For professional support contact us at sales@gitorious.org"
   log "http://gitorious.com"
 }
+
+handle-exit() {
+  rm -f /tmp/.gitorious*
+
+  if [[ -z "$success" ]]; then
+    echo
+    log "Oops, a problem occurred."
+    log "Usually it happens when there's a network problem (probably timeout during package installation)."
+    log "It is safe to re-run this script again."
+  fi
+}
