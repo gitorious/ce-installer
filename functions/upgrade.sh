@@ -20,12 +20,13 @@ shutdown-old-services() {
 }
 
 backup-configuration() {
-  cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.old
-  cp /etc/nginx/conf.d/gitorious.conf /etc/nginx/conf.d/gitorious.conf.old
-  cp /var/www/gitorious/app/config/gitorious.yml /var/www/gitorious/app/config/gitorious.yml.old
-  cp /var/www/gitorious/app/config/database.yml /var/www/gitorious/app/config/database.yml.old
-  cp /var/www/gitorious/app/config/unicorn.rb /var/www/gitorious/app/config/unicorn.rb.old
-  cp /var/www/gitorious/app/config/authentication.yml /var/www/gitorious/app/config/authentication.yml.old 2>/dev/null || true
+  backup_ext="$(date '+%s').backup"
+  cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.$backup_ext 2>/dev/null || true
+  cp /etc/nginx/conf.d/gitorious.conf /etc/nginx/conf.d/gitorious.conf.$backup_ext 2>/dev/null || true
+  cp /var/www/gitorious/app/config/gitorious.yml /var/www/gitorious/app/config/gitorious.yml.$backup_ext 2>/dev/null || true
+  cp /var/www/gitorious/app/config/database.yml /var/www/gitorious/app/config/database.yml.$backup_ext 2>/dev/null || true
+  cp /var/www/gitorious/app/config/unicorn.rb /var/www/gitorious/app/config/unicorn.rb.$backup_ext 2>/dev/null || true
+  cp /var/www/gitorious/app/config/authentication.yml /var/www/gitorious/app/config/authentication.yml.$backup_ext 2>/dev/null || true
 }
 
 remove-old-ruby-install() {

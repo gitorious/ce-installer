@@ -30,12 +30,12 @@ log "Upgrade of your Gitorious installation is complete."
 log "Open https://$gitorious_host/ in your browser to start."
 echo
 
-log "Following files have been backed up with .old extension:"
-echo "  /var/www/gitorious/app/config/gitorious.yml"
-echo "  /var/www/gitorious/app/config/authentication.yml"
-echo "  /var/www/gitorious/app/config/unicorn.rb"
-echo "  /etc/nginx/nginx.conf"
-echo "  /etc/nginx/conf.d/gitorious.conf"
+log "Old configuration files have been backed up and placed at the following paths:"
+echo "  /var/www/gitorious/app/config/gitorious.yml.$backup_ext"
+echo "  /var/www/gitorious/app/config/authentication.yml.$backup_ext"
+echo "  /var/www/gitorious/app/config/unicorn.rb.$backup_ext"
+echo "  /etc/nginx/nginx.conf.$backup_ext"
+echo "  /etc/nginx/conf.d/gitorious.conf.$backup_ext"
 log "If you have modified any of these after previous installation please apply your changes to the new files and restart Gitorious with 'gitoriousctl restart'"
 
 echo
