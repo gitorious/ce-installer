@@ -29,4 +29,6 @@ handle-exit() {
     log "Usually it happens when there's a network problem (probably timeout during package installation)."
     log "It is safe to re-run this script again."
   fi
+
+  exit 1
 }
