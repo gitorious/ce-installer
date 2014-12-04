@@ -8,7 +8,7 @@ log "Welcome to Gitorious installer!"
 log "This script will install Gitorious $gitorious_version on this machine."
 
 echo
-trap 'handle-exit' INT TERM EXIT
+trap 'handle-exit' TERM EXIT
 install_gitorious installation
 success=1
 
