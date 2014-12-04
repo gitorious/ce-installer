@@ -24,7 +24,7 @@ this guide you'll set up your own instance of Gitorious within half an hour
 (depending on your bandwidth).
 
 You will end up with a basic Gitorious installation running on ports 80 and 443
-(https) using sane, default settings, running in public mode with unlimited
+(https) using sane, default settings, running in private mode with unlimited
 private repos enabled. The only option you will be prompted for during the
 installation is the hostname (FQDN) by which you want to access your Gitorious
 installation.
@@ -138,9 +138,9 @@ before they take effect. Restart with the following command:
 
 ### How do I add users?
 
-If your installation runs in public mode users can create accounts for
-themselves. Otherwise users cannot simply register from the web front-page:
-you'll have to add new users yourself. The are 2 ways to do this.
+Unless your installation is running in public mode, users cannot simply
+register from the web front-page: you'll have to add new users yourself. The
+are 2 ways to do this.
 
 One way is to click on "Users" link in Gitorious web app (link visible only to
 admins) to access user management page.
@@ -161,8 +161,14 @@ exec bin/snapshot` as described below, in the backup FAQ section.
 
 ### How do I change the hostname?
 
-Edit `/var/www/gitorious/app/config/gitorious.yml` file, change `host` setting,
-then restart the app with:
+Gitorious doesn't care about the hostname of the machine as reported
+by `hostname` command. However, it's very important to access your Gitorious
+instance with the same host name as set in Gitorious configuration file (for
+authentication cookies to work correctly).
+
+If you want to change the host name by which you access Gitorious edit
+`/var/www/gitorious/app/config/gitorious.yml` file, change `host` setting, then
+restart the app with:
 
     sudo gitoriousctl restart gitorious-web
 
@@ -208,20 +214,15 @@ in.
 Note that this will also allow anyone to register user accounts in
 your Gitorious site.
 
-To change to public mode, edit
-`/var/www/gitorious/app/config/gitorious.yml`. Set `public_mode:
-true`. Then restart with `script/restart` for it to take effect.
+To change to public mode, edit `/var/www/gitorious/app/config/gitorious.yml`.
+Set `public_mode: true`. Then restart with `sudo gitoriousctl restart
+gitorious-web` for it to take effect.
 
 ### What's the recommended specs for a Gitorious server?
 
 At least 2-4GB RAM initially, since Gitorious consists of and uses many
-services.  The resource usage will go up linearly with increasing numbers of
+services. The resource usage will go up linearly with increasing numbers of
 users, web traffic and git operations on your installation.
-
-### How do I install Gitorious on other operating systems?
-
-Community installer supports CentOS 6 and Ubuntu 14.04. However you can use any
-other operating system with the [Virtual Appliance](http://getgitorious.com/virtual-appliance).
 
 ## Upgrading
 

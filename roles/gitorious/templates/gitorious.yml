@@ -114,7 +114,7 @@ host: {{ gitorious_host }}
 # disable HTTP and git:// cloning. These protocols are anonymous, and
 # will allow unregistered users to pull repositories, given that they
 # somehow obtained the correct URLs.
-#public_mode: true
+public_mode: false
 
 # By setting this to false, you effectively disable new user
 # registrations, regardless of public mode on/off. (Defaults to true
