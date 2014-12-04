@@ -47,7 +47,7 @@ We assume the following:
 
 Everything cool? Ok, let's go!
 
-## Installation procedure
+## Installation
 
 For the following steps, please make sure you are logged in as superuser/root.
 
@@ -120,17 +120,6 @@ Did everything work? *Congratulations, you're up and running with Gitorious!*
 
 ## FAQ
 
-### I get a "Sorry, something went wrong" message when I try to log in - what's up?
-
-You are most likely using an unexpected hostname when logging in. You have to
-access your Gitorious server using the same hostname as you set during the
-installation, or the login will fail. This is due to an authenticity check that
-Gitorious performs during user login: the url that users access it with must
-match its configured hostname. If the server hostname isn't DNSed on the
-internet yet (or if your server is only for internal use) you'll have to update
-your /etc/hosts file to map the server's ip to the hostname you chose during
-the Gitorious installation.
-
 ### Can I reconfigure my Gitorious installation?
 
 You certainly can. The main settings are located in
@@ -146,9 +135,8 @@ before they take effect. Restart with the following command:
 ### How do I add users?
 
 If your installation runs in public mode users can create accounts for
-themselves. Otherwise users cannot
-simply register from the web front-page: you'll have to add new users
-yourself. The are 2 ways to do this.
+themselves. Otherwise users cannot simply register from the web front-page:
+you'll have to add new users yourself. The are 2 ways to do this.
 
 One way is to click on "Users" link in Gitorious web app (link visible only to
 admins) to access user management page.
@@ -164,9 +152,8 @@ directly onto the filesystem, and the data of the Gitorious webapp, which goes
 into MySQL. You'll find the git repositories in
 `/var/www/gitorious/repositories`. You can extract your data from MySQL by
 running `mysqldump` on the `gitorious_production` database.  However, in
-practice it's easier to simply pull out your data by running `sudo
-gitoriousctl exec bin/snapshot` as described below, in the backup FAQ
-section.
+practice it's easier to simply pull out your data by running `sudo gitoriousctl
+exec bin/snapshot` as described below, in the backup FAQ section.
 
 ### How do I change the hostname?
 
@@ -187,33 +174,32 @@ visit the site.
 
 ### How do I back it up?
 
-Run `/var/www/gitorious/app/bin/snapshot` as superuser/root.
+Run the following command:
 
-    cd /var/www/gitorious/app/ && bin/snapshot ./testsnapshot.tar
+    sudo gitoriousctl exec bin/snapshot /full/path/to/snapshot.tar
 
-This will back up the current state of your Gitorious site (including
-your hosted git repositories) in a single tarball. You can restore the
-data from the same tarball (see the next FAQ section).
+This will back up the current state of your Gitorious site (including your
+hosted git repositories) in a single tarball. You can restore the data from the
+same tarball (see the next FAQ section).
 
-So just set up a cronjob to do regular snapshots and offsite transfers
-of said backups.
+So just set up a cronjob to do regular snapshots and offsite transfers of said
+backups.
 
 ### How do I perform disaster recovery?
 
-Given a tarball created by the aforementioned
-`/var/www/gitorious/app/bin/snapshot` script, you'll be able to
-restore the state of the Gitorious site (and the hosted git repos)
-from the same tarball by running `bin/restore`:
+Given a tarball created by the aforementioned snapshot command, you'll be able
+to restore the state of the Gitorious site (and the hosted git repos) from the
+same tarball by running `bin/restore`:
 
-    cd /var/www/gitorious/app/ && bin/restore ./testsnapshot.tar
+    sudo gitoriousctl exec bin/restore /full/path/to/snapshot.tar
 
 ### How do I make my hosted git repositories available for anonymous users?
 
-The default private mode will not allow anonymous access to content or
-user registration. Only logged in users which you have created
-explictly can surf your Gitorious installation. But when Gitorious is
-running in public mode, anyone can view and clone repositories in your
-Gitorious site, without logging in.
+The default private mode will not allow anonymous access to content or user
+registration. Only logged in users which you have created explictly can surf
+your Gitorious installation. But when Gitorious is running in public mode,
+anyone can view and clone repositories in your Gitorious site, without logging
+in.
 
 Note that this will also allow anyone to register user accounts in
 your Gitorious site.
@@ -224,20 +210,28 @@ true`. Then restart with `script/restart` for it to take effect.
 
 ### What's the recommended specs for a Gitorious server?
 
-At least 2-4GB RAM initially, since Gitorious can be a bit of a memory
-hog. The resource usage will go up linearly with increasing numbers of
+At least 2-4GB RAM initially, since Gitorious consists of and uses many
+services.  The resource usage will go up linearly with increasing numbers of
 users, web traffic and git operations on your installation.
 
 ### How do I upgrade my Gitorious instance?
 
-This will update Gitorious to latest stable version. Works with 
-Gitorious releases since 2.4.x:
-
-    cd ~/ce-installer && ./upgrade.sh
-
-If you have an older Gitorious instance, please refer [to this guide](https://gitorious.org/gitorious/pages/Upgrading).
+See "Upgrading" section below.
 
 ### How do I install Gitorious on other operating systems?
 
-Community installer supports only CentOS. However you can use any 
+Community installer supports CentOS 6 and Ubuntu 14.04. However you can use any
 other operating system with the [Virtual Appliance](http://getgitorious.com/virtual-appliance).
+
+## Upgrading
+
+To upgrade from Gitorious 2.4.x or 3.x to latest stable release (3.2 as of now), follow these steps:
+
+    >> git clone https://gitorious.org/gitorious/ce-installer.git && cd ce-installer
+    >> sudo ./upgrade.sh
+
+If you have an older Gitorious instance, please refer [to this guide](https://gitorious.org/gitorious/pages/Upgrading).
+
+To check your current version of Gitorious run:
+
+    grep VERSION /var/www/gitorious/app/lib/gitorious.rb
