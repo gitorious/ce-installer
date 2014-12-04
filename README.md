@@ -120,6 +120,10 @@ Did everything work? *Congratulations, you're up and running with Gitorious!*
 
 ## FAQ
 
+### How do I upgrade my Gitorious instance?
+
+See "Upgrading" section below.
+
 ### Can I reconfigure my Gitorious installation?
 
 You certainly can. The main settings are located in
@@ -213,10 +217,6 @@ true`. Then restart with `script/restart` for it to take effect.
 At least 2-4GB RAM initially, since Gitorious consists of and uses many
 services.  The resource usage will go up linearly with increasing numbers of
 users, web traffic and git operations on your installation.
-
-### How do I upgrade my Gitorious instance?
-
-See "Upgrading" section below.
 
 ### How do I install Gitorious on other operating systems?
 
