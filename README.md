@@ -227,8 +227,8 @@ other operating system with the [Virtual Appliance](http://getgitorious.com/virt
 
 To upgrade from Gitorious 2.4.x or 3.x to latest stable release (3.2 as of now), follow these steps:
 
-    >> git clone https://gitorious.org/gitorious/ce-installer.git && cd ce-installer
-    >> sudo ./upgrade.sh
+    git clone https://gitorious.org/gitorious/ce-installer.git && cd ce-installer
+    sudo ./upgrade.sh
 
 If you have an older Gitorious instance, please refer [to this guide](https://gitorious.org/gitorious/pages/Upgrading).
 
