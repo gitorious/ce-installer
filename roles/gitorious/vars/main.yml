@@ -9,3 +9,4 @@ ssl_key_path: /etc/nginx/ssl/gitorious.key
 
 mysql_service: "{{ 'mysqld' if ansible_os_family == 'RedHat' else 'mysql' }}"
 redis_service: "{{ 'redis' if ansible_os_family == 'RedHat' else 'redis-server' }}"
+nginx_user: "{{ 'nginx' if ansible_os_family == 'RedHat' else 'www-data' }}"
