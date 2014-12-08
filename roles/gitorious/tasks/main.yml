@@ -130,10 +130,21 @@
 - name: restart nginx
   service: name=nginx state=restarted
 
-# === logs directory
+# === logs directory + rotation
 
 - name: create logs directory (/var/log/gitorious)
   file: path=/var/log/gitorious state=directory owner=git group=git mode=0775
+
+- name: install logrotate
+  yum: pkg=logrotate state=present
+  when: ansible_os_family == "RedHat"
+
+- name: install logrotate
+  apt: pkg=logrotate state=present
+  when: ansible_os_family == "Debian"
+
+- name: install logrotate config
+  template: src=logrotate.d/gitorious dest=/etc/logrotate.d/gitorious
 
 # === gitorious-shell
 
